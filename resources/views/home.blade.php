@@ -4,25 +4,6 @@
 
 @section('content')
 
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-white justify-content-center mb-4">
-            <ul class="navbar-nav">
-                <li class="nav-item mx-3">
-                    <a class="nav-link {{ request()->is('home') ? 'active font-weight-bold text-primary' : '' }}"
-                        href="{{ route('home') }}">
-                        <i class="fas fa-home"></i> Home
-                    </a>
-                </li>
-                <li class="nav-item mx-3">
-                    <a class="nav-link {{ request()->is('statistics') ? 'active font-weight-bold text-primary' : '' }}"
-                        href="{{route('statistics')}}">
-                        <i class="fas fa-chart-bar"></i> Statistics
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -37,102 +18,81 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>{{ $totalVisitors }}</h3>
+                        <h3>{{ $totalVisitors ?? '00' }}</h3>
                         <p>Total Visitors Registered</p>
                     </div>
                     <div class="icon"><i class="ion ion-bag"></i></div>
-                    <a href="{{ route('visitor_management') }}" class="small-box-footer more-info"
-                        data-url="{{ route('visitor_management') }}">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{ Route::has('visitor_management') ? route('visitor_management') : '#' }}"
+                        class="small-box-footer more-info"
+                        data-url="{{ Route::has('visitor_management') ? route('visitor_management') : '#' }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 </div>
             </div>
 
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>{{ $totalCheckin }}</h3>
+                        <h3>{{ $totalCheckin ?? '00' }}</h3>
                         <p>Visitors Checked In</p>
                     </div>
                     <div class="icon"><i class="ion ion-stats-bars"></i></div>
-                    <a href="{{ route('check_in_visitor') }}" class="small-box-footer more-info"
-                        data-url="{{ route('check_in_visitor') }}">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{ Route::has('check_in_visitor') ? route('check_in_visitor') : '#' }}"
+                        class="small-box-footer more-info"
+                        data-url="{{ Route::has('check_in_visitor') ? route('check_in_visitor') : '#' }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 </div>
             </div>
 
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>{{ $total_checkouts }}</h3>
+                        <h3>{{ $total_checkouts ?? '00' }}</h3>
                         <p>Visitors Checked Out</p>
                     </div>
                     <div class="icon"><i class="ion ion-person-add"></i></div>
-                    <a href="{{ route('visitor_check_out') }}" class="small-box-footer more-info"
-                        data-url="{{ route('visitor_check_out') }}">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{ Route::has('visitor_check_out') ? route('visitor_check_out') : '#' }}"
+                        class="small-box-footer more-info"
+                        data-url="{{ Route::has('visitor_check_out') ? route('visitor_check_out') : '#' }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 </div>
             </div>
 
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>{{ $totalEmployees }}</h3>
+                        <h3>{{ $totalEmployees ?? '00' }}</h3>
                         <p>Total Employees</p>
                     </div>
                     <div class="icon"><i class="ion ion-pie-graph"></i></div>
-                    <a href="{{ route('employee_management') }}" class="small-box-footer more-info"
-                        data-url="{{ route('employee_management') }}">More info <i
-                            class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{ Route::has('employee_management') ? route('employee_management') : '#' }}"
+                        class="small-box-footer more-info"
+                        data-url="{{ Route::has('employee_management') ? route('employee_management') : '#' }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 </div>
             </div>
 
+            <!-- Repeat same for other boxes -->
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-primary">
                     <div class="inner">
-                        <h3>{{ $pendingVisitors }}</h3>
+                        <h3>{{ $pendingVisitors ?? '00' }}</h3>
                         <p>Pending Visitors</p>
                     </div>
                     <div class="icon"><i class="ion ion-clock"></i></div>
-                    <a href="{{ route('pending_visitor_management') }}" class="small-box-footer more-info"
-                        data-url="{{ route('pending_visitor_management') }}">More info <i
-                            class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{ Route::has('pending_visitor_management') ? route('pending_visitor_management') : '#' }}"
+                        class="small-box-footer more-info"
+                        data-url="{{ Route::has('pending_visitor_management') ? route('pending_visitor_management') : '#' }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-secondary">
-                    <div class="inner">
-                        <h3>{{ $totalEmployeeCheckIn }}</h3>
-                        <p>Employees Checked In</p>
-                    </div>
-                    <div class="icon"><i class="ion ion-checkmark"></i></div>
-                    <a href="{{ route('check_in_employee') }}" class="small-box-footer more-info"
-                        data-url="{{ route('check_in_employee') }}">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-white">
-                    <div class="inner">
-                        <h3>{{ $totalEmployeeCheckOut }}</h3>
-                        <p>Employees Checked Out</p>
-                    </div>
-                    <div class="icon"><i class="ion ion-checkmark"></i></div>
-                    <a href="{{ route('check_out_employee') }}" class="small-box-footer more-info"
-                        data-url="{{ route('check_out_employee') }}">More info <i
-                            class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-gradient-purple">
-                    <div class="inner">
-                        <h3>{{ $totalCompanies }}</h3>
-                        <p>Total Companies</p>
-                    </div>
-                    <div class="icon"><i class="ion ion-checkmark"></i></div>
-                    <a href="{{ route('visitor_company') }}" class="small-box-footer more-info"
-                        data-url="{{ route('visitor_company') }}">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
+            <!-- Continue for Employees Checked In/Out and Companies with the same pattern -->
         </div>
-      
-
-
-    @stop
-    <!-- Centered Navbar -->
+    </div>
+@stop
+<!-- Centered Navbar -->

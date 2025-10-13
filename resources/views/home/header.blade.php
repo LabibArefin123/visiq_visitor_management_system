@@ -1,9 +1,11 @@
-<nav class="main-header navbar navbar-expand-md navbar-light navbar-white" style="padding-left: 30px; padding-right: 30px;">
+<nav class="main-header navbar navbar-expand-md navbar-light navbar-white"
+    style="padding-left: 30px; padding-right: 30px;">
     <div class="container-fluid">
 
         <!-- Left: Logo + Title -->
         <a href="#" class="navbar-brand d-flex align-items-center">
-            <img src="{{ asset('images/visiq.png') }}" alt="Logo" class="brand-image  elevation-3" style="width: 80px; height: 80px;">
+            <img src="{{ asset('images/visiq.png') }}" alt="Logo" class="brand-image  elevation-3"
+                style="width: 80px; height: 80px;">
         </a>
 
         <!-- Center: Navbar Menu -->
@@ -18,9 +20,9 @@
                 <li class="nav-item">
                     <a href="#services" class="nav-link custom-link">Services</a>
                 </li>
-               
+
             </ul>
-            
+
             <!-- CSS for custom styles -->
             <style>
                 /* Style for the navbar items */
@@ -32,7 +34,7 @@
                     text-decoration: none;
                     overflow: hidden;
                 }
-            
+
                 /* Parallelogram background effect */
                 .navbar-nav .nav-item .nav-link::after {
                     content: "";
@@ -45,30 +47,31 @@
                     transform: skewX(-20deg);
                     transform-origin: bottom left;
                     transition: transform 0.3s ease, width 0.3s ease;
-                    z-index: -1; /* Ensure it stays behind the text */
+                    z-index: -1;
+                    /* Ensure it stays behind the text */
                     width: 0;
                 }
-            
+
                 /* Hover effect */
                 .navbar-nav .nav-item .nav-link:hover::after {
                     width: 100%;
-                    transform: skewX(0deg); /* No skew on hover, making it appear like a smooth background expansion */
+                    transform: skewX(0deg);
+                    /* No skew on hover, making it appear like a smooth background expansion */
                 }
-            
+
                 /* Hover text color change */
                 .navbar-nav .nav-item .nav-link:hover {
                     color: white;
                 }
             </style>
-            
+
         </div>
 
         <!-- Right: Buttons -->
         <div class="order-3 ml-auto d-flex align-items-center">
-            <a href="{{ route('login') }}" class="btn btn-outline-primary custom-btn" style="margin-right: 10px;">Login</a>
-            <a href="{{ route('register') }}" class="btn btn-outline-primary custom-btn">Register</a>
+            <a href="{{ route('login') }}" class="btn btn-outline-primary custom-btn"
+                style="margin-right: 10px;">Login</a>
         </div>
-
     </div>
 </nav>
 
@@ -91,7 +94,7 @@
     /* Hover effect for navbar links */
     .navbar-nav .nav-item .nav-link:hover,
     .navbar-nav .nav-item .nav-link.active {
-        
+
         transform: translateY(-3px);
     }
 
@@ -104,7 +107,7 @@
     }
 
     .custom-btn:hover {
-       
+
         color: white;
         transform: translateY(-3px);
     }
@@ -115,7 +118,7 @@
         height: 100px;
         object-fit: cover;
     }
-    
+
     /* Active navbar item */
     .navbar-nav .nav-item .nav-link.active {
         font-weight: bold;

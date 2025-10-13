@@ -40,48 +40,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Fetch data from the database
-        $totalVisitors = Visitor::count(); // Total visitors registered
-        $totalCheckin = VisitorCheckin::sum('total_checkins'); // Sum total_checkins instead of count
-        $total_checkouts = VisitorCheckout::sum('total_checkouts'); // Visitors checked out
-        $totalEmployees = Employee::count(); // Total employees
-        $pendingVisitors = PendingVisitor::count();
-        $totalEmployeeCheckIn = CheckInEmployee::sum('total_checkins');
-        $totalEmployeeCheckOut = CheckOutEmployee::sum('total_checkouts');
-        $totalCompanies = VisitorCompany::count(); // Total companies
 
         // Pass data to the view
-        return view('home', compact('totalVisitors', 'totalCheckin', 'total_checkouts', 'totalEmployees', 'pendingVisitors', 'totalEmployeeCheckIn', 'totalEmployeeCheckOut', 'totalCompanies'));
-    }
-
-    public function statistics()
-    {
-        $labels = [];
-        $visitorCheckIns = [];
-        $visitorCheckOuts = [];
-        $employeeCheckIns = [];
-        $employeeCheckOuts = [];
-        
-        for ($i = 4; $i >= 0; $i--) {
-            $date = Carbon::now()->subDays($i)->format('Y-m-d');
-            $label = Carbon::now()->subDays($i)->format('D (M d)');
-            $labels[] = $label;
-        
-            $visitorCheckIns[] = \App\Models\VisitorCheckin::whereDate('check_in_time', $date)->count();
-            $visitorCheckOuts[] = \App\Models\VisitorCheckout::whereDate('check_out_time', $date)->count();
-        
-            $employeeCheckIns[] = \App\Models\CheckInEmployee::whereDate('check_in_time', $date)->count();
-            $employeeCheckOuts[] = \App\Models\CheckOutEmployee::whereDate('check_out_time', $date)->count();
-        }
-        
-        return view('statistics', compact(
-            'labels',
-            'visitorCheckIns',
-            'visitorCheckOuts',
-            'employeeCheckIns',
-            'employeeCheckOuts'
-        ));
-        
+        return view('home');
     }
 }
 
