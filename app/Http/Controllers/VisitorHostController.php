@@ -9,9 +9,9 @@ use App\Models\VisitorGroupHostSchedule;
 use App\Models\VisitorSchedule;
 use Illuminate\Http\Request;
 
-class Visitor_Schedule extends Controller
+class VisitorHostController extends Controller
 {
-    public function visitor_host_schedule_index()
+    public function index()
     {
         $visitorSchedules = VisitorSchedule::with('visitor')->get();
 
@@ -26,14 +26,14 @@ class Visitor_Schedule extends Controller
         return view('visitor_management.visitor_host_schedule', compact('visitorSchedules'));
     }
 
-    public function visitor_host_schedule_create()
+    public function create()
     {
         $visitors = Visitor::all();
         $employees = Employee::all();
         return view('visitor_management.visitor_host_schedule_add', compact('visitors', 'employees'));
     }
 
-    public function visitor_host_schedule_store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'v_id' => 'required|exists:visitors,id',
@@ -53,7 +53,7 @@ class Visitor_Schedule extends Controller
         return redirect()->route('visitor_schedule.index')->with('success', 'Schedule added successfully!');
     }
 
-    public function visitor_host_schedule_view($id)
+    public function view($id)
     {
         // Fetch the schedule by ID along with the associated visitor
         $schedule = VisitorSchedule::with('visitor')->findOrFail($id);
@@ -62,7 +62,7 @@ class Visitor_Schedule extends Controller
         return view('visitor_management.visitor_host_view', compact('schedule'));
     }
 
-    public function visitor_host_schedule_edit($id)
+    public function edit($id)
     {
         // Fetch the schedule by ID along with the associated visitor
         $schedule = VisitorSchedule::with('visitor')->findOrFail($id);
@@ -72,7 +72,7 @@ class Visitor_Schedule extends Controller
         return view('visitor_management.visitor_host_schedule_edit', compact('schedule', 'visitors'));
     }
 
-    public function visitor_host_schedule_update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'v_id' => 'required|exists:visitors,id',
@@ -96,7 +96,7 @@ class Visitor_Schedule extends Controller
     }
 
 
-    public function visitor_host_schedule_destroy($id)
+    public function destroy($id)
     {
         // Find the schedule by ID
         $schedule = VisitorSchedule::findOrFail($id);
@@ -107,7 +107,7 @@ class Visitor_Schedule extends Controller
         // Redirect back to the schedule list with a success message
         return redirect()->route('visitor_schedule.index')->with('success', 'Schedule deleted successfully!');
     }
-    
+
     public function visitor_group_schedule_index()
     {
         $groupSchedules = VisitorGroupHostSchedule::all();
@@ -118,7 +118,7 @@ class Visitor_Schedule extends Controller
     {
         $companies = VisitorCompany::all(); // Fetch all companies
         $employees = Employee::all(); // Fetch all employees
-    
+
         return view('visitor_management.visitor_group_host_schedule_add', compact('companies', 'employees'));
     }
 

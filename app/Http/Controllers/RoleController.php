@@ -3,207 +3,116 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
-
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $roles = Role::orderBy('name', 'ASC')->paginate(10);
-        return view('roles_and_permission.all_roles', [
-            'roles' => $roles
-        ]);
+        $roles = Role::with('permissions')->get();
+        return view('pages.setting_management.roles_and_permission.roles.index', compact('roles'));
     }
 
     public function create()
     {
-        $permissions = Permission::orderBy('name', 'ASC')->paginate(10);
-        return view('roles_and_permission.role_create', [
-            'permissions' => $permissions
-        ]);
+        $routes = collect(Route::getRoutes())
+            ->filter(function ($route) {
+                $middlewares = $route->gatherMiddleware();
+                return $route->getName() &&
+                    $route->getAction('controller') &&
+                    collect($middlewares)->contains('auth');
+            })
+            ->groupBy(function ($route) {
+                return class_basename(explode('@', $route->getActionName())[0]);
+            });
+
+        return view('pages.setting_management.roles_and_permission.roles.create', compact('routes'));
     }
+
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:roles|min:3'
+        $request->validate([
+            'name' => 'required|unique:roles,name',
+            'permissions' => 'nullable|array',
+            // No need to validate permissions.* here
         ]);
 
-        if ($validator->passes()) {
-            $role = Role::create(['name' => $request->name]);
-            if (!empty($request->permission)) {
-                foreach ($request->permission as $name) {
-                    $role->givePermissionTo($name);
-                }
+        $role = Role::create(['name' => $request->name]);
+
+        if ($request->filled('permissions')) {
+            foreach ($request->permissions as $permissionName) {
+                Permission::firstOrCreate([
+                    'name' => $permissionName,
+                    'guard_name' => 'web',
+                ]);
             }
 
-            return redirect()->route('role.index')->with('success', 'Role created successfully.');
-        } else {
-            return redirect()->route('role.create')->withInput()->withErrors($validator);
+            $role->syncPermissions($request->permissions);
         }
+
+        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
     }
 
     public function edit($id)
     {
-        $role = Role::findById($id);
-        $hasPermissions = $role->permissions->pluck('name');
-        $permissions = Permission::orderBy('name', 'ASC')->paginate(10);
-        return view('roles_and_permission.role_edit', [
-            'role' => $role,
-            'permissions' => $permissions,
-            'hasPermissions' => $hasPermissions
-        ]);
+        $role = Role::findOrFail($id);
+
+        // Get assigned permissions for this role
+        $rolePermissions = $role->permissions()->pluck('name')->toArray();
+
+        // Group permissions by controller/module prefix (you can customize this logic)
+        $permissions = Permission::all()->groupBy(function ($permission) {
+            // Optional: Split permission names like "user.create" or "user-edit"
+            return explode('.', $permission->name)[0]; // group by first part
+        });
+
+        return view('pages.setting_management.roles_and_permission.roles.edit', compact('role', 'rolePermissions', 'permissions'));
     }
 
     public function update(Request $request, $id)
     {
-        $role = Role::findById($id);
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:roles,name,' . $id . ',id'
+        $role = Role::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|unique:roles,name,' . $role->id,
+            'permissions' => 'nullable|array',
         ]);
-        if ($validator->passes()) {
-            $role->name = $request->name;
-            $role->save();
-            if (!empty($request->permission)) {
-                $role->syncPermissions($request->permission);
-            } else {
-                $role->syncPermissions([]);
+
+        // Update role name
+        $role->name = $request->name;
+        $role->save();
+
+        // Handle permissions
+        if ($request->filled('permissions')) {
+            foreach ($request->permissions as $permissionName) {
+                Permission::firstOrCreate([
+                    'name' => $permissionName,
+                    'guard_name' => 'web',
+                ]);
             }
-            return redirect()->route('role.index')->with('success', 'Role updated successfully.');
+
+            $role->syncPermissions($request->permissions);
         } else {
-            return redirect()->route('role.edit', $id)->withInput()->withErrors($validator);
+            // If no permissions sent, remove all
+            $role->syncPermissions([]);
         }
+
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
+
 
     public function destroy($id)
-
     {
-        $role = Role::findById($id);
-        $role->delete();
-        return redirect()->route('role.index')->with('success', 'Role deleted successfully.');
-    }
-
-    public function role_list()
-    {
-        $roles = DB::table('roles_permissions')->get();
-
-        $roles->transform(function ($role) {
-            $role->routes = json_decode($role->routes, true);
-            $role->route_count = is_array($role->routes) ? count($role->routes) : 0;
-            return $role;
-        });
-
-        return view('roles_and_permission.role_list', compact('roles'));
-    }
-
-
-    public function role_list_create()
-    {
-        $routes = collect(Route::getRoutes())->filter(function ($route) {
-            return $route->getName(); // Only named routes
-        });
-
-        // Group routes by section using name prefixes
-        $groupedRoutes = [];
-
-        foreach ($routes as $route) {
-            $name = $route->getName();
-
-            if (str_starts_with($name, 'visitor')) {
-                $groupedRoutes['Visitor Management'][] = $route;
-            } elseif (str_starts_with($name, 'employee')) {
-                $groupedRoutes['Employee Management'][] = $route;
-            } elseif (str_starts_with($name, 'user')) {
-                $groupedRoutes['User Management'][] = $route;
-            } elseif (str_starts_with($name, 'report')) {
-                $groupedRoutes['Reports'][] = $route;
-            } elseif (str_starts_with($name, 'role') || str_starts_with($name, 'permission')) {
-                $groupedRoutes['Roles & Permissions'][] = $route;
-            } else {
-                $groupedRoutes['Other'][] = $route;
-            }
-        }
-
-        return view('roles_and_permission.role_list_create', compact('groupedRoutes'));
-    }
-
-
-    public function role_list_store(Request $request)
-    {
-        $request->validate([
-            'user_type' => 'required|integer',
-            'routes'    => 'required|array',
-        ]);
-
-        // Store routes assigned to this user_type in roles_permissions table
-        DB::table('roles_permissions')->updateOrInsert(
-            ['user_type' => $request->user_type],
-            ['routes' => json_encode($request->routes)]
-        );
-
-        return redirect()->route('role_permission.index')->with('success', 'Permissions assigned successfully!');
-    }
-
-    public function role_list_edit($id)
-    {
-        $role = DB::table('roles_permissions')->where('id', $id)->first();
+        $role = Role::find($id);
 
         if (!$role) {
-            return redirect()->route('role_permission.index')->with('error', 'Role not found!');
+            return back()->with('error', 'Role not found.');
         }
 
-        $role->routes = json_decode($role->routes ?? '[]', true);
+        $role->delete();
 
-        $routes = collect(Route::getRoutes())->filter(fn($route) => $route->getName());
-
-        $groupedRoutes = [];
-        foreach ($routes as $route) {
-            $name = $route->getName();
-            if (str_starts_with($name, 'visitor')) {
-                $groupedRoutes['Visitor Management'][] = $route;
-            } elseif (str_starts_with($name, 'employee')) {
-                $groupedRoutes['Employee Management'][] = $route;
-            } elseif (str_starts_with($name, 'user')) {
-                $groupedRoutes['User Management'][] = $route;
-            } elseif (str_starts_with($name, 'report')) {
-                $groupedRoutes['Reports'][] = $route;
-            } elseif (str_starts_with($name, 'role') || str_starts_with($name, 'permission')) {
-                $groupedRoutes['Roles & Permissions'][] = $route;
-            } else {
-                $groupedRoutes['Other'][] = $route;
-            }
-        }
-
-        return view('roles_and_permission.role_list_edit', compact('groupedRoutes', 'role'));
+        return back()->with('success', 'Role deleted successfully.');
     }
-
-    public function role_list_update(Request $request, $id)
-    {
-        $request->validate([
-            'user_type' => 'required|integer',
-            'routes' => 'required|array',
-        ]);
-
-        DB::table('roles_permissions')->where('id', $id)->update([
-            'user_type' => $request->user_type,
-            'routes' => json_encode($request->routes)
-        ]);
-
-        return redirect()->route('role_permission.index')->with('success', 'Permissions updated successfully!');
-    }
-
-    public function role_list_delete($id)
-    {
-        DB::table('roles_permissions')->where('id', $id)->delete();
-
-        return redirect()->route('role_permission.index')->with('success', 'Role deleted successfully!');
-    }
-
 }

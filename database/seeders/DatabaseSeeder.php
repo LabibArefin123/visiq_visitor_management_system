@@ -11,10 +11,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Uncomment this if you want to create 10 fake users
+        // You can also use factories if needed
         // \App\Models\User::factory(10)->create();
 
-        // Call the UserSeeder properly
-        $this->call(UserSeeder::class);
+        // ✅ Properly call multiple seeders in sequence
+        $this->call([
+            UserSeeder::class,
+            VisitorSeeder::class,
+        ]);
     }
 }

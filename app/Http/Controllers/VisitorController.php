@@ -17,7 +17,7 @@ use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Http\Request;
 
 
-class Visitor_Management extends Controller
+class VisitorController extends Controller
 {
     public function visitor_home()
     {
@@ -34,15 +34,9 @@ class Visitor_Management extends Controller
         return view('visitor_management.visitor_view', compact('visitor'));
     }
 
-    public function pending_visitor_home()
-    {
-        $pendingVisitors = PendingVisitor::get();
-        return view('visitor_management.pending_user_index', compact('pendingVisitors'));
-    }
-
     public function visitor_log_edit($id)
     {
-        $visitor = Visitor::findOrFail($id);    
+        $visitor = Visitor::findOrFail($id);
         return view('visitor_management.visitor_log_edit', compact('visitor'));
     }
 
@@ -124,96 +118,6 @@ class Visitor_Management extends Controller
         return redirect()->route('visitor_management');
     }
 
-    public function pending_visitor_create()
-    {
-        return view('visitor_management.pending_visitor_add');
-    }
-
-
-    public function pending_visitor_store(Request $request)
-    {
-        // Validate the form input, including the new fields (v_id)
-        $request->validate([
-            'v_id' => 'required|string|max:20|unique:pending_visitors,v_id',  // Validation for v_id
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:15',
-            'purpose' => 'required|string|max:255',
-            'visit_date' => 'required|date',
-            'date_of_birth' => 'required|date',
-            'national_id' => 'required|string|max:20',
-        ]);
-
-        // Store the data in the database
-        PendingVisitor::create($request->only([
-            'v_id',
-            'name',
-            'email',
-            'phone',
-            'purpose',
-            'visit_date',
-            'date_of_birth',
-            'national_id'
-        ]));
-
-        return redirect()->route('pending_visitor_management')->with('success', 'Visitor added successfully.');
-    }
-
-
-    public function pending_visitor_delete($id)
-    {
-        // Find the visitor and delete
-        $pendingVisitors = PendingVisitor::findOrFail($id);
-        $pendingVisitors->delete();
-
-        return back()->with('success', 'Visitor deleted successfully.');
-    }
-
-    public function pending_visitor_edit($id)
-    {
-        // Fetch the pending visitor or redirect with an error if not found
-        $pendingVisitor = PendingVisitor::find($id);
-
-        // Check if the visitor was found
-        if (!$pendingVisitor) {
-            return redirect()->route('pending_visitor_management')->with('error', 'Visitor not found.');
-        }
-
-        return view('visitor_management.pending_visitor_edit', compact('pendingVisitor'));
-    }
-
-
-    public function pending_visitor_update(Request $request, $id)
-    {
-        // Validate the form input, including the new fields (v_id)
-        $request->validate([
-            'v_id' => 'required|string|max:20|unique:pending_visitors,v_id,' . $id,  // Validation for v_id
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:15',
-            'purpose' => 'required|string|max:255',
-            'visit_date' => 'required|date',
-            'date_of_birth' => 'required|date',
-            'national_id' => 'required|string|max:20',
-        ]);
-
-        // Find the visitor and update the information
-        $pendingVisitor = PendingVisitor::findOrFail($id);
-        $pendingVisitor->update($request->only([
-            'v_id',
-            'name',
-            'email',
-            'phone',
-            'purpose',
-            'visit_date',
-            'date_of_birth',
-            'national_id'
-        ]));
-
-        return redirect()->route('pending_visitor_management')->with('success', 'Visitor updated successfully.');
-    }
-
-    
     public function downloadBlankPDF()
     {
         $pdf = Pdf::loadView('visitor_management.visitor_blank_pdf');

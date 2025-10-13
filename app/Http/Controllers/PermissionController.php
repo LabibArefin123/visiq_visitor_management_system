@@ -3,69 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $permissions = Permission::orderBy('created_at','DESC')->paginate(10);
-        return view('roles_and_permission.permission_list',[
-            'permissions' => $permissions
-        ]);
+        $permissions = Permission::all();
+        return view('pages.setting_management.roles_and_permission.permission.index', compact('permissions'));
     }
-    public function create()
-    {
-        return view('roles_and_permission.permission_create');
-    }
+
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'name' => 'required|unique:permissions|min:3'
+        $request->validate([
+            'name' => 'required|unique:permissions,name',
+            'group' => 'nullable|string|max:255'
         ]);
 
-        if($validator->passes()){
-            Permission::create(['name' => $request->name]);
-            return redirect()->route('permission.index')->with('success','Permission created successfully.');
+        Permission::create([
+            'name' => $request->name,
+            'group' => $request->group,
+            'guard_name' => 'web',
+        ]);
 
-        }else{
-            return redirect()->route('permission.create')->withInput()->withErrors($validator);
-        }
+        return redirect()->route('permissions.index')->with('success', 'Permission created successfully.');
     }
+
     public function edit($id)
     {
-        $permission = Permission::findById($id);
-        return view('roles_and_permission.permission_edit',[
-            'permission' => $permission
-        ]);
+        $permission = Permission::findOrFail($id);
+        return view('pages.setting_management.roles_and_permission.permission.edit', compact('permission'));
     }
 
     public function update(Request $request, $id)
     {
-        $permission = Permission::findById($id);
-        $validator = Validator::make($request->all(),[
-            'name' => 'required|unique:permissions,name,'.$id.',id|min:3'
+        $permission = Permission::findOrFail($id);
+        $request->validate([
+            'name' => 'required|unique:permissions,name,' . $permission->id,
+            'guard_name' => 'required|in:web,api',
         ]);
-        if($validator->passes()){
-            
-            $permission->name = $request->name;
-            $permission->save();
-            return redirect()->route('permission.index')->with('success','Permission updated successfully.');
-        }else{
-            return redirect()->route('permission.edit',$id)->withInput()->withErrors($validator);
-        }
+
+        $permission->update($request->only('name', 'guard_name'));
+        return redirect()->route('permissions.index')->with('success', 'Permission updated successfully.');
     }
 
     public function destroy($id)
     {
-        $permission = Permission::findById($id);
-        $permission->delete();
-        return redirect()->route('permission.index')->with('success','Permission deleted successfully.');
+        Permission::destroy($id);
+        return back()->with('success', 'Permission deleted successfully.');
     }
-
-    
 }

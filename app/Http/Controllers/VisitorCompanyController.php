@@ -9,11 +9,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
 
-class Visitor_Company extends Controller
+class VisitorCompanyController extends Controller
 {
-
-
-    public function visitor_company()
+    public function company()
     {
         // Fetch visitors with the type "group"
         $companies = VisitorCompany::where('visitor_type', 'group')->get();
@@ -24,12 +22,12 @@ class Visitor_Company extends Controller
         return view('visitor_management.visitor_company_index', compact('companies', 'totalCompanies'));
     }
 
-    public function visitor_company_create()
+    public function create()
     {
         return view('visitor_management.visitor_company_create');
     }
 
-    public function visitor_company_store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'contact_person' => 'required|string|max:255',
@@ -48,20 +46,20 @@ class Visitor_Company extends Controller
         return redirect()->route('visitor_company')->with('success', 'Visitor added successfully.');
     }
 
-    public function visitor_company_view($id)
+    public function view($id)
     {
         $companyVisitor = VisitorCompany::findOrFail($id);
         return view('visitor_management.visitor_company_view', compact('companyVisitor'));
     }
 
-    public function visitor_company_edit($id)
+    public function edit($id)
     {
         $companyVisitor = VisitorCompany::findOrFail($id);
         return view('visitor_management.visitor_company_edit', compact('companyVisitor'));
     }
 
 
-    public function visitor_company_update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'contact_person' => 'required|string|max:255',

@@ -12,31 +12,13 @@
 
         <h2>Visitor Log</h2>
 
-        <div class="card mb-3">
-            <div class="card-header bg-primary text-white text-center">
-                <h5 class="mb-0">Download Blank Form</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6 text-center">
-                        <p>Do you want to download a blank form by PDF?</p>
-                        <a href="{{ route('visitor_blank_pdf') }}" class="btn btn-primary">Download PDF</a>
-                    </div>
-                    <div class="col-md-6 text-center">
-                        <p>Do you want to download a blank form by Word?</p>
-                        <a href="{{ route('visitor_blank_word') }}" class="btn btn-primary">Download Word</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="mb-3">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inviteCodeModal">
                 Add Invite Code
             </button>
             <a href="{{ route('checkin_visitor_manual') }}" class="btn btn-warning">Manual Check-In</a>
             <a href="{{ route('guest_card') }}" class="btn btn-danger">Add Guest Card</a>
-           
+
         </div>
 
         <div class="modal fade" id="inviteCodeModal" tabindex="-1" aria-labelledby="inviteCodeModalLabel"
@@ -97,88 +79,119 @@
                 </div>
             </div>
         </div>
-        
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Visitor ID</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Visit Purpose</th>
-                        <th>Visit Date</th>
-                        <th>DOB</th>
-                        <th>Age</th>
-                        <th>National ID</th>
-                        <th>Gender</th>
-                       
-                        <th style="min-width: 200px; white-space: nowrap;" class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($visitors as $visitor)
+
+        <div class="card">
+            <div class="card-body table-responsive">
+                <table id="newsTable" class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>{{ $visitor->id }}</td>
-                            <td>{{ $visitor->v_id }}</td>
-                            <td>{{ $visitor->name }}</td>
-                            <td>{{ $visitor->phone }}</td>
-                            <td>{{ $visitor->email ?? 'N/A' }}</td>
-                            <td>{{ $visitor->purpose }}</td>
-                            <td>{{ \Carbon\Carbon::parse($visitor->visit_date)->format('Y-m-d') }}</td>
-                            <td>{{ $visitor->date_of_birth ? \Carbon\Carbon::parse($visitor->date_of_birth)->format('Y-m-d') : 'N/A' }}</td>
-                            <td>
-                                @if ($visitor->date_of_birth)
-                                    {{ \Carbon\Carbon::parse($visitor->date_of_birth)->age }}
-                                @else
-                                    N/A
-                                @endif
-                            </td>
-                            <td>{{ $visitor->national_id ?? 'N/A' }}</td>
-                            <td>{{ $visitor->gender ?? 'N/A' }}</td>
-                           
-                            <td class="text-nowrap text-center">
-                                <div class="btn-group" role="group">
-                                    <a href="{{ route('visitor.view', $visitor->id) }}" class="btn btn-info btn-sm">View</a>
-                                    <a href="{{ route('visitor_log_edit', $visitor->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                                    <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $visitor->id }}">Delete</button>
-                                    <a href="{{ route('visitor.print', $visitor->id) }}" class="btn btn-secondary btn-sm">Print</a>
-                                </div>
-        
-                                <!-- Hidden Delete Form -->
-                                <form id="delete-form-{{ $visitor->id }}" action="{{ route('visitor.delete', $visitor->id) }}" method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </td>
+                            <th>ID</th>
+                            <th>Visitor ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Visit Purpose</th>
+                            <th>Visit Date</th>
+                            <th>DOB</th>
+                            <th>Age</th>
+                            <th>National ID</th>
+                            <th>Gender</th>
+
+                            <th style="min-width: 200px; white-space: nowrap;" class="text-center">Actions</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($visitors as $visitor)
+                            <tr>
+                                <td>{{ $visitor->id }}</td>
+                                <td>{{ $visitor->visitor_id }}</td>
+                                <td>{{ $visitor->name }}</td>
+                                <td>{{ $visitor->phone }}</td>
+                                <td>{{ $visitor->email ?? 'N/A' }}</td>
+                                <td>{{ $visitor->purpose }}</td>
+                                <td>{{ \Carbon\Carbon::parse($visitor->visit_date)->format('Y-m-d') }}</td>
+                                <td>{{ $visitor->date_of_birth ? \Carbon\Carbon::parse($visitor->date_of_birth)->format('Y-m-d') : 'N/A' }}
+                                </td>
+                                <td>
+                                    @if ($visitor->date_of_birth)
+                                        {{ \Carbon\Carbon::parse($visitor->date_of_birth)->age }}
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                                <td>{{ $visitor->national_id ?? 'N/A' }}</td>
+                                <td>{{ $visitor->gender ?? 'N/A' }}</td>
+
+                                <td class="text-nowrap text-center">
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ route('visitor.view', $visitor->id) }}"
+                                            class="btn btn-info btn-sm">View</a>
+                                        <a href="{{ route('visitor_log_edit', $visitor->id) }}"
+                                            class="btn btn-primary btn-sm">Edit</a>
+                                        <button type="button" class="btn btn-danger btn-sm delete-btn"
+                                            data-id="{{ $visitor->id }}">Delete</button>
+                                        <a href="{{ route('visitor.print', $visitor->id) }}"
+                                            class="btn btn-secondary btn-sm">Print</a>
+                                    </div>
+
+                                    <!-- Hidden Delete Form -->
+                                    <form id="delete-form-{{ $visitor->id }}"
+                                        action="{{ route('visitor.delete', $visitor->id) }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-        
+
         <!-- Total Visitors Count Display -->
         <div class="mt-3">
             <h5 class="text-center">Total Visitors: <span class="badge badge-primary">{{ $totalVisitors }}</span></h5>
         </div>
-        
-        
-        
+
+
+
         <!-- Include SweetAlert -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        
+
         <script>
             function confirmAction(action, visitorId) {
                 let messages = {
-                    'view': { title: "View Visitor", text: "Do you want to view this visitor's details?", icon: "info", url: "{{ route('visitor.view', '') }}/" + visitorId },
-                    'edit': { title: "Edit Visitor", text: "Do you want to edit this visitor?", icon: "question", url: "{{ route('visitor.update', '') }}/" + visitorId },
-                    'delete': { title: "Are you sure?", text: "This action cannot be undone!", icon: "warning", url: "{{ route('visitor.delete', '') }}/" + visitorId, confirmText: "Yes, delete it!", confirmColor: "#d33" },
-                    'print': { title: "Print Visitor", text: "Do you want to print this visitor's details?", icon: "success", url: "javascript:printVisitor(" + visitorId + ")" }
+                    'view': {
+                        title: "View Visitor",
+                        text: "Do you want to view this visitor's details?",
+                        icon: "info",
+                        url: "{{ route('visitor.view', '') }}/" + visitorId
+                    },
+                    'edit': {
+                        title: "Edit Visitor",
+                        text: "Do you want to edit this visitor?",
+                        icon: "question",
+                        url: "{{ route('visitor.update', '') }}/" + visitorId
+                    },
+                    'delete': {
+                        title: "Are you sure?",
+                        text: "This action cannot be undone!",
+                        icon: "warning",
+                        url: "{{ route('visitor.delete', '') }}/" + visitorId,
+                        confirmText: "Yes, delete it!",
+                        confirmColor: "#d33"
+                    },
+                    'print': {
+                        title: "Print Visitor",
+                        text: "Do you want to print this visitor's details?",
+                        icon: "success",
+                        url: "javascript:printVisitor(" + visitorId + ")"
+                    }
                 };
-        
+
                 let config = messages[action];
-        
+
                 Swal.fire({
                     title: config.title,
                     text: config.text,
@@ -198,8 +211,8 @@
                 });
             }
         </script>
-        
-        
+
+
 
     </div>
 @stop
@@ -323,7 +336,4 @@
     <link rel="stylesheet" href="{{ asset('css/customs.css') }}">
 @endsection
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    
-</script>
-
+<script></script>

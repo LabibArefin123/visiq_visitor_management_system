@@ -39,28 +39,6 @@ class Employee_Management extends Controller
         return view('employee_management.check_in_employee', compact('users'));
     }
 
-    public function checkInEmployee(Request $request)
-    {
-        $request->validate([
-            'employee_id' => 'required|exists:employees,id',
-        ]);
-
-        // Record the check-in
-        Attendance::updateOrCreate(
-            [
-                'employee_id' => $request->employee_id,
-                'date' => today(),
-            ],
-            [
-                'check_in' => now(),
-            ]
-        );
-
-        return redirect()->route('check_in_employee_try')->with('success', 'Employee checked in successfully!');
-    }
-
-
-
     public function expected_checkout_employee(Request $request)
     {
         // Validate the incoming request
@@ -118,57 +96,6 @@ class Employee_Management extends Controller
             ->get();
 
         return view('employee_management.check_out_employee', compact('checkOutEmployees', 'search'));
-    }
-
-    /**
-     * Show the attendance tracking page.
-     */
-    public function attendance_tracking(Request $request)
-    {
-        $search = $request->get('search');
-
-        // Fetch employees with optional search
-        $attendanceRecords = Employee::with(['checkIn', 'checkOut'])
-            ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%$search%");
-            })
-            ->paginate(10);
-
-        return view('employee_management.attendance_tracking_index', compact('attendanceRecords'));
-    }
-    public function check_in($employeeId)
-    {
-        $employee = Employee::findOrFail($employeeId);
-
-        CheckInEmployee::create([
-            'employee_id' => $employee->id,
-            'name' => $employee->name,
-            'age' => $employee->age,
-            'department' => $employee->department,
-            'check_in_time' => now(),
-            'status' => 'On Time', // Default to "On Time"
-        ]);
-
-        return redirect()->route('attendance_tracking')->with('success', "{$employee->name} checked in successfully.");
-    }
-
-    /**
-     * Check out an employee.
-     */
-    public function check_Out($employeeId)
-    {
-        $employee = Employee::findOrFail($employeeId);
-
-        CheckOutEmployee::create([
-            'employee_id' => $employee->id,
-            'name' => $employee->name,
-            'age' => $employee->age,
-            'department' => $employee->department,
-            'check_out_time' => now(),
-            'status' => now()->greaterThan(\Carbon\Carbon::createFromTime(21, 0)) ? 'Late' : 'On Time',
-        ]);
-
-        return redirect()->route('attendance_tracking')->with('success', "{$employee->name} checked out successfully.");
     }
 
     /**
@@ -286,107 +213,9 @@ class Employee_Management extends Controller
     }
 
 
-    public function role_index()
-    {
-        $users = User::all();  // Get all employees
-        $roles = Role::all();  // Get all roles
-        $permissions = Permission::all();  // Get all permissions
-        return view('employee_management.roles_and_permission_index', compact('users', 'roles', 'permissions'));
-    }
+    
 
-    public function storeRole(Request $request)
-    {
-        $request->validate(['name' => 'required|unique:roles,name']);
-        Role::create(['name' => $request->name]);
-
-        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
-    }
-
-    public function removeRole(Request $request)
-    {
-        $request->validate(['role' => 'required|exists:roles,name']);
-        Role::where('name', $request->role)->delete();
-
-        return redirect()->route('roles.index')->with('success', 'Role removed successfully.');
-    }
-
-    public function removePermission(Request $request)
-    {
-        $request->validate(['permission' => 'required|exists:permissions,name']);
-        Permission::where('name', $request->permission)->delete();
-
-        return redirect()->route('roles.index')->with('success', 'Permission removed successfully.');
-    }
-
-    // Assign role to employee
-    public function assignRole(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'role' => 'required|exists:roles,name',
-        ]);
-
-        $user = User::findOrFail($request->user_id);
-        $role = Role::where('name', $request->role)->first();
-
-        // Assign the role to the user
-        $user->roles()->syncWithoutDetaching([$role->id]);
-
-        return redirect()->route('roles.index')->with('success', 'Role assigned to employee successfully.');
-    }
-
-    // Assign permissions to role
-    public function assignPermission(Request $request)
-    {
-        $request->validate([
-            'role_id' => 'required|exists:roles,id',
-            'permissions' => 'required|array',
-            'permissions.*' => 'exists:permissions,name',
-        ]);
-
-        $role = Role::find($request->role_id);
-        $permissions = Permission::whereIn('name', $request->permissions)->get();
-        $role->permissions()->sync($permissions);  // Sync permissions with the role
-
-        return redirect()->route('roles.index')->with('success', 'Permissions assigned successfully.');
-    }
-
-    public function employee_notifications()
-    {
-        $employees = Employee::with(['checkIn', 'checkOut'])
-            ->get()
-            ->map(function ($employee) {
-                $checkInTime = $employee->checkIn ? $employee->checkIn->check_in_time : null;
-                $checkOutTime = $employee->checkOut ? $employee->checkOut->check_out_time : null;
-
-                $status = '';
-                if ($checkInTime && \Carbon\Carbon::parse($checkInTime)->hour > 9) {
-                    $status = 'Late Check-In';
-                }
-                if ($checkOutTime && \Carbon\Carbon::parse($checkOutTime)->hour >= 21) {
-                    $status = $status ? $status . ', Late Check-Out' : 'Late Check-Out';
-                }
-
-                return (object) [
-                    'id' => $employee->id,
-                    'name' => $employee->name,
-                    'age' => $employee->age,
-                    'department' => $employee->department,
-                    'checkInTime' => $checkInTime,
-                    'checkOutTime' => $checkOutTime,
-                    'status' => $status ?: 'On Time',
-                ];
-            });
-
-        // Count the total late check-ins or check-outs
-        $totalNotifications = $employees->filter(function ($employee) {
-            return $employee->status !== 'On Time';
-        })->count();
-
-        return view('employee_management.employee_notification', compact('employees', 'totalNotifications'));
-    }
-
-
+    
     public function employeeApproval()
     {
         $approvedEmployees = VisitorToEmployee::where('status', 'Approved')->with(['visitor', 'employee'])->get();
@@ -422,26 +251,4 @@ class Employee_Management extends Controller
         return redirect()->route('employee_management.employee_approval')->with('success', 'Visitor declined successfully!');
     }
 
-    public function notify_employee(Request $request, $id)
-    {
-        try {
-            $employee = Employee::findOrFail($id);
-
-            // Insert notification record
-            EmployeeNotification::create([
-                'employee_id' => $employee->id,
-                'status' => 'Notified for Late Check-In/Check-Out',
-                'notified_at' => now(),
-            ]);
-
-            // Flash success message
-            Session::flash('success', 'Notified employee successfully!');
-
-            return redirect()->route('home'); // Redirect to home
-        } catch (\Exception $e) {
-            Session::flash('error', 'Notification failed!');
-
-            return redirect()->back(); // Stay on the same page if failed
-        }
-    }
 }
