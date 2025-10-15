@@ -40,9 +40,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $totalVisitors = Visitor::count();
 
-        // Pass data to the view
-        return view('home');
+        return view('home', compact('totalVisitors'));
     }
 }
 

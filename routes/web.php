@@ -20,6 +20,7 @@ use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\VisitorHostController;
 use App\Http\Controllers\VisitorBlacklistController;
 use App\Http\Controllers\VisitorEmergencyController;
+use App\Http\Controllers\VisitorGroupMemberController;
 use App\Http\Controllers\VisitorGroupScheduleController;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,14 +32,12 @@ Route::get('/home', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('home');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'check_permission'])->group(function () {
 
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/statistics', [HomeController::class, 'statistics'])->name('statistics');
 
     Route::get('/profile-management', [ProfileController::class, 'profileManagement'])->name('profile.management');
     Route::get('/user_profile', [ProfileController::class, 'visitor_profile'])->name('profile');
@@ -64,15 +63,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/visitor_blank_word', [VisitorController::class, 'downloadBlankWord'])->name('visitor_blank_word');
     Route::get('/visitor/print/{id}', [VisitorController::class, 'printVisitor'])->name('visitor.print');
     Route::get('/visitor_log/{id}/generateQR', [VisitorController::class, 'generate_visitor_QR'])->name('visitor.generateQR');
+    Route::post('/generate-temp-qr', [VisitorController::class, 'generateTempQRCode'])->name('generate_temp_qr');
+    Route::post('/scan-qr', [VisitorController::class, 'scanQRCode'])->name('scan_qr');
+    Route::get('/visitor-qr-submit/{token}', [VisitorController::class, 'processQRCode'])->name('visitor_qr_submit');
+    Route::get('/visitor-qr', [VisitorController::class, 'visitorQRIndex'])->name('visitor.qr');
 
     Route::resource('visitor_blacklists', VisitorBlacklistController::class);
     Route::resource('visitor_emergencys', VisitorEmergencyController::class);
 
-    Route::post('/generate-temp-qr', [VisitorController::class, 'generateTempQRCode'])->name('generate_temp_qr');
-    Route::post('/scan-qr', [VisitorController::class, 'scanQRCode'])->name('scan_qr');
-    Route::get('/visitor-qr-submit/{token}', [VisitorController::class, 'processQRCode'])->name('visitor_qr_submit');
 
-    Route::get('/visitor-qr', [VisitorController::class, 'visitorQRIndex'])->name('visitor.qr');
     Route::get('/visitor/qr-code/pdf/{id}', [VisitorController::class, 'generateQRCodePDF'])->name('visitor.qr_code.pdf');
     Route::get('/visitor/checkin/{id}', [VisitorController::class, 'checkIn'])->name('visitor.checkin');
     Route::get('/visitor/send-qr/whatsapp/{id}', [VisitorController::class, 'sendQRCodeToWhatsApp'])->name('send.qr.whatsapp');
@@ -87,21 +86,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('visitor_companys', VisitorCompanyController::class);
     Route::get('/visitor_company/pdf/{id}', [VisitorCompanyController::class, 'downloadPDF'])->name('visitor_company.pdf');
     Route::get('/visitor_company/word/{id}', [VisitorCompanyController::class, 'downloadWord'])->name('visitor_company.word');
-    Route::get('/visitor_group_members/{visitorId}', [VisitorCompanyController::class, 'indexGroupMembers'])->name('visitor_group_member.index');
-    Route::get('/visitor_group_members/view/{memberId}', [VisitorCompanyController::class, 'viewGroupMember'])->name('visitor_group_member.view');
-    Route::get('/visitor_group_members/add/{visitorId}', [VisitorCompanyController::class, 'addGroupMember'])->name('visitor_group_member.add');
-    Route::post('/visitor_group_members/store/{visitorId}', [VisitorCompanyController::class, 'storeGroupMember'])->name('visitor_group_member.store');
-    Route::get('/visitor_group_members/edit/{memberId}', [VisitorCompanyController::class, 'editGroupMember'])->name('visitor_group_member.edit');
-    Route::put('/visitor_group_members/update/{memberId}', [VisitorCompanyController::class, 'updateGroupMember'])->name('visitor_group_member.update');
-    Route::get('/visitor_group_members/delete/{memberId}', [VisitorCompanyController::class, 'deleteGroupMember'])->name('visitor_group_member.delete');
+    Route::resource('visitor_group_members', VisitorGroupMemberController::class);
 
-    Route::get('/employee_management', [Employee_Management::class, 'employee_management'])->name('employee_management');
-    Route::get('/employee/{id}', [Employee_Management::class, 'show'])->name('employee.show');
-    Route::get('/employee/{id}/edit', [Employee_Management::class, 'edit'])->name('employee.edit');
-    Route::get('/employee_management_create', [Employee_Management::class, 'employee_create'])->name('employee_management_create');
-    Route::post('/employee', [Employee_Management::class, 'store'])->name('employee.store');
-    Route::put('/employee/{id}', [Employee_Management::class, 'update'])->name('employee.update');
-    Route::delete('/employee/{id}', [Employee_Management::class, 'destroy'])->name('employee.destroy');
+    Route::resource('employees', Employee_Management::class);
 
     Route::get('/check_in_employee', [Employee_Attendance::class, 'checkin'])->name('check_in_employee');
     Route::get('/check_out_employee', [Employee_Attendance::class, 'checkout'])->name('check_out_employee');
@@ -118,34 +105,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/employee_attendance_report', [Reporting_And_Analytics::class, 'employee_attendance_report'])->name('employee_attendance_report');
     Route::post('/employee-attendance-report/generate', [Reporting_And_Analytics::class, 'generateAttendanceReport'])->name('employee_attendance_report.generate');
     Route::post('/employee-attendance-report/download', [Reporting_And_Analytics::class, 'downloadAttendanceReport'])->name('employee_attendance_report.download');
-
-    Route::get('/add_user', [User_Management::class, 'add_user'])->name('add_user');
-    Route::get('/users', [User_Management::class, 'user_index'])->name('users.index');
-    Route::get('/users/{id}/edit', [User_Management::class, 'user_edit'])->name('users.edit');
-    Route::post('/users/{id}', [User_Management::class, 'user_update'])->name('users.update');
-
-    Route::get('/all_users', [User_Management::class, 'allUsers'])->name('all_users');
-    Route::get('/user/{id}/view', [User_Management::class, 'allUserView'])->name('all_user_view');
-    Route::get('/user/{id}/edit', [User_Management::class, 'allUserEdit'])->name('all_user_edit');
-    Route::put('/user/{id}/update', [User_Management::class, 'allUserUpdate'])->name('all_user_update');
-    Route::delete('/user/{id}/delete', [User_Management::class, 'allUserDelete'])->name('all_user_delete');
-    Route::post('/store_user', [User_Management::class, 'store_user'])->name('store_user');
-    Route::get('/user_role', [User_Management::class, 'user_role'])->name('user_role');
-    Route::post('/user_role', [User_Management::class, 'store_role'])->name('store_role');
-    Route::delete('/user_role/{id}', [User_Management::class, 'delete_role'])->name('delete_role');
-    Route::get('/admin/show-routes', [User_Management::class, 'showRoutes'])->name('show_routes');
-    Route::get('/admin_user/downloadWord/{id}', [User_Management::class, 'downloadWord'])->name('admin_user.downloadWord');
-
-    Route::get('/general_setting', [System_Setting::class, 'general_setting'])->name('general_setting');
-    Route::post('/general_setting/update', [System_Setting::class, 'updateGeneralSetting'])->name('systemSettings.updateGeneralSettings');
-    Route::get('/security_setting', [System_Setting::class, 'security_setting'])->name('security_setting');
-    Route::get('/user_activity_log', [System_Setting::class, 'userLog'])->name('user_activity_log');
-    Route::get('/notification_preferences', [System_Setting::class, 'notification_preferences'])->name('notification_preferences');
-    Route::get('/visitor_settings', [System_Setting::class, 'visitor_settings'])->name('visitor_settings');
-    Route::post('/visitor_settings/update', [System_Setting::class, 'updateVisitorSettings'])->name('visitor_settings.update');
-    Route::get('/employee_access', [System_Setting::class, 'employee_access'])->name('employee_access');
-    Route::get('/reports_analytics', [System_Setting::class, 'reports_analytics'])->name('reports_analytics');
-    Route::post('/notification_preferences/update', [System_Setting::class, 'updateNotificationPreferences'])->name('notifications.updatePreferences');
 
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);

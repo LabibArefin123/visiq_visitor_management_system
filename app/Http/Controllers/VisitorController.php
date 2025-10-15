@@ -16,34 +16,73 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Http\Request;
 
-
 class VisitorController extends Controller
 {
-    public function visitor_home()
+    public function index()
     {
-        $visitors = Visitor::all();
-        $totalVisitors = $visitors->count(); // Count total visitors
-        return view('visitor_management.visitor_management_index', compact('visitors', 'totalVisitors'));
+        // Paginate 25 visitors per page
+        $visitors = Visitor::orderBy('id', 'asc')->paginate(25);
+
+        // Total visitors count
+        $totalVisitors = Visitor::count();
+
+        return view('visitor_management.index', compact('visitors', 'totalVisitors'));
     }
 
-    public function visitor_view($id)
-    {
-        // Fetch the visitor by ID
-        $visitor = Visitor::findOrFail($id);
 
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('visitor_management.visitor_create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'v_id' => 'required|unique:visitors,v_id',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'nullable|email',
+            'purpose' => 'required|string',
+            'visit_date' => 'required|date',
+            'date_of_birth' => 'nullable|date',
+            'national_id' => 'nullable|string|max:255',
+            'gender' => 'nullable|string',
+        ]);
+
+        Visitor::create($request->all());
+
+        return redirect()->route('visitors.index')->with('success', 'Visitor added successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $visitor = Visitor::findOrFail($id);
         return view('visitor_management.visitor_view', compact('visitor'));
     }
 
-    public function visitor_log_edit($id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
         $visitor = Visitor::findOrFail($id);
         return view('visitor_management.visitor_log_edit', compact('visitor'));
     }
 
-    // Method to handle the update request
-    public function visitor_log_update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        // Validation
         $request->validate([
             'v_id' => 'required|unique:visitors,v_id,' . $id,
             'name' => 'required|string|max:255',
@@ -54,40 +93,23 @@ class VisitorController extends Controller
             'date_of_birth' => 'nullable|date',
             'national_id' => 'nullable|string|max:255',
             'gender' => 'nullable|string',
-
         ]);
 
-        // Find the visitor to update
         $visitor = Visitor::findOrFail($id);
+        $visitor->update($request->all());
 
-        // Update the visitor data
-        $visitor->update([
-            'v_id' => $request->input('v_id'),
-            'name' => $request->input('name'),
-            'phone' => $request->input('phone'),
-            'email' => $request->input('email'),
-            'purpose' => $request->input('purpose'),
-            'visit_date' => $request->input('visit_date'),
-            'date_of_birth' => $request->input('date_of_birth'),
-            'national_id' => $request->input('national_id'),
-            'gender' => $request->input('gender'),
-        ]);
-
-        // Redirect to the visitor list with success message
-        return redirect()->route('visitor_management')->with('success', 'Visitor updated successfully.');
+        return redirect()->route('visitors.index')->with('success', 'Visitor updated successfully.');
     }
 
-
-    // Method to delete a visitor
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
-        // Find the visitor by ID
         $visitor = Visitor::findOrFail($id);
-        // Delete the visitor
         $visitor->delete();
 
-        // Redirect with success message
-        return redirect()->route('visitor_management')->with('success', 'Visitor deleted successfully!');
+        return redirect()->route('visitors.index')->with('success', 'Visitor deleted successfully!');
     }
 
     public function generateGuestCard()

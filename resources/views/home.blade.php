@@ -21,14 +21,16 @@
                         <h3>{{ $totalVisitors ?? '00' }}</h3>
                         <p>Total Visitors Registered</p>
                     </div>
-                    <div class="icon"><i class="ion ion-bag"></i></div>
-                    <a href="{{ Route::has('visitor_management') ? route('visitor_management') : '#' }}"
-                        class="small-box-footer more-info"
-                        data-url="{{ Route::has('visitor_management') ? route('visitor_management') : '#' }}">
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="{{ route('visitors.index') }}" class="small-box-footer more-info"
+                        data-url="{{ route('visitors.index') }}">
                         More info <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
             </div>
+
 
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">

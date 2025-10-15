@@ -18,9 +18,5 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot()
-    {
-        // Register middleware alias
-        app('router')->aliasMiddleware('permission', CheckPermission::class);
-    }
+    public function boot() {}
 }

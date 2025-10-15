@@ -196,9 +196,9 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-light-blue elevation-4',
+    'classes_sidebar' => 'sidebar-dark-purple elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_topnav'  => 'navbar-purple navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -319,18 +319,18 @@ return [
             'submenu' => [
                 [
                     'text' => 'All Notifications',
-                    
+
                     'url'  => 'system_notification', // Replace with your route
                 ],
                 [
                     'text' => 'Employee Notifications',
-                   
+
                     'url'  => 'employee_notifications', // Replace with your route
                 ],
-               
+
             ],
         ],
-        
+
         [
             'type' => 'navbar-item',
             'topnav_right' => true,
@@ -364,19 +364,14 @@ return [
             'icon' => 'fas fa-fw fa-robot',
             'can'  => 'show-ai-chat',
         ],
-        
-        
 
-        [
-            'header' => 'Visitor Management',
-        ],
         [
             'text'    => 'Visitor Management',
             'icon'    => 'fas fa-fw fa-users',
             'submenu' => [
                 [
-                    'text' => 'Visitor Log',
-                    'url'  => 'visitor_log',
+                    'text' => 'Visitor List',
+                    'route'  => 'visitors.index',
                     'icon' => 'fas fa-fw fa-list',
                 ],
                 [
@@ -421,16 +416,12 @@ return [
                 ],
             ],
         ],
-        
-        [
-            'header' => 'Employee Management',
-        ],
         [
             'text'    => 'Employee Management',
             'icon'    => 'fas fa-fw fa-users-cog',
             'submenu' => [
                 [
-                    'text' => 'Employee Directory',
+                    'text' => 'Employee List',
                     'url'  => 'employee_management',
                     'icon' => 'fas fa-fw fa-address-book',
                 ],
@@ -450,15 +441,15 @@ return [
                     'icon' => 'fas fa-fw fa-clock',
                 ],
 
-                
+
             ],
         ],
 
         [
-            'header' => 'Reporting And Analytics',
+            'header' => 'Setting and Reporting',
         ],
         [
-            'text'    => 'Reporting And Analytics',
+            'text'    => 'Report',
             'icon'    => 'fas fa-fw fa-chart-pie',
             'submenu' => [
                 [
@@ -474,10 +465,6 @@ return [
 
             ],
             'classes' => 'nav-item-right-arrow', // Optional: Custom class for right-aligned arrow
-        ],
-
-        [
-            'header' => 'System Settings',
         ],
         [
             'text'    => 'System Settings',
@@ -517,91 +504,6 @@ return [
                 ],
             ],
         ],
-
-        [
-            'header' => 'User Management',
-        ],
-        [
-            'text'    => 'User Management',
-            'url'     => '#',
-            'icon'    => 'fas fa-fw fa-users',
-            'submenu' => [
-                
-                [
-                    'text' => 'All Users', // Added "All Users" here
-                    'url'  => 'all_users',
-                    'icon' => 'fas fa-fw fa-users-cog',
-                ],
-                [
-                    'text' => 'Add New User',
-                    'url'  => 'add_user',
-                    'icon' => 'fas fa-fw fa-user-plus',
-                ],
-                [
-                    'text' => 'User Roles',
-                    'url'  => 'users',
-                    'icon' => 'fas fa-fw fa-user-cog',
-                ],
-            ],
-        ],
-        [
-            'header' => 'Notifications And Alerts',
-        ],
-        [
-            'text'    => 'Notifications And Alerts',
-            'url'     => '#',
-            'icon'    => 'fas fa-fw fa-bell',
-            'submenu' => [
-                [
-                    'text' => 'Visitor Alerts',
-                    'url'  => 'visitor_alerts',
-                    'icon' => 'fas fa-fw fa-exclamation-circle',
-                ],
-                [
-                    'text' => 'Employee Notifications',
-                    'url'  => 'employee_notifications',
-                    'icon' => 'fas fa-fw fa-bell',
-                ],
-                [
-                    'text' => 'System Notifications',
-                    'url'  => 'system_notification',
-                    'icon' => 'fas fa-fw fa-info-circle',
-                ],
-            ],
-        ],
-        [
-            'header' => 'Roles and Permission',
-        ],
-        [
-            'text'    => 'Roles and Permission',
-            'icon'    => 'fas fa-cogs',
-            'submenu' => [
-                [
-                    'text' => 'All Permissions',
-                    'url'  => 'all-permissions',
-                    'icon' => 'fas fa-key',
-                ],
-                [
-                    'text' => 'Permission List',
-                    'url'  => 'permissions',
-                    'icon' => 'fas fa-key',
-                ],
-                [
-                    'text' => 'All Roles',
-                    'url'  => 'roles',
-                    'icon' => 'fas fa-users-cog',
-                ],
-                [
-                    'text' => 'Role List',
-                    'url'  => 'roles_list',
-                    'icon' => 'fas fa-user-shield',
-                ],
-            ],
-        ],
-        
-        
-
-
     ],
 
     /*
@@ -685,12 +587,12 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@11',
                 ],
             ],
         ],
