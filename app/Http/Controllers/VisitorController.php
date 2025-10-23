@@ -26,7 +26,7 @@ class VisitorController extends Controller
         // Total visitors count
         $totalVisitors = Visitor::count();
 
-        return view('visitor_management.index', compact('visitors', 'totalVisitors'));
+        return view('visitor_management.visitor.index', compact('visitors', 'totalVisitors'));
     }
 
 
@@ -35,7 +35,7 @@ class VisitorController extends Controller
      */
     public function create()
     {
-        return view('visitor_management.visitor_create');
+        return view('visitor_management.visitor.create');
     }
 
     /**
@@ -44,15 +44,15 @@ class VisitorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'v_id' => 'required|unique:visitors,v_id',
+            'visitor_id' => 'required|unique:visitors,visitor_id',
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
-            'email' => 'nullable|email',
+            'email' => 'required|email',
             'purpose' => 'required|string',
             'visit_date' => 'required|date',
-            'date_of_birth' => 'nullable|date',
-            'national_id' => 'nullable|string|max:255',
-            'gender' => 'nullable|string',
+            'date_of_birth' => 'required|date',
+            'national_id' => 'required|string|max:255',
+            'gender' => 'required|string',
         ]);
 
         Visitor::create($request->all());
@@ -66,7 +66,7 @@ class VisitorController extends Controller
     public function show(string $id)
     {
         $visitor = Visitor::findOrFail($id);
-        return view('visitor_management.visitor_view', compact('visitor'));
+        return view('visitor_management.visitor.show', compact('visitor'));
     }
 
     /**
@@ -75,7 +75,7 @@ class VisitorController extends Controller
     public function edit(string $id)
     {
         $visitor = Visitor::findOrFail($id);
-        return view('visitor_management.visitor_log_edit', compact('visitor'));
+        return view('visitor_management.visitor.edit', compact('visitor'));
     }
 
     /**
@@ -84,7 +84,7 @@ class VisitorController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'v_id' => 'required|unique:visitors,v_id,' . $id,
+            'visitor_id' => 'required|unique:visitors,visitor_id,' . $id,
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'nullable|email',

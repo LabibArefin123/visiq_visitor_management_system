@@ -3,27 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
-use App\Models\Visitor;
-use App\Models\VisitorCompany;
-use App\Models\VisitorGroupHostSchedule;
-use App\Models\VisitorSchedule;
+use App\Models\BlacklistedVisitor;
 use Illuminate\Http\Request;
 
 class VisitorBlacklistController extends Controller
 {
     public function index()
     {
-        $visitorSchedules = VisitorSchedule::with('visitor')->get();
+        $blacklistedVisitors = BlacklistedVisitor::orderBy('id', 'asc')->paginate(25);
 
-        foreach ($visitorSchedules as $schedule) {
-            $schedule->total_checkins = VisitorSchedule::where('v_id', $schedule->v_id)->count();
-            $schedule->total_checkouts = VisitorSchedule::where('v_id', $schedule->v_id)
-                ->whereNotNull('check_out_time')
-                ->count();
-        }
-
-
-        return view('visitor_management.visitor_host_schedule', compact('visitorSchedules'));
+        return view('visitor_management.visitor_blacklist.index', compact('visitorSchedules'));
     }
 
     public function create()

@@ -298,8 +298,6 @@ return [
     |
     */
 
-
-
     'menu' => [
         // Navbar items:
         [
@@ -542,7 +540,7 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
