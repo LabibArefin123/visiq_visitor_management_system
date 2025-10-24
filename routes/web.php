@@ -5,13 +5,14 @@ use App\Http\Controllers\Employee_Attendance;
 use App\Http\Controllers\Employee_Management;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Notification_And_Alert;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Reporting_And_Analytics;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Roles_And_Permissions;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\System_Setting;
 use App\Http\Controllers\User_Management;
 use App\Http\Controllers\Visitor_Attendance;
@@ -34,20 +35,10 @@ Route::get('/home', function () {
 
 Route::middleware(['auth', 'check_permission'])->group(function () {
 
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/profile-management', [ProfileController::class, 'profileManagement'])->name('profile.management');
-    Route::get('/user_profile', [ProfileController::class, 'visitor_profile'])->name('profile');
-    Route::get('/user_profile_edit', [ProfileController::class, 'user_profile_edit'])->name('user_profile_edit');
-    Route::put('/user_profile_edit', [ProfileController::class, 'user_profile_update'])->name('user_profile_update');
-    Route::get('/profile_picture_edit', [ProfileController::class, 'pictureEdit'])->name('profile_picture_edit');
-    Route::put('/profile_picture_edit', [ProfileController::class, 'pictureUpdate'])->name('profile_picture_update');
-    Route::put('/user_password_update', [ProfileController::class, 'updatePassword'])->name('user_password_update');
-    Route::get('/user_password_edit', [ProfileController::class, 'editPassword'])->name('user_password_edit');
-    Route::get('/user_password_reset', [ProfileController::class, 'resetPassword'])->name('user_password_reset');
+    Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/user_profile', [ProfileController::class, 'user_profile_show'])->name('profile');
+    Route::get('/user_profile/edit', [ProfileController::class, 'user_profile_edit'])->name('profile.edit');
+    Route::put('/user_profile/update', [ProfileController::class, 'user_profile_update'])->name('profile.update');
 
     Route::get('/ai_chat', [AiController::class, 'ai_chat_index'])->name('ai_chat.index');
     Route::post('/ai-chat', [AiController::class, 'ai_chat_response'])->name('ai.chat.response');
@@ -108,6 +99,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
 
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('system_users', UserController::class);
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
 });
 

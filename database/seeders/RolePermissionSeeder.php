@@ -63,6 +63,26 @@ class RolePermissionSeeder extends Seeder
             'visitors.destroy', // Delete
         ];
 
+        $blacklistVisitorPermissions = [
+            'visitor_blacklists.index',   // View
+            'visitor_blacklists.create',  // Create new
+            'visitor_blacklists.store',   // Store new
+            'visitor_blacklists.show',    // View individual
+            'visitor_blacklists.edit',    // Edit
+            'visitor_blacklists.update',  // Update
+            'visitor_blacklists.destroy', // Delete
+        ];
+
+        $systemUserPermission = [
+            'system_users.index',   // View
+            'system_users.create',  // Create new
+            'system_users.store',   // Store new
+            'system_users.show',    // View individual
+            'system_users.edit',    // Edit
+            'system_users.update',  // Update
+            'system_users.destroy', // Delete
+        ];
+
         foreach ($defaultPermissions as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,
@@ -95,6 +115,20 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Visitor'
+            ]);
+        }
+
+        foreach ($blacklistVisitorPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Blacklist Visitor'
+            ]);
+        }
+
+        foreach ($systemUserPermission as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'System User'
             ]);
         }
         // End Permissions

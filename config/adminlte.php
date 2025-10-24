@@ -347,7 +347,7 @@ return [
 
         [
             'text' => 'Dashboard',
-            'url' => 'home',
+            'route' => 'dashboard',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
@@ -404,7 +404,7 @@ return [
                 ],
                 [
                     'text' => 'Visitor Blacklist',
-                    'url'  => 'visitor_blacklist',
+                    'route'  => 'visitor_blacklists.index',
                     'icon' => 'fas fa-fw fa-ban',
                 ],
                 [
@@ -464,41 +464,30 @@ return [
             ],
             'classes' => 'nav-item-right-arrow', // Optional: Custom class for right-aligned arrow
         ],
+
         [
-            'text'    => 'System Settings',
-            'url'     => '#',
-            'icon'    => 'fas fa-fw fa-cogs',
+            'text'    => 'Setting Management',
+            'icon'    => 'fas fa-cogs',
+            // 'route'    => 'menu.setting',
+            // 'can'   => 'menu.setting',
             'submenu' => [
                 [
-                    'text' => 'General Settings',
-                    'url'  => 'general_setting',
-                    'icon' => 'fas fa-fw fa-cogs',
+                    'text' => 'Role List',
+                    'route' => 'roles.index',
+                    'active' => ['roles*'],
+                    'icon' => 'fas fa-user-tag',  // user tag icon
                 ],
                 [
-                    'text' => 'Security Settings',
-                    'url'  => 'security_setting',
-                    'icon' => 'fas fa-fw fa-lock',
+                    'text' => 'Permission List',
+                    'route' => 'permissions.index',
+                    'active' => ['permissions*'],
+                    'icon' => 'fas fa-key',  // key icon
                 ],
                 [
-                    'text' => 'User Activity Log', // New menu item
-                    'url'  => 'user_activity_log',
-                    'icon' => 'fas fa-fw fa-list',
-                ],
-                [
-                    'text' => 'Notification Preferences',
-                    'url'  => 'notification_preferences',
-                    'icon' => 'fas fa-fw fa-bell',
-                ],
-
-                [
-                    'text' => 'Visitor Settings',
-                    'url'  => 'visitor_settings',
-                    'icon' => 'fas fa-fw fa-user-friends',
-                ],
-                [
-                    'text' => 'Employee Access',
-                    'url'  => 'employee_access',
-                    'icon' => 'fas fa-fw fa-id-badge',
+                    'text' => 'System Users',
+                    'route' => 'system_users.index',
+                    'active' => ['system_users*'],
+                    'icon' => 'fas fa-users-cog',  // users with cog icon
                 ],
             ],
         ],

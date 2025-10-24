@@ -21,7 +21,7 @@ use Jenssegers\Agent\Agent;
 use Carbon\Carbon;
 
 
-class HomeController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -42,7 +42,7 @@ class HomeController extends Controller
     {
         $totalVisitors = Visitor::count();
 
-        return view('home', compact('totalVisitors'));
+        return view('dashboard', compact('totalVisitors'));
     }
 }
 

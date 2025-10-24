@@ -12,7 +12,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::with('permissions')->get();
-        return view('pages.setting_management.roles_and_permission.roles.index', compact('roles'));
+        return view('setting_management.roles_and_permission.roles.index', compact('roles'));
     }
 
     public function create()
@@ -28,7 +28,7 @@ class RoleController extends Controller
                 return class_basename(explode('@', $route->getActionName())[0]);
             });
 
-        return view('pages.setting_management.roles_and_permission.roles.create', compact('routes'));
+        return view('setting_management.roles_and_permission.roles.create', compact('routes'));
     }
 
     public function store(Request $request)
@@ -68,7 +68,7 @@ class RoleController extends Controller
             return explode('.', $permission->name)[0]; // group by first part
         });
 
-        return view('pages.setting_management.roles_and_permission.roles.edit', compact('role', 'rolePermissions', 'permissions'));
+        return view('setting_management.roles_and_permission.roles.edit', compact('role', 'rolePermissions', 'permissions'));
     }
 
     public function update(Request $request, $id)

@@ -1,56 +1,100 @@
 @extends('adminlte::page')
-@section('title', 'Welcome to VMS Software') 
-@section('content_header')
-    <h1>Dashboard</h1>
-@stop
-@section('content')
-    <p>Welcome to this beautiful admin panel.</p>
-@stop
+
+@section('title', 'Welcome to VMS Software')
 
 @section('content')
+
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
     <div class="container mx-auto py-6">
         <!-- Page Title -->
         <h1 class="text-2xl font-bold mb-4">Visitor Management Dashboard</h1>
-        <p class="text-gray-600 dark:text-gray-400 mb-6">Welcome to this beautiful admin panel.</p>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">Welcome to VisiQ Dashboard Page.</p>
 
         <!-- Statistic Boxes -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Total Visitors Registered -->
-            <div class="p-6 bg-white dark:bg-gray-800 shadow rounded">
-                <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Total Visitors Registered</h2>
-                <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">1,230</p>
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ $totalVisitors ?? '00' }}</h3>
+                        <p>Total Visitors Registered</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="{{ route('visitors.index') }}" class="small-box-footer more-info"
+                        data-url="{{ route('visitors.index') }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
             </div>
 
-            <!-- Visitors Currently In -->
-            <div class="p-6 bg-white dark:bg-gray-800 shadow rounded">
-                <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Visitors Currently In</h2>
-                <p class="text-3xl font-bold text-green-500 mt-2">120</p>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{ $totalCheckin ?? '00' }}</h3>
+                        <p>Visitors Checked In</p>
+                    </div>
+                    <div class="icon"><i class="ion ion-stats-bars"></i></div>
+                    <a href="{{ Route::has('check_in_visitor') ? route('check_in_visitor') : '#' }}"
+                        class="small-box-footer more-info"
+                        data-url="{{ Route::has('check_in_visitor') ? route('check_in_visitor') : '#' }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
             </div>
 
-            <!-- Visitors Checked Out -->
-            <div class="p-6 bg-white dark:bg-gray-800 shadow rounded">
-                <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Visitors Checked Out</h2>
-                <p class="text-3xl font-bold text-red-500 mt-2">1,110</p>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>{{ $total_checkouts ?? '00' }}</h3>
+                        <p>Visitors Checked Out</p>
+                    </div>
+                    <div class="icon"><i class="ion ion-person-add"></i></div>
+                    <a href="{{ Route::has('visitor_check_out') ? route('visitor_check_out') : '#' }}"
+                        class="small-box-footer more-info"
+                        data-url="{{ Route::has('visitor_check_out') ? route('visitor_check_out') : '#' }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
             </div>
 
-            <!-- Visitors Today -->
-            <div class="p-6 bg-white dark:bg-gray-800 shadow rounded">
-                <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Visitors Today</h2>
-                <p class="text-3xl font-bold text-blue-500 mt-2">45</p>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>{{ $totalEmployees ?? '00' }}</h3>
+                        <p>Total Employees</p>
+                    </div>
+                    <div class="icon"><i class="ion ion-pie-graph"></i></div>
+                    <a href="{{ Route::has('employee_management') ? route('employee_management') : '#' }}"
+                        class="small-box-footer more-info"
+                        data-url="{{ Route::has('employee_management') ? route('employee_management') : '#' }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
             </div>
 
-            <!-- Total Employees -->
-            <div class="p-6 bg-white dark:bg-gray-800 shadow rounded">
-                <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Total Employees</h2>
-                <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">250</p>
+            <!-- Repeat same for other boxes -->
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>{{ $pendingVisitors ?? '00' }}</h3>
+                        <p>Pending Visitors</p>
+                    </div>
+                    <div class="icon"><i class="ion ion-clock"></i></div>
+                    <a href="{{ Route::has('pending_visitor_management') ? route('pending_visitor_management') : '#' }}"
+                        class="small-box-footer more-info"
+                        data-url="{{ Route::has('pending_visitor_management') ? route('pending_visitor_management') : '#' }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
             </div>
+
+            <!-- Continue for Employees Checked In/Out and Companies with the same pattern -->
         </div>
     </div>
 @stop
-@section('css')
-    
-@stop
-
-@section('js')
-    <script> console.log('Hi!'); </script>
-@stop
+<!-- Centered Navbar -->
