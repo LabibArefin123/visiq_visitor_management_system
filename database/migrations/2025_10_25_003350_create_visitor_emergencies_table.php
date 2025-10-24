@@ -7,22 +7,20 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('pending_visitors', function (Blueprint $table) {
+        Schema::create('visitor_emergencies', function (Blueprint $table) {
             $table->id();
-            $table->string('visitor_id');
-            $table->string('national_id');
+            $table->string('emergency_id')->unique();
             $table->string('name');
             $table->string('email');
             $table->string('phone');
-            $table->string('purpose');
-            $table->date('visit_date');
-            $table->date('date_of_birth');
+            $table->text('reason');
+            $table->dateTime('emergency_at');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('pending_visitors');
+        Schema::dropIfExists('visitor_emergencies');
     }
 };

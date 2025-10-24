@@ -17,7 +17,7 @@ class VisitorBlacklistController extends Controller
         $blacklistedVisitors = BlacklistedVisitor::when($search, function ($query, $search) {
             $query->search($search);
         })
-            ->orderBy('id', 'desc')
+            ->orderBy('id', 'asc')
             ->paginate(25);
 
         return view('visitor_management.visitor_blacklist.index', compact('blacklistedVisitors', 'search'));

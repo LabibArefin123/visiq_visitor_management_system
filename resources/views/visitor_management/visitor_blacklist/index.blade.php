@@ -11,7 +11,7 @@
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
-            Add to Blacklist
+            Add
         </a>
     </div>
 @stop
@@ -34,10 +34,8 @@
                             <th>BID</th>
                             <th>Name</th>
                             <th>Phone</th>
-                            <th>Email</th>
                             <th>Reason for Blacklist</th>
                             <th>Blacklisted Date</th>
-                            <th>Added By</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -48,10 +46,8 @@
                                 <td>{{ $blacklist->blacklist_id ?? 'N/A' }}</td>
                                 <td>{{ $blacklist->name }}</td>
                                 <td>{{ $blacklist->phone }}</td>
-                                <td>{{ $blacklist->email ?? 'N/A' }}</td>
                                 <td>{{ $blacklist->reason ?? 'Not Specified' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($blacklist->created_at)->format('Y-m-d') }}</td>
-                                <td>{{ $blacklist->added_by ?? 'System' }}</td>
+                                <td>{{ \Carbon\Carbon::parse($blacklist->blacklisted_at)->format('d F Y') }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('visitor_blacklists.show', $blacklist->id) }}"
                                         class="btn btn-info btn-sm">View</a>
@@ -61,7 +57,7 @@
                                         class="d-inline" onsubmit="return confirm('Remove this visitor from blacklist?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-success btn-sm">Remove</button>
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>

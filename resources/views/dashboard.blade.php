@@ -30,6 +30,36 @@
                     </a>
                 </div>
             </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ $totalEmergencyVisitors ?? '00' }}</h3>
+                        <p>Total Emergency Visitors</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="{{ route('visitor_emergencys.index') }}" class="small-box-footer more-info"
+                        data-url="{{ route('visitor_emergencys.index') }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ $totalBlacklistVisitors ?? '00' }}</h3>
+                        <p>Total Blacklist Visitors</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="{{ route('visitor_blacklists.index') }}" class="small-box-footer more-info"
+                        data-url="{{ route('visitor_blacklists.index') }}">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
 
 
             <div class="col-lg-3 col-6">

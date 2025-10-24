@@ -10,15 +10,15 @@ class PendingVisitor extends Model
     use HasFactory;
 
     protected $fillable = [
-        'v_id',  // Newly added field for Visitor ID
+        'visitor_id',  // Newly added field for Visitor ID
+        'national_id',
         'name',
         'email',
         'phone',
         'purpose',
         'visit_date',
         'date_of_birth',
-        'national_id',
-    ];    
+    ];
 
     // Optional: Mutators for handling date formatting (e.g., Date of Birth) or custom attributes
     protected $dates = [

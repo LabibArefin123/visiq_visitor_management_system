@@ -2,179 +2,106 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use App\Models\Visitor;
-use App\Models\VisitorCompany;
-use App\Models\VisitorGroupHostSchedule;
-use App\Models\VisitorSchedule;
+use App\Models\VisitorEmergency;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class VisitorEmergencyController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
     {
-        $visitorSchedules = VisitorSchedule::with('visitor')->get();
-
-        foreach ($visitorSchedules as $schedule) {
-            $schedule->total_checkins = VisitorSchedule::where('v_id', $schedule->v_id)->count();
-            $schedule->total_checkouts = VisitorSchedule::where('v_id', $schedule->v_id)
-                ->whereNotNull('check_out_time')
-                ->count();
-        }
-
-
-        return view('visitor_management.visitor_host_schedule', compact('visitorSchedules'));
+        $emergencies = VisitorEmergency::orderBy('id', 'asc')->paginate(25);
+        return view('visitor_management.visitor_emergency.index', compact('emergencies'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $visitors = Visitor::all();
-        $employees = Employee::all();
-        return view('visitor_management.visitor_host_schedule_add', compact('visitors', 'employees'));
+        return view('visitor_management.visitor_emergency.create');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'v_id' => 'required|exists:visitors,id',
-            'employee_name' => 'required|string|max:255',
-            'check_in_time' => 'required|date',
-            'check_out_time' => 'nullable|date|after:check_in_time', // Optional field for check_out_time
+            'emergency_id' => 'required|string|max:255',
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|email|max:255',
+            'phone'        => 'required|string|max:20',
+            'reason'       => 'required|string|max:500',
+            'emergency_at' => 'required|date',
         ]);
 
-        // Create the VisitorSchedule
-        VisitorSchedule::create([
-            'v_id' => $request->v_id,
-            'employee_name' => $request->employee_name,
-            'check_in_time' => $request->check_in_time,
-            'check_out_time' => $request->check_out_time, // Store check_out_time if provided
-        ]);
+        $data = $request->all();
 
-        return redirect()->route('visitor_schedule.index')->with('success', 'Schedule added successfully!');
+        // If emergency_id not given, auto-generate one
+        if (empty($data['emergency_id'])) {
+            $data['emergency_id'] = 'EMG-' . strtoupper(Str::random(6));
+        }
+
+        VisitorEmergency::create($data);
+
+        return redirect()
+            ->route('visitor_emergencys.index')
+            ->with('success', 'Emergency record created successfully!');
     }
 
-    public function view($id)
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
     {
-        // Fetch the schedule by ID along with the associated visitor
-        $schedule = VisitorSchedule::with('visitor')->findOrFail($id);
-
-        // Return the view with the schedule data
-        return view('visitor_management.visitor_host_view', compact('schedule'));
+        $emergency = VisitorEmergency::findOrFail($id);
+        return view('visitor_management.visitor_emergency.show', compact('emergency'));
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit($id)
     {
-        // Fetch the schedule by ID along with the associated visitor
-        $schedule = VisitorSchedule::with('visitor')->findOrFail($id);
-        $visitors = Visitor::all();  // Fetch all visitors for the select dropdown
-
-        // Return the edit view with schedule and visitors data
-        return view('visitor_management.visitor_host_schedule_edit', compact('schedule', 'visitors'));
+        $emergency = VisitorEmergency::findOrFail($id);
+        return view('visitor_management.visitor_emergency.edit', compact('emergency'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'v_id' => 'required|exists:visitors,id',
-            'employee_name' => 'required|string|max:255',
-            'check_in_time' => 'required|date',
-            'check_out_time' => 'nullable|date|after:check_in_time',
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|email|max:255',
+            'phone'        => 'required|string|max:20',
+            'reason'       => 'required|string|max:500',
+            'emergency_at' => 'required|date',
         ]);
 
-        // Find the schedule by ID
-        $schedule = VisitorSchedule::findOrFail($id);
+        $emergency = VisitorEmergency::findOrFail($id);
+        $emergency->update($request->all());
 
-        // Update schedule details
-        $schedule->update([
-            'v_id' => $request->v_id, // Ensure it's storing visitor_id
-            'employee_name' => $request->employee_name,
-            'check_in_time' => $request->check_in_time,
-            'check_out_time' => $request->check_out_time,
-        ]);
-
-        return redirect()->route('visitor_schedule.index')->with('success', 'Schedule updated successfully!');
+        return redirect()
+            ->route('visitor_emergencys.index')
+            ->with('success', 'Emergency record updated successfully!');
     }
 
-
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id)
     {
-        // Find the schedule by ID
-        $schedule = VisitorSchedule::findOrFail($id);
+        $emergency = VisitorEmergency::findOrFail($id);
+        $emergency->delete();
 
-        // Delete the schedule
-        $schedule->delete();
-
-        // Redirect back to the schedule list with a success message
-        return redirect()->route('visitor_schedule.index')->with('success', 'Schedule deleted successfully!');
-    }
-
-    public function visitor_group_schedule_index()
-    {
-        $groupSchedules = VisitorGroupHostSchedule::all();
-        return view('visitor_management.visitor_group_host_schedule_index', compact('groupSchedules'));
-    }
-
-    public function visitor_group_schedule_create()
-    {
-        $companies = VisitorCompany::all(); // Fetch all companies
-        $employees = Employee::all(); // Fetch all employees
-
-        return view('visitor_management.visitor_group_host_schedule_add', compact('companies', 'employees'));
-    }
-
-    public function visitor_group_schedule_store(Request $request)
-    {
-        $request->validate([
-            'company_name' => 'required|string|max:255',
-            'employee_name' => 'required|string|max:255',
-            'check_in_time' => 'required|date',
-            'check_out_time' => 'nullable|date|after:check_in_time',
-        ]);
-
-        VisitorGroupHostSchedule::create([
-            'company_name' => $request->company_name,
-            'employee_name' => $request->employee_name,
-            'check_in_time' => $request->check_in_time,
-            'check_out_time' => $request->check_out_time,
-        ]);
-
-        return redirect()->route('visitor_schedule.group.index')->with('success', 'Group Schedule added successfully!');
-    }
-
-    public function visitor_group_schedule_edit($id)
-    {
-        $groupSchedule = VisitorGroupHostSchedule::findOrFail($id);
-        $companies = VisitorCompany::all();
-        $employees = Employee::all();
-
-        return view('visitor_management.visitor_group_host_schedule_edit', compact('groupSchedule', 'companies', 'employees'));
-    }
-
-    public function visitor_group_schedule_update(Request $request, $id)
-    {
-        $request->validate([
-            'company_name' => 'required|string|max:255',
-            'employee_name' => 'required|string|max:255',
-            'check_in_time' => 'required|date',
-            'check_out_time' => 'nullable|date|after:check_in_time',
-        ]);
-
-        $groupSchedule = VisitorGroupHostSchedule::findOrFail($id);
-        $groupSchedule->update([
-            'company_name' => $request->company_name,
-            'employee_name' => $request->employee_name,
-            'check_in_time' => $request->check_in_time,
-            'check_out_time' => $request->check_out_time,
-        ]);
-
-        return redirect()->route('visitor_schedule.group.index')->with('success', 'Group Schedule updated successfully!');
-    }
-
-    public function visitor_group_schedule_delete($id)
-    {
-        $groupSchedule = VisitorGroupHostSchedule::findOrFail($id);
-        $groupSchedule->delete();
-
-        return redirect()->route('visitor_schedule.group.index')->with('success', 'Group Schedule deleted successfully!');
+        return redirect()
+            ->route('visitor_emergencys.index')
+            ->with('success', 'Emergency record deleted successfully!');
     }
 }

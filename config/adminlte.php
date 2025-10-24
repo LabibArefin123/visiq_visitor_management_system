@@ -389,7 +389,7 @@ return [
                 ],
                 [
                     'text' => 'Pending Visitors',
-                    'url'  => 'pending_visitor_log',
+                    'route'  => 'pending_visitors.index',
                     'icon' => 'fas fa-fw fa-clock',
                 ],
                 [
@@ -399,7 +399,7 @@ return [
                 ],
                 [
                     'text' => 'Emergency Visitors',
-                    'url'  => 'visitor_emergency',
+                    'route'  => 'visitor_emergencys.index',
                     'icon' => 'fas fa-fw fa-exclamation-triangle',
                 ],
                 [

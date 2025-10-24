@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             // UserSeeder::class,
             // VisitorSeeder::class,
             // BlacklistedVisitorSeeder::class,
+            // VisitorEmergencySeeder::class,
+            // PendingVisitorSeeder::class,
         ]);
     }
 }
