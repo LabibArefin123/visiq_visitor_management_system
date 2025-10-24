@@ -364,6 +364,20 @@ return [
         ],
 
         [
+            'text'    => 'Organization Menu',
+            'icon'    => 'fas fa-cogs',
+            // 'route'    => 'organization_menu',
+            'submenu' => [
+
+                [
+                    'text' => 'Organization List',
+                    'route' => 'organizations.index',
+                    'icon' => 'fas fa-sliders-h',  // settings sliders icon
+                ],
+            ],
+        ],
+
+        [
             'text'    => 'Visitor Management',
             'icon'    => 'fas fa-fw fa-users',
             'submenu' => [

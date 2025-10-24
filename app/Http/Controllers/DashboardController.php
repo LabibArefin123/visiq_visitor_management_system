@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visitor;
+use App\Models\PendingVisitor;
 use App\Models\VisitorEmergency;
 use App\Models\BlacklistedVisitor;
 
@@ -29,10 +30,11 @@ class DashboardController extends Controller
     public function index()
     {
         $totalVisitors = Visitor::count();
+        $totalPendingVisitors = PendingVisitor::count();
         $totalEmergencyVisitors = VisitorEmergency::count();
         $totalBlacklistVisitors = BlacklistedVisitor::count();
 
-        return view('dashboard', compact('totalVisitors', 'totalEmergencyVisitors', 'totalBlacklistVisitors'));
+        return view('dashboard', compact('totalVisitors', 'totalPendingVisitors', 'totalEmergencyVisitors', 'totalBlacklistVisitors'));
     }
 }
 

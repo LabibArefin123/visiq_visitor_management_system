@@ -17,6 +17,7 @@ use App\Http\Controllers\System_Setting;
 use App\Http\Controllers\User_Management;
 use App\Http\Controllers\Visitor_Attendance;
 use App\Http\Controllers\VisitorCompanyController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\VisitorHostController;
 use App\Http\Controllers\PendingVisitorController;
@@ -60,6 +61,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/visitor-qr-submit/{token}', [VisitorController::class, 'processQRCode'])->name('visitor_qr_submit');
     Route::get('/visitor-qr', [VisitorController::class, 'visitorQRIndex'])->name('visitor.qr');
 
+    Route::resource('organizations', OrganizationController::class);
     Route::resource('pending_visitors', PendingVisitorController::class);
     Route::resource('visitor_blacklists', VisitorBlacklistController::class);
     Route::resource('visitor_emergencys', VisitorEmergencyController::class);

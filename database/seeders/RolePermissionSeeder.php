@@ -63,6 +63,16 @@ class RolePermissionSeeder extends Seeder
             'visitors.destroy', // Delete
         ];
 
+        $organizationPermissions = [
+            'organizations.index',   // View
+            'organizations.create',  // Create new
+            'organizations.store',   // Store new
+            'organizations.show',    // View individual
+            'organizations.edit',    // Edit
+            'organizations.update',  // Update
+            'organizations.destroy', // Delete
+        ];
+
         $blacklistVisitorPermissions = [
             'visitor_blacklists.index',   // View
             'visitor_blacklists.create',  // Create new
@@ -135,6 +145,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Visitor'
+            ]);
+        }
+
+        foreach ($organizationPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Organization'
             ]);
         }
 
