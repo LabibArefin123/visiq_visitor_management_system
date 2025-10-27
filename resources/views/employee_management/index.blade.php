@@ -22,7 +22,7 @@
             <tbody>
                 @forelse ($employees as $employee)
                     <tr>
-                        <td>{{ $employee->id }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td class="text-center">
                             <img src="{{ $employee->profile_picture ? asset('storage/' . $employee->profile_picture) : asset('images/default.jpg') }}"
                                 alt="Profile Picture" class="rounded-circle mx-auto d-block" width="50" height="50">
