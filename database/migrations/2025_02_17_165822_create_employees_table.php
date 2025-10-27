@@ -12,12 +12,10 @@ class CreateEmployeesTable extends Migration
             $table->id();
             $table->string('emp_id')->unique();
             $table->string('name');
-            $table->string('national_id')->nullable();
-            $table->date('dob')->nullable();
             $table->string('department');
             $table->string('phone');
             $table->string('email');
-            $table->string('profile_picture')->nullable();
+            $table->string('national_id')->nullable();
             $table->timestamps();
         });
     }

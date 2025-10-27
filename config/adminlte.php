@@ -392,12 +392,12 @@ return [
                     'icon' => 'fas fa-fw fa-building',
                 ],
                 [
-                    'text' => 'Check-In Visitors',
+                    'text' => 'Check In Visitors',
                     'url'  => 'check_in_visitor',
                     'icon' => 'fas fa-fw fa-sign-in-alt',
                 ],
                 [
-                    'text' => 'Check-Out Visitors',
+                    'text' => 'Check Out Visitors',
                     'url'  => 'check_out_visitor',
                     'icon' => 'fas fa-fw fa-sign-out-alt',
                 ],
@@ -420,11 +420,6 @@ return [
                     'text' => 'Visitor Blacklist',
                     'route'  => 'visitor_blacklists.index',
                     'icon' => 'fas fa-fw fa-ban',
-                ],
-                [
-                    'text' => 'Visitor QR Code',
-                    'url'  => 'visitor-qr',
-                    'icon' => 'fas fa-fw fa-qrcode',
                 ],
             ],
         ],

@@ -5,7 +5,7 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mb-0">Blacklist Visitors</h1>
-        <a href="{{ route('visitor_blacklists.create') }}" class="btn btn-sm btn-danger d-flex align-items-center gap-2">
+        <a href="{{ route('visitor_blacklists.create') }}" class="btn btn-sm btn-success d-flex align-items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <line x1="12" y1="5" x2="12" y2="19"></line>

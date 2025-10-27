@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AiController;
 use App\Http\Controllers\Employee_Attendance;
-use App\Http\Controllers\Employee_Management;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
@@ -50,17 +50,6 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/ai-chat-pdf', [AiController::class, 'ai_chat_pdf'])->name('ai.chat.pdf');
     Route::get('/ai-chat/download/{id}', [AiController::class, 'downloadAIChatPDF'])->name('ai.chat.download');
 
-    Route::get('/guest_card', [VisitorController::class, 'generateGuestCard'])->name('guest_card');
-    Route::resource('visitors', VisitorController::class);
-    Route::get('/visitor_blank_pdf', [VisitorController::class, 'downloadBlankPDF'])->name('visitor_blank_pdf');
-    Route::get('/visitor_blank_word', [VisitorController::class, 'downloadBlankWord'])->name('visitor_blank_word');
-    Route::get('/visitor/print/{id}', [VisitorController::class, 'printVisitor'])->name('visitor.print');
-    Route::get('/visitor_log/{id}/generateQR', [VisitorController::class, 'generate_visitor_QR'])->name('visitor.generateQR');
-    Route::post('/generate-temp-qr', [VisitorController::class, 'generateTempQRCode'])->name('generate_temp_qr');
-    Route::post('/scan-qr', [VisitorController::class, 'scanQRCode'])->name('scan_qr');
-    Route::get('/visitor-qr-submit/{token}', [VisitorController::class, 'processQRCode'])->name('visitor_qr_submit');
-    Route::get('/visitor-qr', [VisitorController::class, 'visitorQRIndex'])->name('visitor.qr');
-
     Route::resource('organizations', OrganizationController::class);
     Route::resource('pending_visitors', PendingVisitorController::class);
     Route::resource('visitor_blacklists', VisitorBlacklistController::class);
@@ -82,7 +71,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/visitor_company/word/{id}', [VisitorCompanyController::class, 'downloadWord'])->name('visitor_company.word');
     Route::resource('visitor_group_members', VisitorGroupMemberController::class);
 
-    Route::resource('employees', Employee_Management::class);
+    Route::resource('employees', EmployeeController::class);
 
     Route::get('/check_in_employee', [Employee_Attendance::class, 'checkin'])->name('check_in_employee');
     Route::get('/check_out_employee', [Employee_Attendance::class, 'checkout'])->name('check_out_employee');
