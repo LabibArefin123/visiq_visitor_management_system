@@ -2,94 +2,115 @@
 
 @section('title', 'Add Employee')
 
-@section('content')
-<div class="container">
-    <h2>Add Employee</h2>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('employee.store') }}" enctype="multipart/form-data">
-        @csrf
-        <div class="mb-3">
-            <label for="E_id" class="form-label">Employee ID</label>
-            <input type="text" class="form-control" id="E_id" name="E_id" value="{{ old('E_id') }}" required>
-        </div>
-    
-        <div class="mb-3">
-            <label for="profile_photo" class="form-label">Profile Photo</label>
-            <input type="file" class="form-control" id="profile_photo" name="profile_photo" accept="image/*" required>
-        </div>
-    
-        <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="national_id" class="form-label">National ID</label>
-            <input type="text" class="form-control" id="national_id" name="national_id" value="{{ old('national_id') }}">
-        </div>
-       
-        <div class="mb-3">
-            <label for="department" class="form-label">Department</label>
-            <input type="text" class="form-control" id="department" name="department" value="{{ old('department') }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="phone" class="form-label">Phone</label>
-            <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="dob" class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" id="dob" name="dob" value="{{ old('dob') }}" required onchange="calculateAge()">
-        </div>
-
-        <div class="mb-3">
-            <label for="age" class="form-label">Age</label>
-            <input type="text" class="form-control" id="age" name="age" value="{{ old('age') }}" readonly>
-        </div>
-    
-        <button type="submit" class="btn btn-primary">Add Employee</button>
-        <a href="{{ route('employee_management') }}" class="btn btn-secondary">Cancel</a>
-    </form>
-</div>
+@section('content_header')
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Create Employee</h3>
+        <a href="{{ route('employee') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
+        </a>
+    </div>
 @stop
 
-@section('footer')
-    <div style="position: fixed; bottom: 5px; right: 5px; text-align: middle;">
-        <p class="text-muted medium">
-            Design and Developed by
-            <a href="https://www.totalofftec.com" target="_blank" style="color: #007bff;">TOTALOFFTEC</a>
-        </p>
+@section('content')
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <form action="{{ route('employees.store') }}" method="POST">
+                    @csrf
+                    <div class="row">
+
+                        {{-- Employee ID --}}
+                        <div class="col-md-6 form-group">
+                            <label for="emp_id"><strong>Employee ID</strong> <span class="text-danger">*</span></label>
+                            <input type="text" name="emp_id" id="emp_id"
+                                class="form-control @error('emp_id') is-invalid @enderror" value="{{ old('emp_id') }}"
+                                placeholder="Enter Employee ID">
+                            @error('emp_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Name --}}
+                        <div class="col-md-6 form-group">
+                            <label for="name"><strong>Name</strong> <span class="text-danger">*</span></label>
+                            <input type="text" name="name" id="name"
+                                class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
+                                placeholder="Enter employee name">
+                            @error('name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Department --}}
+                        <div class="col-md-6 form-group">
+                            <label for="department"><strong>Department</strong> <span class="text-danger">*</span></label>
+                            <input type="text" name="department" id="department"
+                                class="form-control @error('department') is-invalid @enderror"
+                                value="{{ old('department') }}" placeholder="Enter department name">
+                            @error('department')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Phone --}}
+                        <div class="col-md-6 form-group">
+                            <label for="phone"><strong>Phone</strong> <span class="text-danger">*</span></label>
+                            <input type="text" name="phone" id="phone"
+                                class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}"
+                                placeholder="Enter phone number">
+                            @error('phone')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Email --}}
+                        <div class="col-md-6 form-group">
+                            <label for="email"><strong>Email</strong></label>
+                            <input type="email" name="email" id="email"
+                                class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                                placeholder="Enter email address">
+                            @error('email')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- National ID --}}
+                        <div class="col-md-6 form-group">
+                            <label for="national_id"><strong>National ID</strong></label>
+                            <input type="text" name="national_id" id="national_id"
+                                class="form-control @error('national_id') is-invalid @enderror"
+                                value="{{ old('national_id') }}" placeholder="Enter National ID">
+                            @error('national_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Date of Birth --}}
+                        <div class="col-md-6 form-group">
+                            <label for="date_of_birth"><strong>Date of Birth</strong> <span
+                                    class="text-danger">*</span></label>
+                            <input type="date" name="date_of_birth" id="date_of_birth"
+                                class="form-control @error('date_of_birth') is-invalid @enderror"
+                                value="{{ old('date_of_birth') }}">
+                            @error('date_of_birth')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                    </div>
+
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Save Employee
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-@endsection
-
-@section('js')
-<script>
-    function calculateAge() {
-        var dob = document.getElementById('dob').value;
-        if (dob) {
-            var dobDate = new Date(dob);
-            var today = new Date();
-            var age = today.getFullYear() - dobDate.getFullYear();
-            var m = today.getMonth() - dobDate.getMonth();
-
-            if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
-                age--;
-            }
-            document.getElementById('age').value = age;
-        }
-    }
-</script>
-@endsection
+@stop

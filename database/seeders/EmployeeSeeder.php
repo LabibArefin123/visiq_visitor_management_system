@@ -22,14 +22,15 @@ class EmployeeSeeder extends Seeder
             $username = strtolower(str_replace(' ', '', $name)); // remove spaces for email
 
             DB::table('employees')->insert([
-                'emp_id'       => 'EMP' . str_pad($i, 4, '0', STR_PAD_LEFT),
-                'name'         => $name,
-                'department'   => $faker->randomElement($departments),
-                'phone'        => '0' . ($basePhone + $i), // sequential phone
-                'email'        => $username . '@gmail.com',
-                'national_id'  => $baseNationalId + ($i - 1), // sequential increment
-                'created_at'   => now(),
-                'updated_at'   => now(),
+                'emp_id'        => 'EMP' . str_pad($i, 4, '0', STR_PAD_LEFT),
+                'name'          => $name,
+                'department'    => $faker->randomElement($departments),
+                'phone'         => '0' . ($basePhone + $i), // sequential phone
+                'email'         => $username . '@gmail.com',
+                'national_id'   => $baseNationalId + ($i - 1), // sequential increment
+                'date_of_birth' => $faker->dateTimeBetween('1970-01-01', '2000-12-31')->format('Y-m-d'),
+                'created_at'    => now(),
+                'updated_at'    => now(),
             ]);
         }
     }

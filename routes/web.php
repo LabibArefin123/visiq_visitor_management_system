@@ -51,6 +51,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/ai-chat/download/{id}', [AiController::class, 'downloadAIChatPDF'])->name('ai.chat.download');
 
     Route::resource('organizations', OrganizationController::class);
+    Route::resource('visitors', VisitorController::class);
     Route::resource('pending_visitors', PendingVisitorController::class);
     Route::resource('visitor_blacklists', VisitorBlacklistController::class);
     Route::resource('visitor_emergencys', VisitorEmergencyController::class);

@@ -2,104 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Employee;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Display all employees
     public function index()
     {
         $employees = Employee::orderBy('id', 'desc')->paginate(10);
         return view('employee_management.index', compact('employees'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Show create form
     public function create()
     {
         return view('employee_management.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Store employee
     public function store(Request $request)
     {
         $request->validate([
-            'emp_id' => 'required|string|unique:employees,emp_id|max:20',
+            'emp_id' => 'required|unique:employees,emp_id',
             'name' => 'required|string|max:255',
-            'national_id' => 'required|string|max:20|unique:employees,national_id',
             'department' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'email' => 'required|email|unique:employees,email',
+            'phone' => 'required|string|max:20',
+            'email' => 'nullable|email',
+            'national_id' => 'nullable|string|max:20',
+            'date_of_birth' => 'required|date',
         ]);
 
-        Employee::create($request->only([
-            'emp_id',
-            'name',
-            'national_id',
-            'department',
-            'phone',
-            'email',
-        ]));
+        Employee::create($request->all());
 
         return redirect()->route('employees.index')->with('success', 'Employee added successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // Show employee details
     public function show($id)
     {
         $employee = Employee::findOrFail($id);
-        return view('employee_management.employee_management_view', compact('employee'));
+        return view('employee_management.show', compact('employee'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // Show edit form
     public function edit($id)
     {
         $employee = Employee::findOrFail($id);
-        return view('employee_management.employee_management_edit', compact('employee'));
+        return view('employees.edit', compact('employee'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Update employee
     public function update(Request $request, $id)
     {
         $employee = Employee::findOrFail($id);
 
         $request->validate([
-            'emp_id' => 'required|string|max:20|unique:employees,emp_id,' . $employee->id,
+            'emp_id' => 'required|unique:employees,emp_id,' . $employee->id,
             'name' => 'required|string|max:255',
-            'national_id' => 'required|string|max:20|unique:employees,national_id,' . $employee->id,
             'department' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'email' => 'required|email|unique:employees,email,' . $employee->id,
+            'phone' => 'required|string|max:20',
+            'email' => 'nullable|email',
+            'national_id' => 'nullable|string|max:20',
+            'date_of_birth' => 'required|date',
         ]);
 
-        $employee->update($request->only([
-            'emp_id',
-            'name',
-            'national_id',
-            'department',
-            'phone',
-            'email',
-        ]));
+        $employee->update($request->all());
 
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Delete employee
     public function destroy($id)
     {
         $employee = Employee::findOrFail($id);

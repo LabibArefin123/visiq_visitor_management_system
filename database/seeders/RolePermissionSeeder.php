@@ -53,6 +53,16 @@ class RolePermissionSeeder extends Seeder
             'permissions.destroy', // Delete
         ];
 
+        $employeePermissions = [
+            'employees.index',   // View
+            'employees.create',  // Create new
+            'employees.store',   // Store new
+            'employees.show',    // View individual
+            'employees.edit',    // Edit
+            'employees.update',  // Update
+            'employees.destroy', // Delete
+        ];
+
         $visitorPermissions = [
             'visitors.index',   // View
             'visitors.create',  // Create new
@@ -138,6 +148,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Permission'
+            ]);
+        }
+
+        foreach ($employeePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Employee'
             ]);
         }
 
