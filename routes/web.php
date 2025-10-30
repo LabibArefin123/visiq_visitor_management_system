@@ -1,21 +1,15 @@
 <?php
 
 use App\Http\Controllers\AiController;
-use App\Http\Controllers\Employee_Attendance;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeAttendanceController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Notification_And_Alert;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\Reporting_And_Analytics;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\Roles_And_Permissions;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\System_Setting;
-use App\Http\Controllers\User_Management;
-use App\Http\Controllers\Visitor_Attendance;
 use App\Http\Controllers\VisitorCompanyController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\VisitorController;
@@ -65,6 +59,10 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('visitor_group_members', VisitorGroupMemberController::class);
 
     Route::resource('employees', EmployeeController::class);
+    Route::resource('employee_attendances', EmployeeAttendanceController::class);
+    Route::get('/check-in-employees', [EmployeeAttendanceController::class, 'checkInEmployees'])->name('employees.check_in_employee.index');
+    Route::get('/check-out-employees', [EmployeeAttendanceController::class, 'checkOutEmployees'])->name('employees.check_out_employee.index');
+
 
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);

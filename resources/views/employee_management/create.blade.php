@@ -5,7 +5,7 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Create Employee</h3>
-        <a href="{{ route('employee') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2">
+        <a href="{{ route('employees.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -70,7 +70,7 @@
 
                         {{-- Email --}}
                         <div class="col-md-6 form-group">
-                            <label for="email"><strong>Email</strong></label>
+                            <label for="email"><strong>Email</strong> <span class="text-danger">*</span></label>
                             <input type="email" name="email" id="email"
                                 class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
                                 placeholder="Enter email address">
@@ -81,7 +81,7 @@
 
                         {{-- National ID --}}
                         <div class="col-md-6 form-group">
-                            <label for="national_id"><strong>National ID</strong></label>
+                            <label for="national_id"><strong>National ID</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="national_id" id="national_id"
                                 class="form-control @error('national_id') is-invalid @enderror"
                                 value="{{ old('national_id') }}" placeholder="Enter National ID">
@@ -106,7 +106,7 @@
 
                     <div class="text-end mt-3">
                         <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save"></i> Save Employee
+                            Save
                         </button>
                     </div>
                 </form>

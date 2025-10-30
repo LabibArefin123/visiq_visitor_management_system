@@ -392,16 +392,6 @@ return [
                     'icon' => 'fas fa-fw fa-building',
                 ],
                 [
-                    'text' => 'Check In Visitors',
-                    'url'  => 'check_in_visitor',
-                    'icon' => 'fas fa-fw fa-sign-in-alt',
-                ],
-                [
-                    'text' => 'Check Out Visitors',
-                    'url'  => 'check_out_visitor',
-                    'icon' => 'fas fa-fw fa-sign-out-alt',
-                ],
-                [
                     'text' => 'Pending Visitors',
                     'route'  => 'pending_visitors.index',
                     'icon' => 'fas fa-fw fa-clock',
@@ -434,17 +424,17 @@ return [
                 ],
                 [
                     'text' => 'Check-In Employees',
-                    'url'  => 'check_in_employee',
+                    'route'  => 'employees.check_in_employee.index',
                     'icon' => 'fas fa-fw fa-sign-in-alt',
                 ],
                 [
                     'text' => 'Check-Out Employees',
-                    'url'  => 'check_out_employee',
+                    'route'  => 'employees.check_out_employee.index',
                     'icon' => 'fas fa-fw fa-sign-out-alt',
                 ],
                 [
                     'text' => 'Attendance Tracking',
-                    'url'  => 'attendance_tracking',
+                    'route'  => 'employee_attendances.index',
                     'icon' => 'fas fa-fw fa-clock',
                 ],
 

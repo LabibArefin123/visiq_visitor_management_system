@@ -28,8 +28,8 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:255',
             'department' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
-            'email' => 'nullable|email',
-            'national_id' => 'nullable|string|max:20',
+            'email' => 'required|email',
+            'national_id' => 'required|string|max:20',
             'date_of_birth' => 'required|date',
         ]);
 
@@ -62,8 +62,8 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:255',
             'department' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
-            'email' => 'nullable|email',
-            'national_id' => 'nullable|string|max:20',
+            'email' => 'required|email',
+            'national_id' => 'required|string|max:20',
             'date_of_birth' => 'required|date',
         ]);
 

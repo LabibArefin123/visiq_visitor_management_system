@@ -61,6 +61,9 @@ class RolePermissionSeeder extends Seeder
             'employees.edit',    // Edit
             'employees.update',  // Update
             'employees.destroy', // Delete
+            'employee_attendances.index',
+            'employees.check_in_employee.index', // Delete
+            'employees.check_out_employee.index', // Delete
         ];
 
         $visitorPermissions = [

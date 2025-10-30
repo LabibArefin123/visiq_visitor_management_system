@@ -67,13 +67,13 @@
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="small-box bg-success text-white shadow-sm dashboard-box hover-box position-relative">
                     <div class="inner">
-                        <h3>{{ $totalCheckin ?? '00' }}</h3>
+                        <h3>{{ $totalCurrentCheckinEmployees ?? '00' }}</h3>
                         <p>Checked In</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-sign-in-alt"></i>
                     </div>
-                    <a href="#" class="small-box-footer">
+                    <a href="{{ route('employees.check_in_employee.index') }}" class="small-box-footer">
                         More info <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
@@ -83,13 +83,13 @@
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="small-box bg-secondary text-white shadow-sm dashboard-box hover-box position-relative">
                     <div class="inner">
-                        <h3>{{ $total_checkouts ?? '00' }}</h3>
+                        <h3>{{ $totalCurrentCheckoutEmployees ?? '00' }}</h3>
                         <p>Checked Out</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-sign-out-alt"></i>
                     </div>
-                    <a href="#" class="small-box-footer">
+                    <a href="{{ route('employees.check_out_employee.index') }}" class="small-box-footer">
                         More info <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
