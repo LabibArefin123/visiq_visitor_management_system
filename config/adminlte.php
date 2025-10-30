@@ -343,18 +343,10 @@ return [
             'url' => 'admin/blog',
             'can' => 'manage-blog',
         ],
-
-
         [
             'text' => 'Dashboard',
             'route' => 'dashboard',
             'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'All Profiles',
-            'url'  => 'profile-management',
-            'icon' => 'fas fa-fw fa-user-circle',
-            'can'  => 'show-profiles',
         ],
         [
             'text' => 'AI Chat',
@@ -372,92 +364,75 @@ return [
                 [
                     'text' => 'Organization List',
                     'route' => 'organizations.index',
-                    'icon' => 'fas fa-sliders-h',  // settings sliders icon
                 ],
             ],
         ],
 
         [
-            'text'    => 'Visitor Management',
+            'text'    => 'Visitor Menu',
             'icon'    => 'fas fa-fw fa-users',
             'submenu' => [
                 [
                     'text' => 'Visitor List',
                     'route'  => 'visitors.index',
-                    'icon' => 'fas fa-fw fa-list',
                 ],
                 [
                     'text' => 'Visitor Company',
-                    'url'  => 'visitor_company',
-                    'icon' => 'fas fa-fw fa-building',
+                    'route'  => 'visitor_companies.index',
                 ],
                 [
                     'text' => 'Pending Visitors',
                     'route'  => 'pending_visitors.index',
-                    'icon' => 'fas fa-fw fa-clock',
                 ],
                 [
                     'text' => 'Visitor Host Schedule',
                     'url'  => 'visitor_host_schedule',
-                    'icon' => 'fas fa-fw fa-calendar-alt',
                 ],
                 [
                     'text' => 'Emergency Visitors',
                     'route'  => 'visitor_emergencys.index',
-                    'icon' => 'fas fa-fw fa-exclamation-triangle',
                 ],
                 [
                     'text' => 'Visitor Blacklist',
                     'route'  => 'visitor_blacklists.index',
-                    'icon' => 'fas fa-fw fa-ban',
                 ],
             ],
         ],
         [
-            'text'    => 'Employee Management',
+            'text'    => 'Employee Menu',
             'icon'    => 'fas fa-fw fa-users-cog',
             'submenu' => [
                 [
                     'text' => 'Employee List',
-                    'url'  => 'employee_management',
-                    'icon' => 'fas fa-fw fa-address-book',
+                    'route'  => 'employees.index',
                 ],
                 [
                     'text' => 'Check-In Employees',
                     'route'  => 'employees.check_in_employee.index',
-                    'icon' => 'fas fa-fw fa-sign-in-alt',
                 ],
                 [
                     'text' => 'Check-Out Employees',
                     'route'  => 'employees.check_out_employee.index',
-                    'icon' => 'fas fa-fw fa-sign-out-alt',
                 ],
                 [
                     'text' => 'Attendance Tracking',
                     'route'  => 'employee_attendances.index',
-                    'icon' => 'fas fa-fw fa-clock',
                 ],
 
 
             ],
         ],
-
         [
-            'header' => 'Setting and Reporting',
-        ],
-        [
-            'text'    => 'Report',
+            'text'    => 'Report Menu',
             'icon'    => 'fas fa-fw fa-chart-pie',
             'submenu' => [
                 [
                     'text' => 'Visitor Reports',
                     'url'  => 'visitor_report',
-                    'icon' => 'fas fa-fw fa-chart-line',
                 ],
                 [
                     'text' => 'Employee Attendance Reports',
                     'url'  => 'employee_attendance_report',
-                    'icon' => 'fas fa-fw fa-file-alt',
                 ],
 
             ],
@@ -465,7 +440,7 @@ return [
         ],
 
         [
-            'text'    => 'Setting Management',
+            'text'    => 'Setting Menu',
             'icon'    => 'fas fa-cogs',
             // 'route'    => 'menu.setting',
             // 'can'   => 'menu.setting',
@@ -474,19 +449,16 @@ return [
                     'text' => 'Role List',
                     'route' => 'roles.index',
                     'active' => ['roles*'],
-                    'icon' => 'fas fa-user-tag',  // user tag icon
                 ],
                 [
                     'text' => 'Permission List',
                     'route' => 'permissions.index',
                     'active' => ['permissions*'],
-                    'icon' => 'fas fa-key',  // key icon
                 ],
                 [
                     'text' => 'System Users',
                     'route' => 'system_users.index',
                     'active' => ['system_users*'],
-                    'icon' => 'fas fa-users-cog',  // users with cog icon
                 ],
             ],
         ],

@@ -63,12 +63,16 @@
                     <div class="col-md-6 form-group">
                         <label><strong>Date of Birth</strong></label>
                         <input type="date" class="form-control" value="{{ $employee->date_of_birth }}" readonly>
+                        <small class="text-muted">
+                            [{{ \Carbon\Carbon::parse($employee->date_of_birth)->format('d M Y') }}]
+                        </small>
                     </div>
+
 
                     {{-- Age (Optional Display) --}}
                     <div class="col-md-6 form-group">
                         <label><strong>Age</strong></label>
-                        <input type="text" class="form-control" value="{{ $employee->age }}" readonly>
+                        <input type="text" class="form-control" value="{{ $employee->age }}" disabled>
                     </div>
 
                 </div>

@@ -76,6 +76,16 @@ class RolePermissionSeeder extends Seeder
             'visitors.destroy', // Delete
         ];
 
+        $visitorCompanyPermissions = [
+            'visitor_companies.index',   // View
+            'visitor_companies.create',  // Create new
+            'visitor_companies.store',   // Store new
+            'visitor_companies.show',    // View individual
+            'visitor_companies.edit',    // Edit
+            'visitor_companies.update',  // Update
+            'visitor_companies.destroy', // Delete
+        ];
+
         $organizationPermissions = [
             'organizations.index',   // View
             'organizations.create',  // Create new
@@ -165,6 +175,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Visitor'
+            ]);
+        }
+
+        foreach ($visitorCompanyPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor Company'
             ]);
         }
 

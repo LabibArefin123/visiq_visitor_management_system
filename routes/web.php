@@ -53,7 +53,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('visitor_host_schedules', VisitorHostController::class);
     Route::resource('visitor_group_schedules', VisitorGroupScheduleController::class);
 
-    Route::resource('visitor_companys', VisitorCompanyController::class);
+    Route::resource('visitor_companies', VisitorCompanyController::class);
     Route::get('/visitor_company/pdf/{id}', [VisitorCompanyController::class, 'downloadPDF'])->name('visitor_company.pdf');
     Route::get('/visitor_company/word/{id}', [VisitorCompanyController::class, 'downloadWord'])->name('visitor_company.word');
     Route::resource('visitor_group_members', VisitorGroupMemberController::class);

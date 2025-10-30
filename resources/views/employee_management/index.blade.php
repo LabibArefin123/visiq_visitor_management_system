@@ -34,7 +34,6 @@
                             <th>Employee ID</th>
                             <th>Name</th>
                             <th>Department</th>
-                            <th>Designation</th>
                             <th>Phone</th>
                             <th>Email</th>
                             <th class="text-center">Actions</th>
@@ -47,7 +46,6 @@
                                 <td>{{ $employee->emp_id ?? 'N/A' }}</td>
                                 <td>{{ $employee->name }}</td>
                                 <td>{{ $employee->department ?? 'N/A' }}</td>
-                                <td>{{ $employee->designation ?? 'N/A' }}</td>
                                 <td>{{ $employee->phone ?? 'N/A' }}</td>
                                 <td>{{ $employee->email ?? 'N/A' }}</td>
                                 <td class="text-center">

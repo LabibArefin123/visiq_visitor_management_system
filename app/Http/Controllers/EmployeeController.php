@@ -49,7 +49,7 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::findOrFail($id);
-        return view('employees.edit', compact('employee'));
+        return view('employee_management.edit', compact('employee'));
     }
 
     // Update employee
