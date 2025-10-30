@@ -9,13 +9,10 @@
     @endif
 
     <div class="container py-6">
-        <!-- Page Title -->
         <h1 class="text-2xl font-bold mb-4">Visitor Management Dashboard</h1>
         <p class="text-gray-600 mb-6">Welcome to your VisiQ Dashboard. Here is the summary of your visitor data.</p>
 
-        <!-- Statistic Boxes -->
         <div class="row g-4">
-            {{-- Total Visitors --}}
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="small-box bg-info text-white shadow-sm dashboard-box hover-box position-relative">
                     <div class="inner">
@@ -31,12 +28,11 @@
                 </div>
             </div>
 
-            {{-- Emergency Visitors --}}
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="small-box bg-warning text-white shadow-sm dashboard-box hover-box position-relative">
                     <div class="inner">
                         <h3>{{ $totalEmergencyVisitors ?? '00' }}</h3>
-                        <p>Emergency Visitors</p>
+                        <p>Total Emergency Visitors</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-ambulance"></i>
@@ -47,12 +43,11 @@
                 </div>
             </div>
 
-            {{-- Blacklist Visitors --}}
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="small-box bg-danger text-white shadow-sm dashboard-box hover-box position-relative">
                     <div class="inner">
                         <h3>{{ $totalBlacklistVisitors ?? '00' }}</h3>
-                        <p>Blacklist Visitors</p>
+                        <p>Total Blacklist Visitors</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-user-slash"></i>
@@ -63,44 +58,11 @@
                 </div>
             </div>
 
-            {{-- Checked In Visitors --}}
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="small-box bg-success text-white shadow-sm dashboard-box hover-box position-relative">
-                    <div class="inner">
-                        <h3>{{ $totalCurrentCheckinEmployees ?? '00' }}</h3>
-                        <p>Checked In</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-sign-in-alt"></i>
-                    </div>
-                    <a href="{{ route('employees.check_in_employee.index') }}" class="small-box-footer">
-                        More info <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            </div>
-
-            {{-- Checked Out Visitors --}}
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="small-box bg-secondary text-white shadow-sm dashboard-box hover-box position-relative">
-                    <div class="inner">
-                        <h3>{{ $totalCurrentCheckoutEmployees ?? '00' }}</h3>
-                        <p>Checked Out</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </div>
-                    <a href="{{ route('employees.check_out_employee.index') }}" class="small-box-footer">
-                        More info <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            </div>
-
-            {{-- Employees --}}
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="small-box bg-primary text-white shadow-sm dashboard-box hover-box position-relative">
                     <div class="inner">
                         <h3>{{ $totalEmployees ?? '00' }}</h3>
-                        <p>Employees</p>
+                        <p>Total Employees</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-user-tie"></i>
@@ -111,12 +73,41 @@
                 </div>
             </div>
 
-            {{-- Pending Visitors --}}
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-success text-white shadow-sm dashboard-box hover-box position-relative">
+                    <div class="inner">
+                        <h3>{{ $totalCurrentCheckinEmployees ?? '00' }}</h3>
+                        <p>Current Checked In Employees</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <a href="{{ route('employees.check_in_employee.index') }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-secondary text-white shadow-sm dashboard-box hover-box position-relative">
+                    <div class="inner">
+                        <h3>{{ $totalCurrentCheckoutEmployees ?? '00' }}</h3>
+                        <p>Current Checked Out Employees</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <a href="{{ route('employees.check_out_employee.index') }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="small-box bg-indigo text-white shadow-sm dashboard-box hover-box position-relative">
                     <div class="inner">
                         <h3>{{ $totalPendingVisitors ?? '00' }}</h3>
-                        <p>Pending Visitors</p>
+                        <p>Total Pending Visitors</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-clock"></i>

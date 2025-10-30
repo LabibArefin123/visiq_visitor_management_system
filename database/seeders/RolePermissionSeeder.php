@@ -126,6 +126,26 @@ class RolePermissionSeeder extends Seeder
             'pending_visitors.destroy', // Delete
         ];
 
+        $visitorGroupMemberPermissions = [
+            'visitor_group_members.index',   // View
+            'visitor_group_members.create',  // Create new
+            'visitor_group_members.store',   // Store new
+            'visitor_group_members.show',    // View individual
+            'visitor_group_members.edit',    // Edit
+            'visitor_group_members.update',  // Update
+            'visitor_group_members.destroy', // Delete
+        ];
+
+        $visitorHostSchedulePermissions = [
+            'visitor_host_schedules.index',   // View
+            'visitor_host_schedules.create',  // Create new
+            'visitor_host_schedules.store',   // Store new
+            'visitor_host_schedules.show',    // View individual
+            'visitor_host_schedules.edit',    // Edit
+            'visitor_host_schedules.update',  // Update
+            'visitor_host_schedules.destroy', // Delete
+        ];
+
         $systemUserPermission = [
             'system_users.index',   // View
             'system_users.create',  // Create new
@@ -210,6 +230,20 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Pending Visitor'
+            ]);
+        }
+
+        foreach ($visitorGroupMemberPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor Group Member'
+            ]);
+        }
+
+        foreach ($visitorHostSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor Host Schedule'
             ]);
         }
 

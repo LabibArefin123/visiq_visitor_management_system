@@ -385,8 +385,12 @@ return [
                     'route'  => 'pending_visitors.index',
                 ],
                 [
+                    'text' => 'Visitor Group Member',
+                    'route'  => 'visitor_group_members.index',
+                ],
+                [
                     'text' => 'Visitor Host Schedule',
-                    'url'  => 'visitor_host_schedule',
+                    'route'  => 'visitor_host_schedules.index',
                 ],
                 [
                     'text' => 'Emergency Visitors',

@@ -13,7 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitorCompanyController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\VisitorController;
-use App\Http\Controllers\VisitorHostController;
+use App\Http\Controllers\VisitorHostScheduleController;
 use App\Http\Controllers\PendingVisitorController;
 use App\Http\Controllers\VisitorBlacklistController;
 use App\Http\Controllers\VisitorEmergencyController;
@@ -50,19 +50,16 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('visitor_blacklists', VisitorBlacklistController::class);
     Route::resource('visitor_emergencys', VisitorEmergencyController::class);
 
-    Route::resource('visitor_host_schedules', VisitorHostController::class);
-    Route::resource('visitor_group_schedules', VisitorGroupScheduleController::class);
-
+    Route::resource('visitor_group_members', VisitorGroupMemberController::class);
+    Route::resource('visitor_host_schedules', VisitorHostScheduleController::class);
     Route::resource('visitor_companies', VisitorCompanyController::class);
     Route::get('/visitor_company/pdf/{id}', [VisitorCompanyController::class, 'downloadPDF'])->name('visitor_company.pdf');
     Route::get('/visitor_company/word/{id}', [VisitorCompanyController::class, 'downloadWord'])->name('visitor_company.word');
-    Route::resource('visitor_group_members', VisitorGroupMemberController::class);
 
     Route::resource('employees', EmployeeController::class);
     Route::resource('employee_attendances', EmployeeAttendanceController::class);
     Route::get('/check-in-employees', [EmployeeAttendanceController::class, 'checkInEmployees'])->name('employees.check_in_employee.index');
     Route::get('/check-out-employees', [EmployeeAttendanceController::class, 'checkOutEmployees'])->name('employees.check_out_employee.index');
-
 
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);

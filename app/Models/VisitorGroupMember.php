@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,10 +9,15 @@ class VisitorGroupMember extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['visitor_id', 'gid', 'name', 'email', 'phone', 'purpose'];
+    protected $table = 'visitor_group_members';
 
-    public function visitor()
-    {
-        return $this->belongsTo(Visitor::class);
-    }
+    protected $fillable = [
+        'group_name',
+        'visitor_ids',
+        'total_group_members',
+    ];
+
+    protected $casts = [
+        'visitor_ids' => 'array', // Store as JSON array
+    ];
 }
