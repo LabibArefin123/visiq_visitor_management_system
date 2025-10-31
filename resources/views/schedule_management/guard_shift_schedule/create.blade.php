@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'Add Shift Schedule')
+@section('title', 'Add Guard Shift Schedule')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Add Shift Schedule</h3>
-        <a href="{{ route('shift_schedules.index') }}"
+        <h3 class="mb-0">Add Guard Shift Schedule</h3>
+        <a href="{{ route('shift_guard_schedules.index') }}"
             class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
@@ -21,7 +21,7 @@
     <div class="container">
         <div class="card shadow-lg mt-3">
             <div class="card-body">
-                <form action="{{ route('shift_schedules.store') }}" method="POST">
+                <form action="{{ route('shift_guard_schedules.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         {{-- Shift Name --}}

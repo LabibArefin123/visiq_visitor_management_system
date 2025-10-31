@@ -14,9 +14,13 @@ use App\Http\Controllers\VisitorHostScheduleController;
 use App\Http\Controllers\VisitorBlacklistController;
 use App\Http\Controllers\VisitorEmergencyController;
 use App\Http\Controllers\VisitorGroupMemberController;
-use App\Http\Controllers\GuardController;
 use App\Http\Controllers\OfficeScheduleController;
 use App\Http\Controllers\ShiftScheduleController;
+use App\Http\Controllers\ShiftGuardScheduleController;
+use App\Http\Controllers\AccessPointController;
+use App\Http\Controllers\GuardController;
+use App\Http\Controllers\AccessPointGuardController;
+use App\Http\Controllers\EmergencyIncidentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
@@ -69,9 +73,13 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     //schedule menu
     Route::resource('office_schedules', OfficeScheduleController::class);
     Route::resource('shift_schedules', ShiftScheduleController::class);
+    Route::resource('shift_guard_schedules', ShiftGuardScheduleController::class);
 
     //security menu
     Route::resource('guards', GuardController::class);
+    Route::resource('access_points', AccessPointController::class);
+    Route::resource('access_point_guards', AccessPointGuardController::class);
+    Route::resource('emergency_incidents', EmergencyIncidentController::class);
 
     //setting menu
     Route::resource('roles', RoleController::class);

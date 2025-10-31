@@ -67,24 +67,18 @@
                             @enderror
                         </div>
 
-                        {{-- Shift --}}
                         <div class="col-md-6 form-group">
-                            <label for="shift"><strong>Shift</strong></label>
-                            <select name="shift" id="shift" class="form-control">
+                            <label for="shift"><strong>Shift</strong> <span class="text-danger">*</span></label>
+                            <select name="shift" id="shift" class="form-control @error('shift') is-invalid @enderror">
                                 <option value="">Select Shift</option>
-                                <option value="Morning" {{ old('shift') == 'Morning' ? 'selected' : '' }}>Morning</option>
-                                <option value="Evening" {{ old('shift') == 'Evening' ? 'selected' : '' }}>Evening</option>
-                                <option value="Night" {{ old('shift') == 'Night' ? 'selected' : '' }}>Night</option>
+                                @foreach ($shifts as $shift)
+                                    <option value="{{ $shift->shift_name }}"
+                                        {{ old('shift') == $shift->shift_name ? 'selected' : '' }}>
+                                        {{ $shift->shift_name }}
+                                    </option>
+                                @endforeach
                             </select>
-                        </div>
-
-                        {{-- Assigned Gate --}}
-                        <div class="col-md-6 form-group">
-                            <label for="assigned_gate"><strong>Assigned Gate</strong></label>
-                            <input type="text" name="assigned_gate" id="assigned_gate"
-                                class="form-control @error('assigned_gate') is-invalid @enderror"
-                                value="{{ old('assigned_gate') }}" placeholder="Enter gate name or number">
-                            @error('assigned_gate')
+                            @error('shift')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>

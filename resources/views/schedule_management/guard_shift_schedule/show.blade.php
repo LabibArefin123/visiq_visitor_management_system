@@ -6,10 +6,10 @@
     <div class="d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Shift Schedule Details</h3>
         <div>
-            <a href="{{ route('shift_schedules.edit', $shiftSchedule->id) }}" class="btn btn-warning btn-sm">
+            <a href="{{ route('shift_guard_schedules.edit', $shift_guard_schedule->id) }}" class="btn btn-warning btn-sm">
                 <i class="fas fa-edit"></i> Edit
             </a>
-            <a href="{{ route('shift_schedules.index') }}" class="btn btn-secondary btn-sm">
+            <a href="{{ route('shift_guard_schedules.index') }}" class="btn btn-secondary btn-sm">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
         </div>
@@ -24,23 +24,23 @@
 
                     <div class="col-md-6 form-group">
                         <label><strong>Shift Name:</strong></label>
-                        <p>{{ $shiftSchedule->shift_name }}</p>
+                        <p class="form-control">{{ $shift_guard_schedule->shift_name }}</p>
                     </div>
 
                     <div class="col-md-6 form-group">
                         <label><strong>Start Time:</strong></label>
-                        <p>{{ date('h:i A', strtotime($shiftSchedule->start_time)) }}</p>
+                        <p class="form-control">{{ date('h:i A', strtotime($shift_guard_schedule->start_time)) }}</p>
                     </div>
 
                     <div class="col-md-6 form-group">
                         <label><strong>End Time:</strong></label>
-                        <p>{{ date('h:i A', strtotime($shiftSchedule->end_time)) }}</p>
+                        <p class="form-control">{{ date('h:i A', strtotime($shift_guard_schedule->end_time)) }}</p>
                     </div>
 
                     <div class="col-md-6 form-group">
                         <label><strong>Status:</strong></label>
-                        <span class="badge {{ $shiftSchedule->status == 'Active' ? 'bg-success' : 'bg-danger' }}">
-                            {{ $shiftSchedule->status }}
+                        <span class="badge {{ $shift_guard_schedule->status == 'Active' ? 'bg-success' : 'bg-danger' }}">
+                            {{ $shift_guard_schedule->status }}
                         </span>
                     </div>
 

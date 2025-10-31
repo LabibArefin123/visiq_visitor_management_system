@@ -23,10 +23,8 @@
                             <th>Name</th>
                             <th>Phone</th>
                             <th>Email</th>
-                            <th>Shift</th>
-                            <th>Assigned Gate</th>
+                            <th class="text-center">Shift</th>
                             <th>Status</th>
-                            <th>Created At</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -38,21 +36,19 @@
                                 <td>{{ $guard->name }}</td>
                                 <td>{{ $guard->phone }}</td>
                                 <td>{{ $guard->email ?? 'N/A' }}</td>
-                                <td>{{ $guard->shift ?? 'N/A' }}</td>
-                                <td>{{ $guard->assigned_gate ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $guard->shift ?? 'N/A' }}</td>
                                 <td>
                                     <span class="badge bg-{{ $guard->status == 'Active' ? 'success' : 'danger' }}">
                                         {{ $guard->status }}
                                     </span>
                                 </td>
-                                <td>{{ $guard->created_at->format('d M Y') }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-1">
                                         <a href="{{ route('guards.show', $guard->id) }}" class="btn btn-info btn-sm">
-                                            <i class="fas fa-eye"></i> View
+                                            View
                                         </a>
-                                        <a href="{{ route('guards.edit', $guard->id) }}" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-edit"></i> Edit
+                                        <a href="{{ route('guards.edit', $guard->id) }}" class="btn btn-warning btn-sm">
+                                            Edit
                                         </a>
                                         <form action="{{ route('guards.destroy', $guard->id) }}" method="POST"
                                             class="d-inline"
@@ -60,7 +56,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i> Delete
+                                                Delete
                                             </button>
                                         </form>
                                     </div>

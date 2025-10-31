@@ -26,7 +26,7 @@ class OfficeScheduleController extends Controller
             'organization_id' => 'required|exists:organizations,id',
             'schedule_name' => 'required|string|max:255',
             'start_time' => 'required',
-            'end_time' => 'required|after:start_time',
+            'end_time' => 'required|',
             'status' => 'required|string',
         ]);
 
@@ -53,7 +53,7 @@ class OfficeScheduleController extends Controller
             'organization_id' => 'required|exists:organizations,id',
             'schedule_name' => 'required|string|max:255',
             'start_time' => 'required',
-            'end_time' => 'required|after:start_time',
+            'end_time' => 'required|',
             'status' => 'required|string',
         ]);
 

@@ -33,8 +33,17 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $schedule->organization->name }}</td>
                                 <td>{{ $schedule->schedule_name }}</td>
-                                <td>{{ $schedule->start_time }}</td>
-                                <td>{{ $schedule->end_time }}</td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}
+                                    <span
+                                        class="text-muted">({{ \Carbon\Carbon::parse($schedule->start_time)->format('g:i A') }})</span>
+                                </td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}
+                                    <span
+                                        class="text-muted">({{ \Carbon\Carbon::parse($schedule->end_time)->format('g:i A') }})</span>
+                                </td>
+
                                 <td>
                                     <span class="badge bg-{{ $schedule->status == 'Active' ? 'success' : 'danger' }}">
                                         {{ $schedule->status }}

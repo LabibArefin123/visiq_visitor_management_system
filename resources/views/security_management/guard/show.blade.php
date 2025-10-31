@@ -51,12 +51,6 @@
                         <input type="text" class="form-control" value="{{ $guard->shift ?? 'N/A' }}" readonly>
                     </div>
 
-                    {{-- Assigned Gate --}}
-                    <div class="col-md-6 form-group mb-3">
-                        <label><strong>Assigned Gate</strong></label>
-                        <input type="text" class="form-control" value="{{ $guard->assigned_gate ?? 'N/A' }}" readonly>
-                    </div>
-
                     {{-- Status --}}
                     <div class="col-md-6 form-group mb-3">
                         <label><strong>Status</strong></label>

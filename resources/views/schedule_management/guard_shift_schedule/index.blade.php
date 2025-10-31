@@ -4,8 +4,8 @@
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Shift Schedule List</h3>
-        <a href="{{ route('shift_schedules.create') }}" class="btn btn-sm btn-success">
+        <h3 class="mb-0">Guard Shift Schedule List</h3>
+        <a href="{{ route('shift_guard_schedules.create') }}" class="btn btn-sm btn-success">
             <i class="fas fa-plus"></i> Add New
         </a>
     </div>
@@ -49,16 +49,16 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="{{ route('shift_schedules.show', $schedule->id) }}"
+                                        <a href="{{ route('shift_guard_schedules.show', $schedule->id) }}"
                                             class="btn btn-info btn-sm">
                                             View
                                         </a>
-                                        <a href="{{ route('shift_schedules.edit', $schedule->id) }}"
+                                        <a href="{{ route('shift_guard_schedules.edit', $schedule->id) }}"
                                             class="btn btn-warning btn-sm">
                                             Edit
                                         </a>
-                                        <form action="{{ route('shift_schedules.destroy', $schedule->id) }}" method="POST"
-                                            class="d-inline"
+                                        <form action="{{ route('shift_guard_schedules.destroy', $schedule->id) }}"
+                                            method="POST" class="d-inline"
                                             onsubmit="return confirm('Are you sure you want to delete this schedule?');">
                                             @csrf
                                             @method('DELETE')

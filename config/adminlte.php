@@ -435,12 +435,12 @@ return [
                     'route'  => 'office_schedules.index',
                 ],
                 [
-                    'text' => 'Shift Schedules',
+                    'text' => 'Shift Schedule',
                     'route'  => 'shift_schedules.index',
                 ],
                 [
                     'text' => 'Guard Shift Schedule',
-                    'url'  => '#',
+                    'route'  => 'shift_guard_schedules.index',
                 ],
             ],
         ],
@@ -465,21 +465,21 @@ return [
             'text'    => 'Security Menu',
             'icon'    => 'fas fa-user-shield',
             'submenu' => [
-                [
-                    'text' => 'Security Desk Logs',
-                    'icon' => 'fas fa-clipboard-list',
-                    'submenu' => [
-                        ['text' => 'Check-In Log', 'url' => '#'],
-                        ['text' => 'Check-Out Log', 'url' => '#'],
-                        ['text' => 'Gate Pass Verification', 'url' => '#'],
-                    ],
-                ],
+                // [
+                //     'text' => 'Security Desk Logs',
+                //     'icon' => 'fas fa-clipboard-list',
+                //     'submenu' => [
+                //         ['text' => 'Check-In Log', 'url' => '#'],
+                //         ['text' => 'Check-Out Log', 'url' => '#'],
+                //         ['text' => 'Gate Pass Verification', 'url' => '#'],
+                //     ],
+                // ],
                 [
                     'text' => 'Access Point Management',
                     'icon' => 'fas fa-door-open',
                     'submenu' => [
-                        ['text' => 'Access Points', 'url' => '#'],
-                        ['text' => 'Assign Guards', 'url' => '#'],
+                        ['text' => 'Access Points', 'route' => 'access_points.index'],
+                        ['text' => 'Access Point Guards', 'route' => 'access_point_guards.index'],
                         ['text' => 'Access History Logs', 'url' => '#'],
                     ],
                 ],
@@ -488,7 +488,6 @@ return [
                     'icon' => 'fas fa-user-lock',
                     'submenu' => [
                         ['text' => 'Guard List', 'route' => 'guards.index'],
-                        ['text' => 'Guard Shift Schedule', 'url' => '#'],
                         ['text' => 'Guard Activity Log', 'url' => '#'],
                     ],
                 ],
@@ -497,7 +496,7 @@ return [
                     'icon' => 'fas fa-bell',
                     'submenu' => [
                         ['text' => 'Overstay Alerts', 'url' => '#'],
-                        ['text' => 'Emergency Incidents', 'url' => '#'],
+                        ['text' => 'Emergency Incidents', 'route' => 'emergency_incidents.index'],
                         ['text' => 'Blacklist Monitor', 'url' => '#'],
                     ],
                 ],

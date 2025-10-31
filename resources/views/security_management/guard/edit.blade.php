@@ -5,8 +5,13 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Edit Guard</h3>
-        <a href="{{ route('guards.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2">
-            <i class="fas fa-arrow-left"></i> Back
+        <a href="{{ route('guards.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
         </a>
     </div>
 @stop
@@ -24,7 +29,7 @@
                             <label for="guard_id"><strong>Guard ID</strong></label>
                             <input type="text" name="guard_id" id="guard_id"
                                 class="form-control @error('guard_id') is-invalid @enderror"
-                                value="{{ old('guard_id', $guard->guard_id) }}" readonly>
+                                value="{{ old('guard_id', $guard->guard_id) }}">
                             @error('guard_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -65,25 +70,17 @@
 
                         {{-- Shift --}}
                         <div class="col-md-6 form-group">
-                            <label for="shift"><strong>Shift</strong></label>
-                            <select name="shift" id="shift" class="form-control">
+                            <label for="shift"><strong>Shift</strong> <span class="text-danger">*</span></label>
+                            <select name="shift" id="shift" class="form-control @error('shift') is-invalid @enderror">
                                 <option value="">Select Shift</option>
-                                <option value="Morning" {{ old('shift', $guard->shift) == 'Morning' ? 'selected' : '' }}>
-                                    Morning</option>
-                                <option value="Evening" {{ old('shift', $guard->shift) == 'Evening' ? 'selected' : '' }}>
-                                    Evening</option>
-                                <option value="Night" {{ old('shift', $guard->shift) == 'Night' ? 'selected' : '' }}>Night
-                                </option>
+                                @foreach ($shifts as $shift)
+                                    <option value="{{ $shift->shift_name }}"
+                                        {{ old('shift', $guard->shift) == $shift->shift_name ? 'selected' : '' }}>
+                                        {{ $shift->shift_name }}
+                                    </option>
+                                @endforeach
                             </select>
-                        </div>
-
-                        {{-- Assigned Gate --}}
-                        <div class="col-md-6 form-group">
-                            <label for="assigned_gate"><strong>Assigned Gate</strong></label>
-                            <input type="text" name="assigned_gate" id="assigned_gate"
-                                class="form-control @error('assigned_gate') is-invalid @enderror"
-                                value="{{ old('assigned_gate', $guard->assigned_gate) }}">
-                            @error('assigned_gate')
+                            @error('shift')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>

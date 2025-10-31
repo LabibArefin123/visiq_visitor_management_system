@@ -22,9 +22,7 @@
             <div class="card-body">
                 <form action="{{ route('visitors.store') }}" method="POST">
                     @csrf
-
                     <div class="row">
-                        {{-- Visitor ID --}}
                         <div class="col-md-6 form-group ">
                             <label for="visitor_id"><strong>Visitor ID</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="visitor_id" id="visitor_id"
@@ -35,7 +33,6 @@
                             @enderror
                         </div>
 
-                        {{-- Name --}}
                         <div class="col-md-6 form-group ">
                             <label for="name"><strong>Name</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="name" id="name"
@@ -46,7 +43,6 @@
                             @enderror
                         </div>
 
-                        {{-- Phone --}}
                         <div class="col-md-6 form-group ">
                             <label for="phone"><strong>Phone</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="phone" id="phone"
@@ -57,7 +53,6 @@
                             @enderror
                         </div>
 
-                        {{-- Email --}}
                         <div class="col-md-6 form-group ">
                             <label for="email"><strong>Email <span class="text-danger">*</span></strong></label>
                             <input type="email" name="email" id="email"
@@ -68,7 +63,6 @@
                             @enderror
                         </div>
 
-                        {{-- Purpose --}}
                         <div class="col-md-6 form-group ">
                             <label for="purpose"><strong>Visit Purpose <span class="text-danger">*</span></strong></label>
                             <input type="text" name="purpose" id="purpose"
@@ -79,7 +73,6 @@
                             @enderror
                         </div>
 
-                        {{-- Visit Date --}}
                         <div class="col-md-6 form-group ">
                             <label for="visit_date"><strong>Visit Date <span class="text-danger">*</span></strong></label>
                             <input type="date" name="visit_date" id="visit_date"
@@ -90,7 +83,6 @@
                             @enderror
                         </div>
 
-                        {{-- Date of Birth --}}
                         <div class="col-md-6 form-group ">
                             <label for="date_of_birth"><strong>Date of Birth <span
                                         class="text-danger">*</span></strong></label>
@@ -102,7 +94,6 @@
                             @enderror
                         </div>
 
-                        {{-- National ID --}}
                         <div class="col-md-6 form-group ">
                             <label for="national_id"><strong>National ID <span class="text-danger">*</span></strong></label>
                             <input type="text" name="national_id" id="national_id"
@@ -113,7 +104,6 @@
                             @enderror
                         </div>
 
-                        {{-- Gender --}}
                         <div class="col-md-6 form-group ">
                             <label for="gender"><strong>Gender <span class="text-danger">*</span></strong></label>
                             <select name="gender" id="gender"

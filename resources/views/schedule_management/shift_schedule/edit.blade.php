@@ -5,8 +5,14 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Edit Shift Schedule</h3>
-        <a href="{{ route('shift_schedules.index') }}" class="btn btn-sm btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back
+        <a href="{{ route('shift_schedules.index') }}"
+            class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
         </a>
     </div>
 @stop
@@ -27,23 +33,6 @@
                                 class="form-control @error('shift_name') is-invalid @enderror"
                                 value="{{ old('shift_name', $shiftSchedule->shift_name) }}" placeholder="Enter shift name">
                             @error('shift_name')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-
-                        {{-- Shift Type --}}
-                        <div class="col-md-6 form-group">
-                            <label for="shift_type"><strong>Shift Type</strong> <span class="text-danger">*</span></label>
-                            <select name="shift_type" id="shift_type"
-                                class="form-control @error('shift_type') is-invalid @enderror">
-                                <option value="Morning" {{ $shiftSchedule->shift_type == 'Morning' ? 'selected' : '' }}>
-                                    Morning</option>
-                                <option value="Evening" {{ $shiftSchedule->shift_type == 'Evening' ? 'selected' : '' }}>
-                                    Evening</option>
-                                <option value="Night" {{ $shiftSchedule->shift_type == 'Night' ? 'selected' : '' }}>Night
-                                </option>
-                            </select>
-                            @error('shift_type')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>

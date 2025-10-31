@@ -166,6 +166,26 @@ class RolePermissionSeeder extends Seeder
             'office_schedules.destroy', // Delete
         ];
 
+        $shiftGuardSchedulePermissions = [
+            'shift_guard_schedules.index',   // View
+            'shift_guard_schedules.create',  // Create new
+            'shift_guard_schedules.store',   // Store new
+            'shift_guard_schedules.show',    // View individual
+            'shift_guard_schedules.edit',    // Edit
+            'shift_guard_schedules.update',  // Update
+            'shift_guard_schedules.destroy', // Delete
+        ];
+
+        $accessPointPermissions = [
+            'access_points.index',   // View
+            'access_points.create',  // Create new
+            'access_points.store',   // Store new
+            'access_points.show',    // View individual
+            'access_points.edit',    // Edit
+            'access_points.update',  // Update
+            'access_points.destroy', // Delete
+        ];
+
         $guardPermissions = [
             'guards.index',   // View
             'guards.create',  // Create new
@@ -174,6 +194,26 @@ class RolePermissionSeeder extends Seeder
             'guards.edit',    // Edit
             'guards.update',  // Update
             'guards.destroy', // Delete
+        ];
+
+        $accessPointGuardPermissions = [
+            'access_point_guards.index',   // View
+            'access_point_guards.create',  // Create new
+            'access_point_guards.store',   // Store new
+            'access_point_guards.show',    // View individual
+            'access_point_guards.edit',    // Edit
+            'access_point_guards.update',  // Update
+            'access_point_guards.destroy', // Delete
+        ];
+
+        $emergencyIncidentPermissions = [
+            'emergency_incidents.index',   // View
+            'emergency_incidents.create',  // Create new
+            'emergency_incidents.store',   // Store new
+            'emergency_incidents.show',    // View individual
+            'emergency_incidents.edit',    // Edit
+            'emergency_incidents.update',  // Update
+            'emergency_incidents.destroy', // Delete
         ];
 
         $systemUserPermission = [
@@ -291,6 +331,21 @@ class RolePermissionSeeder extends Seeder
             ]);
         }
 
+        foreach ($shiftGuardSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Guard Shift Schedule'
+            ]);
+        }
+
+        // security menu
+        foreach ($accessPointPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Access Point'
+            ]);
+        }
+
         foreach ($guardPermissions as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,
@@ -298,6 +353,20 @@ class RolePermissionSeeder extends Seeder
             ]);
         }
 
+        foreach ($accessPointGuardPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Access Point Guard'
+            ]);
+        }
+
+        foreach ($emergencyIncidentPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Emergency Incident'
+            ]);
+        }
+        // setting menu
         foreach ($systemUserPermission as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,

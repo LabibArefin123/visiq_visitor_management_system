@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guard;
+use App\Models\ShiftGuardSchedule;
+use App\Models\AccessPoint;
 use Illuminate\Http\Request;
 
 class GuardController extends Controller
@@ -21,7 +23,8 @@ class GuardController extends Controller
      */
     public function create()
     {
-        return view('security_management.guard.create');
+        $shifts = ShiftGuardSchedule::orderBy('shift_name', 'asc')->get(); // Sort A to Z
+        return view('security_management.guard.create', compact('shifts'));
     }
 
     /**
@@ -35,7 +38,6 @@ class GuardController extends Controller
             'phone' => 'required|string|max:15',
             'email' => 'required|email|unique:guards,email',
             'shift' => 'required|string',
-            'assigned_gate' => 'required|string',
             'status' => 'required|string',
         ]);
 
@@ -57,7 +59,8 @@ class GuardController extends Controller
      */
     public function edit(Guard $guard)
     {
-        return view('security_management.guard.edit', compact('guard'));
+        $shifts = ShiftGuardSchedule::orderBy('shift_name', 'asc')->get(); // Sort A to Z
+        return view('security_management.guard.edit', compact('guard', 'shifts'));
     }
 
     /**
@@ -70,7 +73,6 @@ class GuardController extends Controller
             'phone' => 'required|string|max:15',
             'email' => 'required|email|unique:guards,email,' . $guard->id,
             'shift' => 'required|string',
-            'assigned_gate' => 'required|string',
             'status' => 'required|string',
         ]);
 
