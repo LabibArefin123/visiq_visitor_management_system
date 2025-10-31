@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             // OfficeScheduleSeeder::class,
             // EmergencyIncidentSeeder::class,
             // GuardActivityLogSeeder::class,
-            BlacklistMonitorSeeder::class,
+            // BlacklistMonitorSeeder::class,
+            AccessHistoryLogSeeder::class,
         ]);
     }
 }

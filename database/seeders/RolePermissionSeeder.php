@@ -206,6 +206,7 @@ class RolePermissionSeeder extends Seeder
             'access_point_guards.edit',    // Edit
             'access_point_guards.update',  // Update
             'access_point_guards.destroy', // Delete
+            'access_point_guards.activity_log', // Delete
         ];
 
         $emergencyIncidentPermissions = [

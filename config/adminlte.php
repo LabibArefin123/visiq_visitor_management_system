@@ -480,7 +480,7 @@ return [
                     'submenu' => [
                         ['text' => 'Access Points', 'route' => 'access_points.index'],
                         ['text' => 'Access Point Guards', 'route' => 'access_point_guards.index'],
-                        ['text' => 'Access History Logs', 'url' => '#'],
+                        ['text' => 'Access History Logs', 'route' => 'access_point_guards.activity_log'],
                     ],
                 ],
                 [
