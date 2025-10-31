@@ -104,6 +104,7 @@ class RolePermissionSeeder extends Seeder
             'visitor_blacklists.edit',    // Edit
             'visitor_blacklists.update',  // Update
             'visitor_blacklists.destroy', // Delete
+            'visitor_blacklists.activity_log', // Activity Log
         ];
 
         $emergencyVisitorPermissions = [
@@ -194,6 +195,7 @@ class RolePermissionSeeder extends Seeder
             'guards.edit',    // Edit
             'guards.update',  // Update
             'guards.destroy', // Delete
+            'guards.activity_log', // Activity log
         ];
 
         $accessPointGuardPermissions = [

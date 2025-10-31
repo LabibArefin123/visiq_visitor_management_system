@@ -20,7 +20,9 @@ use App\Http\Controllers\ShiftGuardScheduleController;
 use App\Http\Controllers\AccessPointController;
 use App\Http\Controllers\GuardController;
 use App\Http\Controllers\AccessPointGuardController;
+use App\Http\Controllers\GuardActivityLogController;
 use App\Http\Controllers\EmergencyIncidentController;
+use App\Http\Controllers\BlacklistMonitorController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
@@ -57,6 +59,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('visitors', VisitorController::class);
     Route::resource('pending_visitors', PendingVisitorController::class);
     Route::resource('visitor_blacklists', VisitorBlacklistController::class);
+    Route::get('/visitor_blacklist_monitor', [BlacklistMonitorController::class, 'index'])->name('visitor_blacklists.activity_log');
     Route::resource('visitor_emergencys', VisitorEmergencyController::class);
     Route::resource('visitor_group_members', VisitorGroupMemberController::class);
     Route::resource('visitor_host_schedules', VisitorHostScheduleController::class);
@@ -77,6 +80,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
 
     //security menu
     Route::resource('guards', GuardController::class);
+    Route::get('/guard_activity_log', [GuardActivityLogController::class, 'index'])->name('guards.activity_log');
     Route::resource('access_points', AccessPointController::class);
     Route::resource('access_point_guards', AccessPointGuardController::class);
     Route::resource('emergency_incidents', EmergencyIncidentController::class);

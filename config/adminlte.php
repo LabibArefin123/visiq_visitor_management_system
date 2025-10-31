@@ -488,7 +488,7 @@ return [
                     'icon' => 'fas fa-user-lock',
                     'submenu' => [
                         ['text' => 'Guard List', 'route' => 'guards.index'],
-                        ['text' => 'Guard Activity Log', 'url' => '#'],
+                        ['text' => 'Guard Activity Log', 'route' => 'guards.activity_log'],
                     ],
                 ],
                 [
@@ -497,7 +497,7 @@ return [
                     'submenu' => [
                         ['text' => 'Overstay Alerts', 'url' => '#'],
                         ['text' => 'Emergency Incidents', 'route' => 'emergency_incidents.index'],
-                        ['text' => 'Blacklist Monitor', 'url' => '#'],
+                        ['text' => 'Blacklist Monitor', 'route' => 'visitor_blacklists.activity_log'],
                     ],
                 ],
             ],

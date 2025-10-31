@@ -32,9 +32,9 @@
                         <tr>
                             <th>#</th>
                             <th>Visitor ID</th>
-                            <th>Visitor</th>
+                            <th>Visitor Name</th>
                             <th>Employee ID</th>
-                            <th>Employee</th>
+                            <th>Employee Name</th>
                             <th>Meeting Date & Time</th>
                             <th>Status</th>
                             <th class="text-center">Actions</th>
