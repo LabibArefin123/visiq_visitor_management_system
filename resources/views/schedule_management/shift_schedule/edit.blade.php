@@ -1,0 +1,99 @@
+@extends('adminlte::page')
+
+@section('title', 'Edit Shift Schedule')
+
+@section('content_header')
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Edit Shift Schedule</h3>
+        <a href="{{ route('shift_schedules.index') }}" class="btn btn-sm btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+@stop
+
+@section('content')
+    <div class="container">
+        <div class="card shadow-lg mt-3">
+            <div class="card-body">
+                <form action="{{ route('shift_schedules.update', $shiftSchedule->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="row">
+
+                        {{-- Shift Name --}}
+                        <div class="col-md-6 form-group">
+                            <label for="shift_name"><strong>Shift Name</strong> <span class="text-danger">*</span></label>
+                            <input type="text" name="shift_name" id="shift_name"
+                                class="form-control @error('shift_name') is-invalid @enderror"
+                                value="{{ old('shift_name', $shiftSchedule->shift_name) }}" placeholder="Enter shift name">
+                            @error('shift_name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Shift Type --}}
+                        <div class="col-md-6 form-group">
+                            <label for="shift_type"><strong>Shift Type</strong> <span class="text-danger">*</span></label>
+                            <select name="shift_type" id="shift_type"
+                                class="form-control @error('shift_type') is-invalid @enderror">
+                                <option value="Morning" {{ $shiftSchedule->shift_type == 'Morning' ? 'selected' : '' }}>
+                                    Morning</option>
+                                <option value="Evening" {{ $shiftSchedule->shift_type == 'Evening' ? 'selected' : '' }}>
+                                    Evening</option>
+                                <option value="Night" {{ $shiftSchedule->shift_type == 'Night' ? 'selected' : '' }}>Night
+                                </option>
+                            </select>
+                            @error('shift_type')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Start Time --}}
+                        <div class="col-md-6 form-group">
+                            <label for="start_time"><strong>Start Time</strong> <span class="text-danger">*</span></label>
+                            <input type="time" name="start_time" id="start_time"
+                                class="form-control @error('start_time') is-invalid @enderror"
+                                value="{{ old('start_time', $shiftSchedule->start_time) }}">
+                            @error('start_time')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- End Time --}}
+                        <div class="col-md-6 form-group">
+                            <label for="end_time"><strong>End Time</strong> <span class="text-danger">*</span></label>
+                            <input type="time" name="end_time" id="end_time"
+                                class="form-control @error('end_time') is-invalid @enderror"
+                                value="{{ old('end_time', $shiftSchedule->end_time) }}">
+                            @error('end_time')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Status --}}
+                        <div class="col-md-6 form-group">
+                            <label for="status"><strong>Status</strong> <span class="text-danger">*</span></label>
+                            <select name="status" id="status"
+                                class="form-control @error('status') is-invalid @enderror">
+                                <option value="Active" {{ $shiftSchedule->status == 'Active' ? 'selected' : '' }}>Active
+                                </option>
+                                <option value="Inactive" {{ $shiftSchedule->status == 'Inactive' ? 'selected' : '' }}>
+                                    Inactive</option>
+                            </select>
+                            @error('status')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                    </div>
+
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-success">
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@stop

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             // VisitorEmergencySeeder::class,
             // PendingVisitorSeeder::class,
             // VisitorHostScheduleSeeder::class,
+            // OfficeScheduleSeeder::class,
         ]);
     }
 }

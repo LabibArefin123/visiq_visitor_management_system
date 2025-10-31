@@ -14,7 +14,7 @@
 
         <div class="row g-4">
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="small-box bg-info text-white shadow-sm dashboard-box hover-box position-relative">
+                <div class="small-box bg-info text-white shadow-sm dashboard-box hover-box ">
                     <div class="inner">
                         <h3>{{ $totalVisitors ?? '00' }}</h3>
                         <p>Total Visitors</p>
@@ -29,7 +29,7 @@
             </div>
 
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="small-box bg-warning text-white shadow-sm dashboard-box hover-box position-relative">
+                <div class="small-box bg-warning text-white shadow-sm dashboard-box hover-box ">
                     <div class="inner">
                         <h3>{{ $totalEmergencyVisitors ?? '00' }}</h3>
                         <p>Total Emergency Visitors</p>
@@ -44,7 +44,7 @@
             </div>
 
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="small-box bg-danger text-white shadow-sm dashboard-box hover-box position-relative">
+                <div class="small-box bg-danger text-white shadow-sm dashboard-box hover-box ">
                     <div class="inner">
                         <h3>{{ $totalBlacklistVisitors ?? '00' }}</h3>
                         <p>Total Blacklist Visitors</p>
@@ -59,7 +59,7 @@
             </div>
 
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="small-box bg-primary text-white shadow-sm dashboard-box hover-box position-relative">
+                <div class="small-box bg-primary text-white shadow-sm dashboard-box hover-box ">
                     <div class="inner">
                         <h3>{{ $totalEmployees ?? '00' }}</h3>
                         <p>Total Employees</p>
@@ -74,7 +74,7 @@
             </div>
 
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="small-box bg-success text-white shadow-sm dashboard-box hover-box position-relative">
+                <div class="small-box bg-success text-white shadow-sm dashboard-box hover-box ">
                     <div class="inner">
                         <h3>{{ $totalCurrentCheckinEmployees ?? '00' }}</h3>
                         <p>Current Checked In Employees</p>
@@ -89,7 +89,7 @@
             </div>
 
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="small-box bg-secondary text-white shadow-sm dashboard-box hover-box position-relative">
+                <div class="small-box bg-secondary text-white shadow-sm dashboard-box hover-box ">
                     <div class="inner">
                         <h3>{{ $totalCurrentCheckoutEmployees ?? '00' }}</h3>
                         <p>Current Checked Out Employees</p>
@@ -104,7 +104,7 @@
             </div>
 
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="small-box bg-indigo text-white shadow-sm dashboard-box hover-box position-relative">
+                <div class="small-box bg-indigo text-white shadow-sm dashboard-box hover-box ">
                     <div class="inner">
                         <h3>{{ $totalPendingVisitors ?? '00' }}</h3>
                         <p>Total Pending Visitors</p>
@@ -119,36 +119,4 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .dashboard-box {
-            transition: all 0.3s ease;
-        }
-
-        .dashboard-box:hover {
-            transform: scale(1.05);
-        }
-
-        .dashboard-box .icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 50px;
-            opacity: 0.2;
-        }
-
-        .small-box-footer {
-            display: block;
-            background: rgba(0, 0, 0, 0.05);
-            color: white;
-            text-decoration: none;
-            padding: 5px 0;
-            transition: 0.3s;
-        }
-
-        .small-box-footer:hover {
-            color: #f1f1f1;
-            background: rgba(0, 0, 0, 0.15);
-        }
-    </style>
 @stop

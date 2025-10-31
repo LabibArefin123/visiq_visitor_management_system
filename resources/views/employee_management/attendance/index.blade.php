@@ -37,7 +37,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $attendance->employee->emp_id ?? 'N/A' }}</td>
                                 <td>
-                                    <a href="{{ route('employees.index') }}"
+                                    <a href="{{ route('employees.show', $attendance->employee->id) }}"
                                         class="text-decoration-none fw-bold text-primary">
                                         {{ $attendance->employee->name ?? 'N/A' }}
                                     </a>

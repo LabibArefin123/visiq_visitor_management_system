@@ -57,7 +57,7 @@
                                                         class="form-check-input visitor-checkbox"
                                                         {{ collect(old('visitor_ids'))->contains($visitor->id) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="visitor_{{ $visitor->id }}">
-                                                        {{ $visitor->name }} ({{ $visitor->visitor_id }})
+                                                        {{ $visitor->name }}
                                                     </label>
                                                 </div>
                                             </div>

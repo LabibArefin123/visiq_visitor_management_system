@@ -1,0 +1,112 @@
+@extends('adminlte::page')
+
+@section('title', 'Add Guard')
+
+@section('content_header')
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Add New Guard</h3>
+        <a href="{{ route('guards.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
+        </a>
+    </div>
+@stop
+
+@section('content')
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <form action="{{ route('guards.store') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        {{-- Guard ID --}}
+                        <div class="col-md-6 form-group">
+                            <label for="guard_id"><strong>Guard ID</strong> <span class="text-danger">*</span></label>
+                            <input type="text" name="guard_id" id="guard_id"
+                                class="form-control @error('guard_id') is-invalid @enderror" value="{{ old('guard_id') }}"
+                                placeholder="Enter guard ID">
+                            @error('guard_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Name --}}
+                        <div class="col-md-6 form-group">
+                            <label for="name"><strong>Name</strong> <span class="text-danger">*</span></label>
+                            <input type="text" name="name" id="name"
+                                class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
+                                placeholder="Enter guard name">
+                            @error('name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Phone --}}
+                        <div class="col-md-6 form-group">
+                            <label for="phone"><strong>Phone</strong> <span class="text-danger">*</span></label>
+                            <input type="text" name="phone" id="phone"
+                                class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}"
+                                placeholder="Enter phone number">
+                            @error('phone')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Email --}}
+                        <div class="col-md-6 form-group">
+                            <label for="email"><strong>Email</strong></label>
+                            <input type="email" name="email" id="email"
+                                class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                                placeholder="Enter email (optional)">
+                            @error('email')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Shift --}}
+                        <div class="col-md-6 form-group">
+                            <label for="shift"><strong>Shift</strong></label>
+                            <select name="shift" id="shift" class="form-control">
+                                <option value="">Select Shift</option>
+                                <option value="Morning" {{ old('shift') == 'Morning' ? 'selected' : '' }}>Morning</option>
+                                <option value="Evening" {{ old('shift') == 'Evening' ? 'selected' : '' }}>Evening</option>
+                                <option value="Night" {{ old('shift') == 'Night' ? 'selected' : '' }}>Night</option>
+                            </select>
+                        </div>
+
+                        {{-- Assigned Gate --}}
+                        <div class="col-md-6 form-group">
+                            <label for="assigned_gate"><strong>Assigned Gate</strong></label>
+                            <input type="text" name="assigned_gate" id="assigned_gate"
+                                class="form-control @error('assigned_gate') is-invalid @enderror"
+                                value="{{ old('assigned_gate') }}" placeholder="Enter gate name or number">
+                            @error('assigned_gate')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Status --}}
+                        <div class="col-md-6 form-group">
+                            <label for="status"><strong>Status</strong></label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="Active" {{ old('status') == 'Active' ? 'selected' : '' }}>Active</option>
+                                <option value="Inactive" {{ old('status') == 'Inactive' ? 'selected' : '' }}>Inactive
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@stop

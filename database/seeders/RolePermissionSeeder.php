@@ -146,6 +146,36 @@ class RolePermissionSeeder extends Seeder
             'visitor_host_schedules.destroy', // Delete
         ];
 
+        $shiftSchedulePermissions = [
+            'shift_schedules.index',   // View
+            'shift_schedules.create',  // Create new
+            'shift_schedules.store',   // Store new
+            'shift_schedules.show',    // View individual
+            'shift_schedules.edit',    // Edit
+            'shift_schedules.update',  // Update
+            'shift_schedules.destroy', // Delete
+        ];
+
+        $officeSchedulePermissions = [
+            'office_schedules.index',   // View
+            'office_schedules.create',  // Create new
+            'office_schedules.store',   // Store new
+            'office_schedules.show',    // View individual
+            'office_schedules.edit',    // Edit
+            'office_schedules.update',  // Update
+            'office_schedules.destroy', // Delete
+        ];
+
+        $guardPermissions = [
+            'guards.index',   // View
+            'guards.create',  // Create new
+            'guards.store',   // Store new
+            'guards.show',    // View individual
+            'guards.edit',    // Edit
+            'guards.update',  // Update
+            'guards.destroy', // Delete
+        ];
+
         $systemUserPermission = [
             'system_users.index',   // View
             'system_users.create',  // Create new
@@ -244,6 +274,27 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Visitor Host Schedule'
+            ]);
+        }
+
+        foreach ($shiftSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Shift Schedule'
+            ]);
+        }
+
+        foreach ($officeSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Office Schedule'
+            ]);
+        }
+
+        foreach ($guardPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Guard'
             ]);
         }
 
