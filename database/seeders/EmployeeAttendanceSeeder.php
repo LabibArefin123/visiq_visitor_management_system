@@ -15,8 +15,8 @@ class EmployeeAttendanceSeeder extends Seeder
 
         $employees = Employee::all();
 
-        $startDate = now()->setDate(2024, 11, 1);
-        $endDate   = now()->setDate(2025, 2, 28);
+        $startDate = now()->setDate(2025, 11, 1);
+        $endDate   = now()->setDate(2026, 2, 20);
 
         foreach ($employees as $employee) {
             // Random chance an employee will have attendance at all

@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>VisiQ</b>',
+    'logo' => '<span style="font-weight:700; color:#007bff; text-decoration:none;">Visi</span><span style="font-weight:700; color:#28a745; text-decoration:none;">Q</span>',
     'logo_img' => 'images/visiq.png',
     'logo_img_class' => 'brand-image img-circle elevation-4',
     'logo_img_xl' => null,
@@ -495,11 +495,70 @@ return [
                     'text' => 'Security Alerts & Incidents',
                     'icon' => 'fas fa-bell',
                     'submenu' => [
-                        ['text' => 'Overstay Alerts', 'url' => '#'],
+                        ['text' => 'Overstay Alerts', 'route' => 'overstay_alerts.index'],
                         ['text' => 'Emergency Incidents', 'route' => 'emergency_incidents.index'],
+                        ['text' => 'Fire Drills', 'url' => 'fire_drills'],
+                        ['text' => 'Medical Emergencies', 'url' => 'medical_incidents'],
+                        ['text' => 'Evacuation Plan', 'url' => 'evacuation_plan'],
                         ['text' => 'Blacklist Monitor', 'route' => 'visitor_blacklists.activity_log'],
                     ],
                 ],
+            ],
+        ],
+
+        [
+            'text' => 'Building Management',
+            'icon' => 'fas fa-building',
+            'submenu' => [
+                ['text' => 'Building List', 'url' => '#'],
+                ['text' => 'Floors Overview', 'url' => 'floors'],
+                ['text' => 'Offices & Zones', 'url' => 'zones'],
+                ['text' => 'Facilities', 'url' => 'facilities'],
+                ['text' => 'Maintenance Requests', 'url' => 'maintenance'],
+                ['text' => 'Cafeteria', 'url' => '#'],
+                ['text' => 'Restaurant', 'url' => '#'],
+                ['text' => 'Gym', 'url' => '#'],
+            ],
+        ],
+
+        [
+            'text' => 'Vehicle & Parking',
+            'icon' => 'fas fa-car',
+            'submenu' => [
+                ['text' => 'Vehicle Log', 'url' => 'vehicle_logs'],
+                ['text' => 'Parking Slots', 'url' => 'parking_slots'],
+                ['text' => 'Parking Permits', 'url' => 'parking_permits'],
+            ],
+        ],
+
+        [
+            'text' => 'Assets & Equipment',
+            'icon' => 'fas fa-boxes',
+            'submenu' => [
+                ['text' => 'Asset Inventory', 'url' => 'assets'],
+                ['text' => 'Equipment Maintenance', 'url' => 'equipment_maintenance'],
+                ['text' => 'Lost & Found', 'url' => 'lost_found'],
+            ],
+        ],
+
+        [
+            'text' => 'Utilities & Services',
+            'icon' => 'fas fa-lightbulb',
+            'submenu' => [
+                ['text' => 'Power & Generator Logs', 'url' => 'power_logs'],
+                ['text' => 'Water Supply Logs', 'url' => 'water_logs',],
+                ['text' => 'Lift / Elevator Logs', 'url' => 'lift_logs',],
+                ['text' => 'CCTV Maintenance', 'url' => 'cctv_maintenance',],
+            ],
+        ],
+
+        [
+            'text' => 'Communication',
+            'icon' => 'fas fa-comments',
+            'submenu' => [
+                ['text' => 'Internal Messages', 'url' => 'internal_messages'],
+                ['text' => 'Announcements', 'url' => 'announcements',],
+                ['text' => 'Visitor Feedback', 'url' => 'visitor_feedback'],
             ],
         ],
 

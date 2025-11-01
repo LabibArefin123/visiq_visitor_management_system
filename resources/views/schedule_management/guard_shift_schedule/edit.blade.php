@@ -60,6 +60,7 @@
                             <label for="status"><strong>Status</strong> <span class="text-danger">*</span></label>
                             <select name="status" id="status"
                                 class="form-control @error('status') is-invalid @enderror">
+                                <option value="">Select Status</option>
                                 <option value="Active" {{ $shift_guard_schedule->status == 'Active' ? 'selected' : '' }}>
                                     Active
                                 </option>

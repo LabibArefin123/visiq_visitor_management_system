@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
             // EmergencyIncidentSeeder::class,
             // GuardActivityLogSeeder::class,
             // BlacklistMonitorSeeder::class,
-            AccessHistoryLogSeeder::class,
+            OverstayAlertSeeder::class,
+            // AccessHistoryLogSeeder::class,
         ]);
     }
 }

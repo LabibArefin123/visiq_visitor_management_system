@@ -22,6 +22,7 @@ use App\Http\Controllers\GuardController;
 use App\Http\Controllers\AccessPointGuardController;
 use App\Http\Controllers\AccessHistoryLogController;
 use App\Http\Controllers\GuardActivityLogController;
+use App\Http\Controllers\OverstayAlertController;
 use App\Http\Controllers\EmergencyIncidentController;
 use App\Http\Controllers\BlacklistMonitorController;
 use App\Http\Controllers\PermissionController;
@@ -85,6 +86,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('access_points', AccessPointController::class);
     Route::resource('access_point_guards', AccessPointGuardController::class);
     Route::get('/access_point_guard_history_log', [AccessHistoryLogController::class, 'index'])->name('access_point_guards.activity_log');
+    Route::resource('overstay_alerts', OverstayAlertController::class);
     Route::resource('emergency_incidents', EmergencyIncidentController::class);
 
     //setting menu

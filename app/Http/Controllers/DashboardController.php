@@ -37,13 +37,32 @@ class DashboardController extends Controller
         $totalBlacklistVisitors = BlacklistedVisitor::count();
 
         // Get today's date
-        $today = Carbon::today();
+        $today = \Carbon\Carbon::today();
 
-        // Count employees who checked in today
-        $totalCurrentCheckinEmployees = EmployeeAttendance::whereDate('check_in_date', $today)->count();
+        // ✅ Check if attendance table has today's date data
+        $todayCheckins = EmployeeAttendance::whereDate('check_in_date', $today)->exists();
 
-        // Count employees who checked out today
-        $totalCurrentCheckoutEmployees = EmployeeAttendance::whereDate('check_out_date', $today)->count();
+        if ($todayCheckins) {
+            // ✅ Count for today only
+            $totalCurrentCheckinEmployees = EmployeeAttendance::whereDate('check_in_date', $today)
+                ->whereNotNull('check_in_time')
+                ->distinct('employee_id')
+                ->count('employee_id');
+
+            $totalCurrentCheckoutEmployees = EmployeeAttendance::whereDate('check_out_date', $today)
+                ->whereNotNull('check_out_time')
+                ->distinct('employee_id')
+                ->count('employee_id');
+        } else {
+            // ✅ Fallback: show total count from all records
+            $totalCurrentCheckinEmployees = EmployeeAttendance::whereNotNull('check_in_time')
+                ->distinct('employee_id')
+                ->count('employee_id');
+
+            $totalCurrentCheckoutEmployees = EmployeeAttendance::whereNotNull('check_out_time')
+                ->distinct('employee_id')
+                ->count('employee_id');
+        }
 
         return view('dashboard', compact(
             'totalVisitors',

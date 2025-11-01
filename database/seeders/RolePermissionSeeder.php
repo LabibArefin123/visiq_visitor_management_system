@@ -209,6 +209,16 @@ class RolePermissionSeeder extends Seeder
             'access_point_guards.activity_log', // Delete
         ];
 
+        $overstayAlertPermissions = [
+            'overstay_alerts.index',   // View
+            'overstay_alerts.create',  // Create new
+            'overstay_alerts.store',   // Store new
+            'overstay_alerts.show',    // View individual
+            'overstay_alerts.edit',    // Edit
+            'overstay_alerts.update',  // Update
+            'overstay_alerts.destroy', // Delete
+        ];
+
         $emergencyIncidentPermissions = [
             'emergency_incidents.index',   // View
             'emergency_incidents.create',  // Create new
@@ -360,6 +370,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Access Point Guard'
+            ]);
+        }
+
+        foreach ($overstayAlertPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Overstay Alert'
             ]);
         }
 

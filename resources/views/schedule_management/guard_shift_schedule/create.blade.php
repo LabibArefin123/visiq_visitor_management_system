@@ -61,6 +61,7 @@
                             <label for="status"><strong>Status</strong> <span class="text-danger">*</span></label>
                             <select name="status" id="status"
                                 class="form-control @error('status') is-invalid @enderror">
+                                <option value="">Select Status</option>
                                 <option value="Active" {{ old('status') == 'Active' ? 'selected' : '' }}>Active</option>
                                 <option value="Inactive" {{ old('status') == 'Inactive' ? 'selected' : '' }}>Inactive
                                 </option>
