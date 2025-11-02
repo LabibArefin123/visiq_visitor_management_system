@@ -6,6 +6,8 @@ use App\Http\Controllers\EmployeeAttendanceController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\SubAreaController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\PendingVisitorController;
@@ -25,6 +27,10 @@ use App\Http\Controllers\GuardActivityLogController;
 use App\Http\Controllers\OverstayAlertController;
 use App\Http\Controllers\EmergencyIncidentController;
 use App\Http\Controllers\BlacklistMonitorController;
+use App\Http\Controllers\ParkingListController;
+use App\Http\Controllers\LostAndFoundController;
+use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\VisitorFeedbackController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
@@ -55,7 +61,12 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/ai-chat-pdf', [AiController::class, 'ai_chat_pdf'])->name('ai.chat.pdf');
     Route::get('/ai-chat/download/{id}', [AiController::class, 'downloadAIChatPDF'])->name('ai.chat.download');
 
+    //organization menu
     Route::resource('organizations', OrganizationController::class);
+
+    //building menu
+    Route::resource('areas', AreaController::class);
+    Route::resource('sub_areas', SubAreaController::class);
 
     //visitor menu
     Route::resource('visitors', VisitorController::class);
@@ -75,6 +86,9 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/check-in-employees', [EmployeeAttendanceController::class, 'checkInEmployees'])->name('employees.check_in_employee.index');
     Route::get('/check-out-employees', [EmployeeAttendanceController::class, 'checkOutEmployees'])->name('employees.check_out_employee.index');
 
+    //parking menu
+    Route::resource('parking_lists', ParkingListController::class);
+
     //schedule menu
     Route::resource('office_schedules', OfficeScheduleController::class);
     Route::resource('shift_schedules', ShiftScheduleController::class);
@@ -88,6 +102,13 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/access_point_guard_history_log', [AccessHistoryLogController::class, 'index'])->name('access_point_guards.activity_log');
     Route::resource('overstay_alerts', OverstayAlertController::class);
     Route::resource('emergency_incidents', EmergencyIncidentController::class);
+
+    //asset menu
+    Route::resource('lost_and_founds', LostAndFoundController::class);
+
+    //communication menu
+    Route::resource('announcements', AnnouncementController::class);
+    Route::get('/visitor_feedback', [VisitorFeedbackController::class, 'index'])->name('visitors.feedback');
 
     //setting menu
     Route::resource('roles', RoleController::class);

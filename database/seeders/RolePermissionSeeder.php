@@ -74,6 +74,7 @@ class RolePermissionSeeder extends Seeder
             'visitors.edit',    // Edit
             'visitors.update',  // Update
             'visitors.destroy', // Delete
+            'visitors.feedback', // feedback
         ];
 
         $visitorCompanyPermissions = [
@@ -86,6 +87,28 @@ class RolePermissionSeeder extends Seeder
             'visitor_companies.destroy', // Delete
         ];
 
+        // building menu
+        $areaPermissions = [
+            'areas.index',   // View
+            'areas.create',  // Create new
+            'areas.store',   // Store new
+            'areas.show',    // View individual
+            'areas.edit',    // Edit
+            'areas.update',  // Update
+            'areas.destroy', // Delete
+        ];
+
+        $subAreaPermissions = [
+            'sub_areas.index',   // View
+            'sub_areas.create',  // Create new
+            'sub_areas.store',   // Store new
+            'sub_areas.show',    // View individual
+            'sub_areas.edit',    // Edit
+            'sub_areas.update',  // Update
+            'sub_areas.destroy', // Delete
+        ];
+
+        // organization menu
         $organizationPermissions = [
             'organizations.index',   // View
             'organizations.create',  // Create new
@@ -209,6 +232,39 @@ class RolePermissionSeeder extends Seeder
             'access_point_guards.activity_log', // Delete
         ];
 
+        //asset menu
+        $parkingListPermissions = [
+            'parking_lists.index',   // View
+            'parking_lists.create',  // Create new
+            'parking_lists.store',   // Store new
+            'parking_lists.show',    // View individual
+            'parking_lists.edit',    // Edit
+            'parking_lists.update',  // Update
+            'parking_lists.destroy', // Delete
+        ];
+
+        //asset menu
+        $lostAndFoundPermissions = [
+            'lost_and_founds.index',   // View
+            'lost_and_founds.create',  // Create new
+            'lost_and_founds.store',   // Store new
+            'lost_and_founds.show',    // View individual
+            'lost_and_founds.edit',    // Edit
+            'lost_and_founds.update',  // Update
+            'lost_and_founds.destroy', // Delete
+        ];
+
+        // security menu
+        $anncouncementPermissions = [
+            'announcements.index',   // View
+            'announcements.create',  // Create new
+            'announcements.store',   // Store new
+            'announcements.show',    // View individual
+            'announcements.edit',    // Edit
+            'announcements.update',  // Update
+            'announcements.destroy', // Delete
+        ];
+
         $overstayAlertPermissions = [
             'overstay_alerts.index',   // View
             'overstay_alerts.create',  // Create new
@@ -267,10 +323,24 @@ class RolePermissionSeeder extends Seeder
             ]);
         }
 
-        foreach ($employeePermissions as $permission) {
+        foreach ($organizationPermissions as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,
-                'module' => 'Employee'
+                'module' => 'Organization'
+            ]);
+        }
+
+        foreach ($areaPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Area'
+            ]);
+        }
+
+        foreach ($subAreaPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Sub Area'
             ]);
         }
 
@@ -285,13 +355,6 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Visitor Company'
-            ]);
-        }
-
-        foreach ($organizationPermissions as $permission) {
-            Permission::firstOrCreate([
-                'name' => $permission,
-                'module' => 'Organization'
             ]);
         }
 
@@ -327,6 +390,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Visitor Host Schedule'
+            ]);
+        }
+
+        foreach ($employeePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Employee'
             ]);
         }
 
@@ -370,6 +440,27 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Access Point Guard'
+            ]);
+        }
+
+        foreach ($parkingListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Parking List'
+            ]);
+        }
+
+        foreach ($anncouncementPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Announcement'
+            ]);
+        }
+
+        foreach ($lostAndFoundPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Lost And Found'
             ]);
         }
 

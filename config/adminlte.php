@@ -369,6 +369,29 @@ return [
         ],
 
         [
+            'text'    => 'Building Menu',
+            'icon'    => 'fas fa-building',
+            'submenu' => [
+                [
+                    'text' => 'Building List',
+                    'url' => '#',
+                ],
+                [
+                    'text' => 'Building Location',
+                    'url' => '#',
+                ],
+                [
+                    'text' => 'Sub Area List',
+                    'route' => 'sub_areas.index',
+                ],
+                [
+                    'text' => 'Area List',
+                    'route' => 'areas.index',
+                ],
+            ],
+        ],
+
+        [
             'text'    => 'Visitor Menu',
             'icon'    => 'fas fa-fw fa-users',
             'submenu' => [
@@ -507,26 +530,11 @@ return [
         ],
 
         [
-            'text' => 'Building Management',
-            'icon' => 'fas fa-building',
-            'submenu' => [
-                ['text' => 'Building List', 'url' => '#'],
-                ['text' => 'Floors Overview', 'url' => 'floors'],
-                ['text' => 'Offices & Zones', 'url' => 'zones'],
-                ['text' => 'Facilities', 'url' => 'facilities'],
-                ['text' => 'Maintenance Requests', 'url' => 'maintenance'],
-                ['text' => 'Cafeteria', 'url' => '#'],
-                ['text' => 'Restaurant', 'url' => '#'],
-                ['text' => 'Gym', 'url' => '#'],
-            ],
-        ],
-
-        [
             'text' => 'Vehicle & Parking',
             'icon' => 'fas fa-car',
             'submenu' => [
-                ['text' => 'Vehicle Log', 'url' => 'vehicle_logs'],
-                ['text' => 'Parking Slots', 'url' => 'parking_slots'],
+                // ['text' => 'Vehicle Log', 'url' => 'vehicle_logs'],
+                ['text' => 'Parking List', 'route' => 'parking_lists.index'],
                 ['text' => 'Parking Permits', 'url' => 'parking_permits'],
             ],
         ],
@@ -535,20 +543,9 @@ return [
             'text' => 'Assets & Equipment',
             'icon' => 'fas fa-boxes',
             'submenu' => [
-                ['text' => 'Asset Inventory', 'url' => 'assets'],
-                ['text' => 'Equipment Maintenance', 'url' => 'equipment_maintenance'],
-                ['text' => 'Lost & Found', 'url' => 'lost_found'],
-            ],
-        ],
-
-        [
-            'text' => 'Utilities & Services',
-            'icon' => 'fas fa-lightbulb',
-            'submenu' => [
-                ['text' => 'Power & Generator Logs', 'url' => 'power_logs'],
-                ['text' => 'Water Supply Logs', 'url' => 'water_logs',],
-                ['text' => 'Lift / Elevator Logs', 'url' => 'lift_logs',],
-                ['text' => 'CCTV Maintenance', 'url' => 'cctv_maintenance',],
+                // ['text' => 'Asset Inventory', 'url' => 'assets'],
+                // ['text' => 'Equipment Maintenance', 'url' => 'equipment_maintenance'],
+                ['text' => 'Lost & Found', 'route' => 'lost_and_founds.index'],
             ],
         ],
 
@@ -556,9 +553,8 @@ return [
             'text' => 'Communication',
             'icon' => 'fas fa-comments',
             'submenu' => [
-                ['text' => 'Internal Messages', 'url' => 'internal_messages'],
-                ['text' => 'Announcements', 'url' => 'announcements',],
-                ['text' => 'Visitor Feedback', 'url' => 'visitor_feedback'],
+                ['text' => 'Announcements', 'route' => 'announcements.index'],
+                ['text' => 'Visitor Feedback', 'route' => 'visitors.feedback'],
             ],
         ],
 

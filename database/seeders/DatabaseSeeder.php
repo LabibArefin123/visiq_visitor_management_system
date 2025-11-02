@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         // ✅ Properly call multiple seeders in sequence
         $this->call([
             RolePermissionSeeder::class,
+            SubAreaSeeder::class,
             // EmployeeSeeder::class,
             // EmployeeAttendanceSeeder::class,
             // UserSeeder::class,
@@ -30,8 +31,11 @@ class DatabaseSeeder extends Seeder
             // EmergencyIncidentSeeder::class,
             // GuardActivityLogSeeder::class,
             // BlacklistMonitorSeeder::class,
-            OverstayAlertSeeder::class,
+            // LostAndFoundSeeder::class,
+            // OverstayAlertSeeder::class,
             // AccessHistoryLogSeeder::class,
+            // AnnouncementSeeder::class,
+            // VisitorFeedbackSeeder::class,
         ]);
     }
 }
