@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\SubAreaController;
+use App\Http\Controllers\BuildingLocationController;
+use App\Http\Controllers\BuildingListController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\PendingVisitorController;
@@ -68,6 +70,8 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     //building menu
     Route::resource('areas', AreaController::class);
     Route::resource('sub_areas', SubAreaController::class);
+    Route::resource('building_locations', BuildingLocationController::class);
+    Route::resource('building_lists', BuildingListController::class);
 
     //visitor menu
     Route::resource('visitors', VisitorController::class);

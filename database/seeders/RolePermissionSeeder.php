@@ -108,6 +108,26 @@ class RolePermissionSeeder extends Seeder
             'sub_areas.destroy', // Delete
         ];
 
+        $buildingLocationPermissions = [
+            'building_locations.index',   // View
+            'building_locations.create',  // Create new
+            'building_locations.store',   // Store new
+            'building_locations.show',    // View individual
+            'building_locations.edit',    // Edit
+            'building_locations.update',  // Update
+            'building_locations.destroy', // Delete
+        ];
+
+        $buildingListPermissions = [
+            'building_lists.index',   // View
+            'building_lists.create',  // Create new
+            'building_lists.store',   // Store new
+            'building_lists.show',    // View individual
+            'building_lists.edit',    // Edit
+            'building_lists.update',  // Update
+            'building_lists.destroy', // Delete
+        ];
+
         // organization menu
         $organizationPermissions = [
             'organizations.index',   // View
@@ -351,6 +371,20 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Sub Area'
+            ]);
+        }
+
+        foreach ($buildingLocationPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Building Location'
+            ]);
+        }
+
+        foreach ($buildingListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Building List'
             ]);
         }
 

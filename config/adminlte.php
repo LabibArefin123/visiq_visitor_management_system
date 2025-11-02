@@ -374,11 +374,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Building List',
-                    'url' => '#',
+                    'route' => 'building_lists.index',
                 ],
                 [
                     'text' => 'Building Location',
-                    'url' => '#',
+                    'route' => 'building_locations.index',
                 ],
                 [
                     'text' => 'Sub Area List',
