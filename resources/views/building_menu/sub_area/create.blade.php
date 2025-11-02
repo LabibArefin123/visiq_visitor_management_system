@@ -5,7 +5,7 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Add New Area</h3>
-        <a href="{{ route('areas.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2">
+        <a href="{{ route('sub_areas.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -20,7 +20,7 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('areas.store') }}" method="POST">
+                <form action="{{ route('sub_areas.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 form-group">

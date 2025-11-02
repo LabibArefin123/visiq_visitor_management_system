@@ -35,6 +35,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserCategoryController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -111,6 +112,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/visitor_feedback', [VisitorFeedbackController::class, 'index'])->name('visitors.feedback');
 
     //setting menu
+    Route::resource('user_categories', UserCategoryController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('system_users', UserController::class);

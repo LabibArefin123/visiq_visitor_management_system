@@ -565,6 +565,11 @@ return [
             // 'can'   => 'menu.setting',
             'submenu' => [
                 [
+                    'text' => 'User Catogory List',
+                    'route' => 'user_categories.index',
+                    'active' => ['user_categories*'],
+                ],
+                [
                     'text' => 'Role List',
                     'route' => 'roles.index',
                     'active' => ['roles*'],

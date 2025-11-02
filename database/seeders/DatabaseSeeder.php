@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
         // ✅ Properly call multiple seeders in sequence
         $this->call([
             RolePermissionSeeder::class,
-            SubAreaSeeder::class,
+            UserCategorySeeder::class,
+            // SubAreaSeeder::class,
             // EmployeeSeeder::class,
             // EmployeeAttendanceSeeder::class,
             // UserSeeder::class,

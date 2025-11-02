@@ -285,6 +285,16 @@ class RolePermissionSeeder extends Seeder
             'emergency_incidents.destroy', // Delete
         ];
 
+        $userCategoriesPermission = [
+            'user_categories.index',   // View
+            'user_categories.create',  // Create new
+            'user_categories.store',   // Store new
+            'user_categories.show',    // View individual
+            'user_categories.edit',    // Edit
+            'user_categories.update',  // Update
+            'user_categories.destroy', // Delete
+        ];
+
         $systemUserPermission = [
             'system_users.index',   // View
             'system_users.create',  // Create new
@@ -478,6 +488,13 @@ class RolePermissionSeeder extends Seeder
             ]);
         }
         // setting menu
+        foreach ($userCategoriesPermission as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'User Categories'
+            ]);
+        }
+
         foreach ($systemUserPermission as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,
