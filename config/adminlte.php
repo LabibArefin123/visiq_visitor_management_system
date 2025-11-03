@@ -373,20 +373,29 @@ return [
             'icon'    => 'fas fa-building',
             'submenu' => [
                 [
+                    'text' => 'Room List',
+                    'route' => 'room_lists.index',
+                    'active' => ['room_lists*'],
+                ],
+                [
                     'text' => 'Building List',
                     'route' => 'building_lists.index',
+                    'active' => ['building_lists*'],
                 ],
                 [
                     'text' => 'Building Location',
                     'route' => 'building_locations.index',
+                    'active' => ['building_locations*'],
                 ],
                 [
                     'text' => 'Sub Area List',
                     'route' => 'sub_areas.index',
+                    'active' => ['sub_areas*'],
                 ],
                 [
                     'text' => 'Area List',
                     'route' => 'areas.index',
+                    'active' => ['areas*'],
                 ],
             ],
         ],

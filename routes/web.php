@@ -10,6 +10,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\SubAreaController;
 use App\Http\Controllers\BuildingLocationController;
 use App\Http\Controllers\BuildingListController;
+use App\Http\Controllers\RoomListController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\PendingVisitorController;
@@ -72,6 +73,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('sub_areas', SubAreaController::class);
     Route::resource('building_locations', BuildingLocationController::class);
     Route::resource('building_lists', BuildingListController::class);
+    Route::resource('room_lists', RoomListController::class);
 
     //visitor menu
     Route::resource('visitors', VisitorController::class);

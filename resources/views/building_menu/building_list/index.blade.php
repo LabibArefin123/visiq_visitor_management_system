@@ -25,13 +25,13 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Building Category</th>
-                            <th>Naval Area</th>
-                            <th>Location</th>
-                            <th>Level</th>
+                            <th class="text-center">Building Category</th>
+                            <th class="text-center">Naval Area</th>
+                            <th class="text-center">Location</th>
+                            <th class="text-center">Level</th>
                             <th>Unit Per Level</th>
                             <th>Remarks</th>
-                            <th width="150">Action</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,24 +39,26 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $list->name ?? 'N/A' }}</td>
-                                <td>{{ $list->category->category_name ?? 'N/A' }}</td>
-                                <td>{{ $list->area->name ?? 'N/A' }}</td>
-                                <td>{{ $list->location->name ?? 'N/A' }}</td>
-                                <td>{{ $list->level ?? '-' }}</td>
+                                <td class="text-center">{{ $list->category->category_name ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $list->area->name ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $list->location->name ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $list->level ?? '-' }}</td>
                                 <td>{{ $list->unit_per_level ?? '-' }}</td>
                                 <td>{{ $list->remarks ?? '-' }}</td>
-                                <td>
-                                    <a href="{{ route('building_lists.show', $list->id) }}"
-                                        class="btn btn-sm btn-info">View</a>
-                                    <a href="{{ route('building_lists.edit', $list->id) }}"
-                                        class="btn btn-sm btn-primary">Edit</a>
-                                    <form action="{{ route('building_lists.destroy', $list->id) }}" method="POST"
-                                        class="d-inline-block"
-                                        onsubmit="return confirm('Are you sure you want to delete this building?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-1">
+                                        <a href="{{ route('building_lists.show', $list->id) }}"
+                                            class="btn btn-sm btn-info">View</a>
+                                        <a href="{{ route('building_lists.edit', $list->id) }}"
+                                            class="btn btn-sm btn-primary">Edit</a>
+                                        <form action="{{ route('building_lists.destroy', $list->id) }}" method="POST"
+                                            class="d-inline-block"
+                                            onsubmit="return confirm('Are you sure you want to delete this building?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

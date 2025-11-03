@@ -33,7 +33,7 @@ class BuildingListController extends Controller
             'area_id' => 'required|exists:areas,id',
             'building_location_id' => 'required|exists:building_locations,id',
             'level' => 'required|integer',
-            'unit_per_level' => 'required|integer',
+            'unit_per_level' => 'nullable|integer',
             'remarks' => 'required|string',
         ]);
 
@@ -53,12 +53,13 @@ class BuildingListController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'user_category_id' => 'nullable|exists:user_categories,id',
-            'area_id' => 'nullable|exists:areas,id',
-            'building_location_id' => 'nullable|exists:building_locations,id',
-            'level' => 'nullable|integer',
-            'unit_per_level' => 'nullable|integer',
-            'remarks' => 'nullable|string',
+            'name_in_bangla' => 'required|string|max:255',
+            'user_category_id' => 'required|exists:user_categories,id',
+            'area_id' => 'required|exists:areas,id',
+            'building_location_id' => 'required|exists:building_locations,id',
+            'level' => 'required|integer',
+            'unit_per_level' => 'required|integer',
+            'remarks' => 'required|string',
         ]);
 
         $buildingList->update($request->all());

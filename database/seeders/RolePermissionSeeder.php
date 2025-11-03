@@ -20,7 +20,7 @@ class RolePermissionSeeder extends Seeder
 
         // Create Permissions
         $defaultPermissions = [
-            'home',
+            'dashboard',
         ];
 
         $userPermissions = [
@@ -126,6 +126,16 @@ class RolePermissionSeeder extends Seeder
             'building_lists.edit',    // Edit
             'building_lists.update',  // Update
             'building_lists.destroy', // Delete
+        ];
+
+        $roomListPermissions = [
+            'room_lists.index',   // View
+            'room_lists.create',  // Create new
+            'room_lists.store',   // Store new
+            'room_lists.show',    // View individual
+            'room_lists.edit',    // Edit
+            'room_lists.update',  // Update
+            'room_lists.destroy', // Delete
         ];
 
         // organization menu
@@ -385,6 +395,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Building List'
+            ]);
+        }
+
+        foreach ($roomListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Room List'
             ]);
         }
 
