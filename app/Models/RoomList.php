@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class RoomList extends Model
 {
@@ -13,8 +14,8 @@ class RoomList extends Model
         'area_id',
         'building_location_id',
         'building_list_id',
-        'flat_name',
-        'flat_name_in_bangla',
+        'room_name',
+        'room_name_in_bangla',
         'level',
         'remarks',
     ];
@@ -34,7 +35,7 @@ class RoomList extends Model
         return $this->belongsTo(BuildingLocation::class, 'building_location_id');
     }
 
-    public function list()
+    public function building()
     {
         return $this->belongsTo(BuildingList::class, 'building_list_id');
     }

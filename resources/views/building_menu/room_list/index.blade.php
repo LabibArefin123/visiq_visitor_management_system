@@ -25,11 +25,13 @@
                         <tr>
                             <th>#</th>
                             <th>Room Name</th>
+                            <th>Room Name (in Bangla)</th>
                             <th>Category</th>
                             <th>Area</th>
                             <th>Location</th>
                             <th>Building</th>
                             <th>Level</th>
+                            <th>Remarks</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -38,11 +40,13 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $flat->room_name }}</td>
+                                <td>{{ $flat->room_name_in_bangla }}</td>
                                 <td>{{ $flat->category->category_name ?? 'N/A' }}</td>
                                 <td>{{ $flat->area->name ?? 'N/A' }}</td>
                                 <td>{{ $flat->location->name ?? 'N/A' }}</td>
                                 <td>{{ $flat->building->name ?? 'N/A' }}</td>
                                 <td>{{ $flat->level ?? '-' }}</td>
+                                <td>{{ $flat->remarks }}</td>
                                 <td>
                                     <a href="{{ route('room_lists.show', $flat->id) }}" class="btn btn-sm btn-info"><i
                                             class="fas fa-eye"></i></a>

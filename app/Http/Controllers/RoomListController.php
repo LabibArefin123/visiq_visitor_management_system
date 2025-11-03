@@ -51,7 +51,7 @@ class RoomListController extends Controller
 
         RoomList::create($request->all());
 
-        return redirect()->route('room_lists.index')->with('success', 'Flat added successfully.');
+        return redirect()->route('room_lists.index')->with('success', 'Room added successfully.');
     }
 
     public function show(RoomList $roomList)
@@ -69,7 +69,7 @@ class RoomListController extends Controller
         $locations = BuildingLocation::all();
         $buildings = BuildingList::all();
 
-        return view('building_menu.room_list.edit', compact('RoomList', 'categories', 'areas', 'locations', 'buildings'));
+        return view('building_menu.room_list.edit', compact('roomList', 'categories', 'areas', 'locations', 'buildings'));
     }
 
     /**
@@ -90,7 +90,7 @@ class RoomListController extends Controller
 
         $roomList->update($request->all());
 
-        return redirect()->route('room_lists.index')->with('success', 'Flat updated successfully.');
+        return redirect()->route('room_lists.index')->with('success', 'Room updated successfully.');
     }
 
     /**
@@ -99,6 +99,6 @@ class RoomListController extends Controller
     public function destroy(RoomList $roomList)
     {
         $roomList->delete();
-        return redirect()->route('room_lists.index')->with('success', 'Flat deleted successfully.');
+        return redirect()->route('room_lists.index')->with('success', 'Room deleted successfully.');
     }
 }

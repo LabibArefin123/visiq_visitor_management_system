@@ -465,14 +465,17 @@ return [
                 [
                     'text' => 'Office Schedule',
                     'route'  => 'office_schedules.index',
+                    'active' => ['office_schedules*'],
                 ],
                 [
                     'text' => 'Shift Schedule',
                     'route'  => 'shift_schedules.index',
+                    'active' => ['shift_schedules*'],
                 ],
                 [
                     'text' => 'Guard Shift Schedule',
                     'route'  => 'shift_guard_schedules.index',
+                    'active' => ['shift_guard_schedules*'],
                 ],
             ],
         ],

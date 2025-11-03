@@ -22,12 +22,12 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 form-group">
-                        <label><strong>Flat Name</strong></label>
+                        <label><strong>Room Name</strong></label>
                         <input type="text" class="form-control" value="{{ $roomList->room_name }}" readonly>
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <label><strong>Flat Name (Bangla)</strong></label>
+                        <label><strong>Room Name (Bangla)</strong></label>
                         <input type="text" class="form-control" value="{{ $roomList->room_name_in_bangla }}" readonly>
                     </div>
 

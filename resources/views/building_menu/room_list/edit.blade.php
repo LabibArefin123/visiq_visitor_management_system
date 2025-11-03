@@ -24,24 +24,24 @@
                     @csrf
                     @method('PUT')
                     <div class="row">
-                        {{-- Flat Name --}}
+                        {{-- Room Name --}}
                         <div class="col-md-6 form-group">
-                            <label><strong>Flat Name</strong> <span class="text-danger">*</span></label>
+                            <label><strong>Room Name</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="room_name"
                                 class="form-control @error('room_name') is-invalid @enderror"
-                                value="{{ old('room_name', $roomList->room_name) }}" placeholder="Enter flat name">
+                                value="{{ old('room_name', $roomList->room_name) }}" placeholder="Enter Room Name">
                             @error('room_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        {{-- Flat Name in Bangla --}}
+                        {{-- Room Name in Bangla --}}
                         <div class="col-md-6 form-group">
-                            <label><strong>Flat Name (Bangla)</strong></label>
+                            <label><strong>Room Name (Bangla)</strong></label>
                             <input type="text" name="room_name_in_bangla"
                                 class="form-control @error('room_name_in_bangla') is-invalid @enderror"
                                 value="{{ old('room_name_in_bangla', $roomList->room_name_in_bangla) }}"
-                                placeholder="Enter flat name in Bangla">
+                                placeholder="Enter Room Name in Bangla">
                             @error('room_name_in_bangla')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror

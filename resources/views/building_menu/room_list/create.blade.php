@@ -23,24 +23,24 @@
                 <form action="{{ route('room_lists.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        {{-- Flat Name --}}
+                        {{-- Room Name --}}
                         <div class="col-md-6 form-group">
-                            <label for="flat_name"><strong>Flat Name</strong> <span class="text-danger">*</span></label>
-                            <input type="text" name="flat_name" id="flat_name"
-                                class="form-control @error('flat_name') is-invalid @enderror" value="{{ old('flat_name') }}"
-                                placeholder="Enter flat name">
-                            @error('flat_name')
+                            <label for="room_name"><strong>Room Name</strong> <span class="text-danger">*</span></label>
+                            <input type="text" name="room_name" id="room_name"
+                                class="form-control @error('room_name') is-invalid @enderror" value="{{ old('room_name') }}"
+                                placeholder="Enter Room Name">
+                            @error('room_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        {{-- Flat Name (Bangla) --}}
+                        {{-- Room Name (Bangla) --}}
                         <div class="col-md-6 form-group">
-                            <label for="flat_name_in_bangla"><strong>Flat Name (Bangla)</strong></label>
-                            <input type="text" name="flat_name_in_bangla" id="flat_name_in_bangla"
-                                class="form-control @error('flat_name_in_bangla') is-invalid @enderror"
-                                value="{{ old('flat_name_in_bangla') }}" placeholder="Enter flat name in Bangla">
-                            @error('flat_name_in_bangla')
+                            <label for="room_name_in_bangla"><strong>Room Name (Bangla)</strong></label>
+                            <input type="text" name="room_name_in_bangla" id="room_name_in_bangla"
+                                class="form-control @error('room_name_in_bangla') is-invalid @enderror"
+                                value="{{ old('room_name_in_bangla') }}" placeholder="Enter Room Name in Bangla">
+                            @error('room_name_in_bangla')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
