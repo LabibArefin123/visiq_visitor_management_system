@@ -325,6 +325,26 @@ class RolePermissionSeeder extends Seeder
             'emergency_incidents.destroy', // Delete
         ];
 
+        $evacuationPlanPermissions = [
+            'evacuation_plans.index',   // View
+            'evacuation_plans.create',  // Create new
+            'evacuation_plans.store',   // Store new
+            'evacuation_plans.show',    // View individual
+            'evacuation_plans.edit',    // Edit
+            'evacuation_plans.update',  // Update
+            'evacuation_plans.destroy', // Delete
+        ];
+
+        $medicalEmergencyPermissions = [
+            'medical_emergencies.index',   // View
+            'medical_emergencies.create',  // Create new
+            'medical_emergencies.store',   // Store new
+            'medical_emergencies.show',    // View individual
+            'medical_emergencies.edit',    // Edit
+            'medical_emergencies.update',  // Update
+            'medical_emergencies.destroy', // Delete
+        ];
+
         $userCategoriesPermission = [
             'user_categories.index',   // View
             'user_categories.create',  // Create new
@@ -349,6 +369,7 @@ class RolePermissionSeeder extends Seeder
             'ajax.getLocationsByArea',   // Get all locations under a specific Area.
             'ajax.getBuildingsByLocation',  //  Get all building lists under a specific Location.
             'ajax.getHolders',  //  Get all holders by user type
+            'ajax.getReporters',  //  Get all holders by user type
         ];
 
         foreach ($defaultPermissions as $permission) {
@@ -559,6 +580,20 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Emergency Incident'
+            ]);
+        }
+
+        foreach ($evacuationPlanPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Evacuation Plan'
+            ]);
+        }
+
+        foreach ($medicalEmergencyPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Medical Emergency'
             ]);
         }
         // setting menu

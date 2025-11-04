@@ -67,4 +67,22 @@ class AjaxController extends Controller
 
         return response()->json($data);
     }
+
+    public function getReporters($type)
+    {
+        switch ($type) {
+            case 'employee':
+                $data = Employee::orderBy('name')->get(['id', 'name']);
+                break;
+            case 'visitor':
+                $data = Visitor::orderBy('name')->get(['id', 'name']);
+                break;
+            case 'guard':
+                $data = Guard::orderBy('name')->get(['id', 'name']);
+                break;
+            default:
+                $data = collect();
+        }
+        return response()->json($data);
+    }
 }

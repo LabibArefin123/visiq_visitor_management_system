@@ -32,6 +32,8 @@ class DatabaseSeeder extends Seeder
             // EmergencyIncidentSeeder::class,
             // GuardActivityLogSeeder::class,
             // BlacklistMonitorSeeder::class,
+            // MedicalEmergencySeeder::class,
+            EvacuationPlanSeeder::class,
             // LostAndFoundSeeder::class,
             // OverstayAlertSeeder::class,
             // AccessHistoryLogSeeder::class,

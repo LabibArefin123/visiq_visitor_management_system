@@ -539,22 +539,11 @@ return [
                     'submenu' => [
                         ['text' => 'Overstay Alerts', 'route' => 'overstay_alerts.index'],
                         ['text' => 'Emergency Incidents', 'route' => 'emergency_incidents.index'],
-                        ['text' => 'Fire Drills', 'url' => 'fire_drills'],
-                        ['text' => 'Medical Emergencies', 'url' => 'medical_incidents'],
-                        ['text' => 'Evacuation Plan', 'url' => 'evacuation_plan'],
+                        ['text' => 'Medical Emergencies', 'route' => 'medical_emergencies.index'],
+                        ['text' => 'Evacuation Plan', 'route' => 'evacuation_plans.index'],
                         ['text' => 'Blacklist Monitor', 'route' => 'visitor_blacklists.activity_log'],
                     ],
                 ],
-            ],
-        ],
-
-        [
-            'text' => 'Vehicle & Parking',
-            'icon' => 'fas fa-car',
-            'submenu' => [
-                // ['text' => 'Vehicle Log', 'url' => 'vehicle_logs'],
-                ['text' => 'Parking List', 'route' => 'parking_lists.index'],
-                ['text' => 'Parking Permits', 'url' => 'parking_permits'],
             ],
         ],
 
@@ -576,6 +565,18 @@ return [
                 ['text' => 'Visitor Feedback', 'route' => 'visitors.feedback'],
             ],
         ],
+
+        [
+            'text' => 'Vehicle & Parking',
+            'icon' => 'fas fa-car',
+            'submenu' => [
+                // ['text' => 'Vehicle Log', 'url' => 'vehicle_logs'],
+                ['text' => 'Parking List', 'route' => 'parking_lists.index'],
+                ['text' => 'Parking Permits', 'url' => 'parking_permits'],
+            ],
+        ],
+
+
 
         [
             'text'    => 'Setting Menu',
