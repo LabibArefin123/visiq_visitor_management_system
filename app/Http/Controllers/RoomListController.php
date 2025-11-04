@@ -41,11 +41,11 @@ class RoomListController extends Controller
         $request->validate([
             'room_name' => 'required|string|max:255',
             'room_name_in_bangla' => 'nullable|string|max:255',
-            'user_category_id' => 'nullable|exists:user_categories,id',
-            'area_id' => 'nullable|exists:areas,id',
-            'building_location_id' => 'nullable|exists:building_locations,id',
-            'building_list_id' => 'nullable|exists:building_lists,id',
-            'level' => 'nullable|integer|min:0',
+            'user_category_id' => 'required|exists:user_categories,id',
+            'area_id' => 'required|exists:areas,id',
+            'building_location_id' => 'required|exists:building_locations,id',
+            'building_list_id' => 'required|exists:building_lists,id',
+            'level' => 'required|integer|min:0',
             'remarks' => 'nullable|string',
         ]);
 

@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Area;
+use App\Models\Employee;
+use App\Models\Visitor;
+use App\Models\Guard;
+use App\Models\BuildingLocation;
+use App\Models\BuildingList;
+
+class AjaxController extends Controller
+{
+    /**
+     * Get all locations under a specific Area.
+     */
+    public function getLocationsByArea(Request $request)
+    {
+        $areaId = $request->area_id;
+
+        $locations = BuildingLocation::where('area_id', $areaId)
+            ->select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return response()->json($locations);
+    }
+
+    /**
+     * Get all building lists under a specific Location.
+     */
+    public function getBuildingsByLocation(Request $request)
+    {
+        $locationId = $request->building_location_id;
+
+        $buildings = BuildingList::where('building_location_id', $locationId)
+            ->select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return response()->json($buildings);
+    }
+
+    public function getHolders($type)
+    {
+        switch ($type) {
+            case 'employee':
+                $data = \App\Models\Employee::orderBy('name', 'asc')
+                    ->get(['id', 'name', 'emp_id as unique_code']);
+                break;
+
+            case 'visitor':
+                $data = \App\Models\Visitor::orderBy('name', 'asc')
+                    ->get(['id', 'name', 'visitor_id as unique_code']);
+                break;
+
+            case 'guard':
+                $data = \App\Models\Guard::orderBy('name', 'asc')
+                    ->get(['id', 'name', 'guard_id as unique_code']);
+                break;
+
+            default:
+                $data = collect();
+                break;
+        }
+
+        return response()->json($data);
+    }
+}

@@ -4,7 +4,7 @@
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Edit Flat</h3>
+        <h3 class="mb-0">Edit Room</h3>
         <a href="{{ route('room_lists.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -23,6 +23,7 @@
                 <form action="{{ route('room_lists.update', $roomList->id) }}" method="POST">
                     @csrf
                     @method('PUT')
+
                     <div class="row">
                         {{-- Room Name --}}
                         <div class="col-md-6 form-group">
@@ -49,8 +50,8 @@
 
                         {{-- User Category --}}
                         <div class="col-md-6 form-group">
-                            <label><strong>User Category</strong></label>
-                            <select name="user_category_id"
+                            <label><strong>User Category</strong> <span class="text-danger">*</span></label>
+                            <select name="user_category_id" id="user_category_id"
                                 class="form-control @error('user_category_id') is-invalid @enderror">
                                 <option value="">-- Select User Category --</option>
                                 @foreach ($categories as $category)
@@ -67,8 +68,9 @@
 
                         {{-- Area --}}
                         <div class="col-md-6 form-group">
-                            <label><strong>Naval Area</strong></label>
-                            <select name="area_id" class="form-control @error('area_id') is-invalid @enderror">
+                            <label><strong>Area</strong> <span class="text-danger">*</span></label>
+                            <select id="area_id" name="area_id"
+                                class="form-control @error('area_id') is-invalid @enderror">
                                 <option value="">-- Select Area --</option>
                                 @foreach ($areas as $area)
                                     <option value="{{ $area->id }}"
@@ -84,8 +86,8 @@
 
                         {{-- Building Location --}}
                         <div class="col-md-6 form-group">
-                            <label><strong>Building Location</strong></label>
-                            <select name="building_location_id"
+                            <label><strong>Building Location</strong> <span class="text-danger">*</span></label>
+                            <select id="building_location_id" name="building_location_id"
                                 class="form-control @error('building_location_id') is-invalid @enderror">
                                 <option value="">-- Select Location --</option>
                                 @foreach ($locations as $location)
@@ -102,8 +104,8 @@
 
                         {{-- Building --}}
                         <div class="col-md-6 form-group">
-                            <label><strong>Building</strong></label>
-                            <select name="building_list_id"
+                            <label><strong>Building</strong> <span class="text-danger">*</span></label>
+                            <select id="building_list_id" name="building_list_id"
                                 class="form-control @error('building_list_id') is-invalid @enderror">
                                 <option value="">-- Select Building --</option>
                                 @foreach ($buildings as $building)
@@ -120,8 +122,9 @@
 
                         {{-- Level --}}
                         <div class="col-md-6 form-group">
-                            <label><strong>Level</strong></label>
-                            <input type="number" name="level" class="form-control @error('level') is-invalid @enderror"
+                            <label><strong>Level</strong> <span class="text-danger">*</span></label>
+                            <input type="number" name="level" id="level"
+                                class="form-control @error('level') is-invalid @enderror"
                                 value="{{ old('level', $roomList->level) }}" placeholder="Enter level number">
                             @error('level')
                                 <small class="text-danger">{{ $message }}</small>
@@ -131,7 +134,8 @@
                         {{-- Remarks --}}
                         <div class="col-md-12 form-group">
                             <label><strong>Remarks</strong></label>
-                            <textarea name="remarks" class="form-control @error('remarks') is-invalid @enderror" placeholder="Enter remarks">{{ old('remarks', $roomList->remarks) }}</textarea>
+                            <textarea name="remarks" id="remarks" class="form-control @error('remarks') is-invalid @enderror"
+                                placeholder="Enter remarks">{{ old('remarks', $roomList->remarks) }}</textarea>
                             @error('remarks')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -146,3 +150,58 @@
         </div>
     </div>
 @stop
+
+@section('js')
+    <script>
+        $(document).ready(function() {
+            // Area change loads locations
+            $('#area_id').on('change', function() {
+                var areaID = $(this).val();
+                $('#building_location_id').html('<option value="">Loading...</option>');
+                $('#building_list_id').html('<option value="">-- Select Building --</option>');
+
+                if (areaID) {
+                    $.ajax({
+                        url: '{{ route('ajax.getLocationsByArea') }}',
+                        type: 'GET',
+                        data: {
+                            area_id: areaID
+                        },
+                        success: function(data) {
+                            $('#building_location_id').html(
+                                '<option value="">-- Select Location --</option>');
+                            $.each(data, function(key, value) {
+                                $('#building_location_id').append('<option value="' +
+                                    value.id + '">' + value.name + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Location change loads buildings
+            $('#building_location_id').on('change', function() {
+                var locationID = $(this).val();
+                $('#building_list_id').html('<option value="">Loading...</option>');
+
+                if (locationID) {
+                    $.ajax({
+                        url: '{{ route('ajax.getBuildingsByLocation') }}',
+                        type: 'GET',
+                        data: {
+                            building_location_id: locationID
+                        },
+                        success: function(data) {
+                            $('#building_list_id').html(
+                                '<option value="">-- Select Building --</option>');
+                            $.each(data, function(key, value) {
+                                $('#building_list_id').append('<option value="' + value
+                                    .id + '">' + value.name + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endsection

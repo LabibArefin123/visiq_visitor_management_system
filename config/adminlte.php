@@ -519,6 +519,13 @@ return [
                     ],
                 ],
                 [
+                    'text' => 'ID Card Management',
+                    'icon' => 'fas fa-id-card',
+                    'submenu' => [
+                        ['text' => 'ID Card List', 'route' => 'id_cards.index'],
+                    ],
+                ],
+                [
                     'text' => 'Guard Management',
                     'icon' => 'fas fa-user-lock',
                     'submenu' => [

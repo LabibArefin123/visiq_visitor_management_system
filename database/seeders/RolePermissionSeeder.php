@@ -262,6 +262,16 @@ class RolePermissionSeeder extends Seeder
             'access_point_guards.activity_log', // Delete
         ];
 
+        $idCardListPermissions = [
+            'id_cards.index',   // View
+            'id_cards.create',  // Create new
+            'id_cards.store',   // Store new
+            'id_cards.show',    // View individual
+            'id_cards.edit',    // Edit
+            'id_cards.update',  // Update
+            'id_cards.destroy', // Delete
+        ];
+
         //asset menu
         $parkingListPermissions = [
             'parking_lists.index',   // View
@@ -333,6 +343,12 @@ class RolePermissionSeeder extends Seeder
             'system_users.edit',    // Edit
             'system_users.update',  // Update
             'system_users.destroy', // Delete
+        ];
+
+        $ajaxPermission = [
+            'ajax.getLocationsByArea',   // Get all locations under a specific Area.
+            'ajax.getBuildingsByLocation',  //  Get all building lists under a specific Location.
+            'ajax.getHolders',  //  Get all holders by user type
         ];
 
         foreach ($defaultPermissions as $permission) {
@@ -497,6 +513,13 @@ class RolePermissionSeeder extends Seeder
             ]);
         }
 
+        foreach ($idCardListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'ID Card'
+            ]);
+        }
+
         foreach ($accessPointGuardPermissions as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,
@@ -550,6 +573,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'System User'
+            ]);
+        }
+
+        foreach ($ajaxPermission as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Ajax Controller'
             ]);
         }
         // End Permissions

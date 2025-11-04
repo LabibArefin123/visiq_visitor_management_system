@@ -47,7 +47,8 @@
 
                         {{-- User Category --}}
                         <div class="col-md-6 form-group">
-                            <label for="user_category_id"><strong>User Category</strong></label>
+                            <label for="user_category_id"><strong>User Category</strong> <span
+                                    class="text-danger">*</span></label>
                             <select name="user_category_id" id="user_category_id"
                                 class="form-control @error('user_category_id') is-invalid @enderror">
                                 <option value="">-- Select User Category --</option>
@@ -65,15 +66,11 @@
 
                         {{-- Area --}}
                         <div class="col-md-6 form-group">
-                            <label for="area_id"><strong>Naval Area</strong></label>
-                            <select name="area_id" id="area_id"
-                                class="form-control @error('area_id') is-invalid @enderror">
+                            <label for="area_id"><strong>Area</strong> <span class="text-danger">*</span></label>
+                            <select id="area_id" name="area_id" class="form-control">
                                 <option value="">-- Select Area --</option>
                                 @foreach ($areas as $area)
-                                    <option value="{{ $area->id }}"
-                                        {{ old('area_id') == $area->id ? 'selected' : '' }}>
-                                        {{ $area->name }}
-                                    </option>
+                                    <option value="{{ $area->id }}">{{ $area->name }}</option>
                                 @endforeach
                             </select>
                             @error('area_id')
@@ -83,16 +80,10 @@
 
                         {{-- Building Location --}}
                         <div class="col-md-6 form-group">
-                            <label for="building_location_id"><strong>Building Location</strong></label>
-                            <select name="building_location_id" id="building_location_id"
-                                class="form-control @error('building_location_id') is-invalid @enderror">
+                            <label for="building_location_id"><strong>Building Location</strong> <span
+                                    class="text-danger">*</span></label>
+                            <select id="building_location_id" name="building_location_id" class="form-control">
                                 <option value="">-- Select Location --</option>
-                                @foreach ($locations as $location)
-                                    <option value="{{ $location->id }}"
-                                        {{ old('building_location_id') == $location->id ? 'selected' : '' }}>
-                                        {{ $location->name }}
-                                    </option>
-                                @endforeach
                             </select>
                             @error('building_location_id')
                                 <small class="text-danger">{{ $message }}</small>
@@ -101,16 +92,10 @@
 
                         {{-- Building List --}}
                         <div class="col-md-6 form-group">
-                            <label for="building_list_id"><strong>Building Name</strong></label>
-                            <select name="building_list_id" id="building_list_id"
-                                class="form-control @error('building_list_id') is-invalid @enderror">
+                            <label for="building_list_id"><strong>Building Name</strong> <span
+                                    class="text-danger">*</span></label>
+                            <select id="building_list_id" name="building_list_id" class="form-control">
                                 <option value="">-- Select Building --</option>
-                                @foreach ($buildings as $building)
-                                    <option value="{{ $building->id }}"
-                                        {{ old('building_list_id') == $building->id ? 'selected' : '' }}>
-                                        {{ $building->name }}
-                                    </option>
-                                @endforeach
                             </select>
                             @error('building_list_id')
                                 <small class="text-danger">{{ $message }}</small>
@@ -119,7 +104,7 @@
 
                         {{-- Level --}}
                         <div class="col-md-6 form-group">
-                            <label for="level"><strong>Level</strong></label>
+                            <label for="level"><strong>Level</strong> <span class="text-danger">*</span></label>
                             <input type="number" name="level" id="level"
                                 class="form-control @error('level') is-invalid @enderror" value="{{ old('level') }}"
                                 placeholder="Enter level number">
@@ -147,3 +132,55 @@
         </div>
     </div>
 @stop
+
+@section('js')
+    <script>
+        $('#area_id').on('change', function() {
+            var areaID = $(this).val();
+
+            $('#building_location_id').html('<option value="">Loading...</option>');
+            $('#building_list_id').html('<option value="">-- Select Building --</option>');
+
+            if (areaID) {
+                $.ajax({
+                    url: '{{ route('ajax.getLocationsByArea') }}',
+                    type: 'GET',
+                    data: {
+                        area_id: areaID
+                    },
+                    success: function(data) {
+                        $('#building_location_id').html(
+                            '<option value="">-- Select Location --</option>');
+                        $.each(data, function(key, value) {
+                            $('#building_location_id').append('<option value="' + value.id +
+                                '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+
+        $('#building_location_id').on('change', function() {
+            var locationID = $(this).val();
+
+            $('#building_list_id').html('<option value="">Loading...</option>');
+
+            if (locationID) {
+                $.ajax({
+                    url: '{{ route('ajax.getBuildingsByLocation') }}',
+                    type: 'GET',
+                    data: {
+                        building_location_id: locationID
+                    },
+                    success: function(data) {
+                        $('#building_list_id').html('<option value="">-- Select Building --</option>');
+                        $.each(data, function(key, value) {
+                            $('#building_list_id').append('<option value="' + value.id + '">' +
+                                value.name + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+@endsection

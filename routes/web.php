@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AiController;
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeAttendanceController;
 use App\Http\Controllers\ProfileController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\ShiftScheduleController;
 use App\Http\Controllers\ShiftGuardScheduleController;
 use App\Http\Controllers\AccessPointController;
 use App\Http\Controllers\GuardController;
+use App\Http\Controllers\IdCardController;
 use App\Http\Controllers\AccessPointGuardController;
 use App\Http\Controllers\AccessHistoryLogController;
 use App\Http\Controllers\GuardActivityLogController;
@@ -65,6 +67,11 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/ai-chat-pdf', [AiController::class, 'ai_chat_pdf'])->name('ai.chat.pdf');
     Route::get('/ai-chat/download/{id}', [AiController::class, 'downloadAIChatPDF'])->name('ai.chat.download');
 
+    //ajax controller
+    Route::get('/get-locations-by-area', [AjaxController::class, 'getLocationsByArea'])->name('ajax.getLocationsByArea');
+    Route::get('/get-buildings-by-location', [AjaxController::class, 'getBuildingsByLocation'])->name('ajax.getBuildingsByLocation');
+    Route::get('/get-holders/{type}', [AjaxController::class, 'getHolders'])->name('ajax.getHolders');
+
     //organization menu
     Route::resource('organizations', OrganizationController::class);
 
@@ -103,6 +110,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
 
     //security menu
     Route::resource('guards', GuardController::class);
+    Route::resource('id_cards', IdCardController::class);
     Route::get('/guard_activity_log', [GuardActivityLogController::class, 'index'])->name('guards.activity_log');
     Route::resource('access_points', AccessPointController::class);
     Route::resource('access_point_guards', AccessPointGuardController::class);
