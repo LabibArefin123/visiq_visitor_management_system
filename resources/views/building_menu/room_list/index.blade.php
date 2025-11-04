@@ -68,8 +68,8 @@
                     </tbody>
                 </table>
 
-                <div class="mt-3">
-                    {{ $rooms->links() }}
+                <div class="mt-3 d-flex justify-content-center">
+                    {{ $rooms->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </div>

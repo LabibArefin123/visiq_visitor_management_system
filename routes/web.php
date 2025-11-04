@@ -7,12 +7,18 @@ use App\Http\Controllers\EmployeeAttendanceController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+
+//building menu
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\SubAreaController;
 use App\Http\Controllers\BuildingLocationController;
 use App\Http\Controllers\BuildingListController;
 use App\Http\Controllers\RoomListController;
+
+//organization menu
 use App\Http\Controllers\OrganizationController;
+
+//visitor menu
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\PendingVisitorController;
 use App\Http\Controllers\VisitorCompanyController;
@@ -20,9 +26,13 @@ use App\Http\Controllers\VisitorHostScheduleController;
 use App\Http\Controllers\VisitorBlacklistController;
 use App\Http\Controllers\VisitorEmergencyController;
 use App\Http\Controllers\VisitorGroupMemberController;
+
+//schedule menu
 use App\Http\Controllers\OfficeScheduleController;
 use App\Http\Controllers\ShiftScheduleController;
 use App\Http\Controllers\ShiftGuardScheduleController;
+
+//security menu
 use App\Http\Controllers\AccessPointController;
 use App\Http\Controllers\GuardController;
 use App\Http\Controllers\IdCardController;
@@ -34,10 +44,23 @@ use App\Http\Controllers\OverstayAlertController;
 use App\Http\Controllers\EvacuationPlanController;
 use App\Http\Controllers\EmergencyIncidentController;
 use App\Http\Controllers\BlacklistMonitorController;
+
+//parking menu
 use App\Http\Controllers\ParkingListController;
+
+//facility menu
+use App\Http\Controllers\SupplyListController;
+use App\Http\Controllers\StockLogController;
+use App\Http\Controllers\ItemRequestController;
+
+//asset menu
 use App\Http\Controllers\LostAndFoundController;
+
+//communication menu
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\VisitorFeedbackController;
+
+//setting menu
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
@@ -122,6 +145,11 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('medical_emergencies', MedicalEmergencyController::class);
     Route::resource('evacuation_plans', EvacuationPlanController::class);
     Route::resource('emergency_incidents', EmergencyIncidentController::class);
+
+    //facility menu
+    Route::resource('supply_lists', SupplyListController::class);
+    Route::resource('stock_logs', StockLogController::class);
+    Route::resource('item_requests', ItemRequestController::class);
 
     //asset menu
     Route::resource('lost_and_founds', LostAndFoundController::class);

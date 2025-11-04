@@ -546,6 +546,43 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'Facility Center',
+            'icon' => 'fas fa-cogs',
+            'submenu' => [
+                [
+                    'text' => 'Seat / Space Allocation',
+                    'icon' => 'fas fa-chair',
+                    'submenu' => [
+                        ['text' => 'Seat Allocation', 'url' => '#'],
+                        ['text' => 'Hot Desk Booking', 'url' => '#'],
+                        ['text' => 'Meeting Room Reservation', 'url' => '#'],
+                        ['text' => 'Seat Utilization Report', 'url' => '#'],
+                    ],
+                ],
+                [
+                    'text' => 'Inventory & Supplies',
+                    'icon' => 'fas fa-boxes',
+                    'submenu' => [
+                        ['text' => 'Supply List', 'route' => 'supply_lists.index'],
+                        ['text' => 'Stock-In / Stock-Out Logs', 'route' => 'stock_logs.index'],
+                        ['text' => 'Item Request Forms', 'route' => 'item_requests.index'],
+                        ['text' => 'Damaged Items', 'url' => '#'],
+                    ],
+                ],
+                [
+                    'text' => 'Maintenance & Support',
+                    'icon' => 'fas fa-tools',
+                    'submenu' => [
+                        ['text' => 'Maintenance Requests', 'url' => '#'],
+                        ['text' => 'Assigned Technicians', 'url' => '#'],
+                        ['text' => 'Repair History', 'url' => '#'],
+                        ['text' => 'Equipment Status', 'url' => '#'],
+                        ['text' => 'Support Tickets', 'url' => '#'],
+                    ],
+                ],
+            ],
+        ],
 
         [
             'text' => 'Assets & Equipment',

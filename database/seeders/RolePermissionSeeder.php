@@ -272,7 +272,41 @@ class RolePermissionSeeder extends Seeder
             'id_cards.destroy', // Delete
         ];
 
-        //asset menu
+        //facility menu 
+        // inventory menu (supply list)
+        $supplyListPermissions = [
+            'supply_lists.index',   // View
+            'supply_lists.create',  // Create new
+            'supply_lists.store',   // Store new
+            'supply_lists.show',    // View individual
+            'supply_lists.edit',    // Edit
+            'supply_lists.update',  // Update
+            'supply_lists.destroy', // Delete
+        ];
+
+        // inventory menu (stock log)
+        $stockLogPermissions = [
+            'stock_logs.index',   // View
+            'stock_logs.create',  // Create new
+            'stock_logs.store',   // Store new
+            'stock_logs.show',    // View individual
+            'stock_logs.edit',    // Edit
+            'stock_logs.update',  // Update
+            'stock_logs.destroy', // Delete
+        ];
+
+        // inventory menu (stock log)
+        $itemRequestPermissions = [
+            'item_requests.index',   // View
+            'item_requests.create',  // Create new
+            'item_requests.store',   // Store new
+            'item_requests.show',    // View individual
+            'item_requests.edit',    // Edit
+            'item_requests.update',  // Update
+            'item_requests.destroy', // Delete
+        ];
+
+        //parking menu
         $parkingListPermissions = [
             'parking_lists.index',   // View
             'parking_lists.create',  // Create new
@@ -545,6 +579,27 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Access Point Guard'
+            ]);
+        }
+
+        foreach ($supplyListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Supply List'
+            ]);
+        }
+
+        foreach ($stockLogPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Stock Log'
+            ]);
+        }
+
+        foreach ($itemRequestPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Item Request'
             ]);
         }
 
