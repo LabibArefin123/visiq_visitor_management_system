@@ -295,7 +295,7 @@ class RolePermissionSeeder extends Seeder
             'stock_logs.destroy', // Delete
         ];
 
-        // inventory menu (stock log)
+        // inventory menu (item request)
         $itemRequestPermissions = [
             'item_requests.index',   // View
             'item_requests.create',  // Create new
@@ -304,6 +304,17 @@ class RolePermissionSeeder extends Seeder
             'item_requests.edit',    // Edit
             'item_requests.update',  // Update
             'item_requests.destroy', // Delete
+        ];
+
+        // inventory menu (item damage)
+        $itemDamagePermissions = [
+            'item_damages.index',   // View
+            'item_damages.create',  // Create new
+            'item_damages.store',   // Store new
+            'item_damages.show',    // View individual
+            'item_damages.edit',    // Edit
+            'item_damages.update',  // Update
+            'item_damages.destroy', // Delete
         ];
 
         //parking menu
@@ -600,6 +611,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Item Request'
+            ]);
+        }
+
+        foreach ($itemDamagePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Item Damage'
             ]);
         }
 

@@ -567,7 +567,7 @@ return [
                         ['text' => 'Supply List', 'route' => 'supply_lists.index'],
                         ['text' => 'Stock-In / Stock-Out Logs', 'route' => 'stock_logs.index'],
                         ['text' => 'Item Request Forms', 'route' => 'item_requests.index'],
-                        ['text' => 'Damaged Items', 'url' => '#'],
+                        ['text' => 'Damaged Items', 'route' => 'item_damages.index'],
                     ],
                 ],
                 [

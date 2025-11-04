@@ -52,6 +52,7 @@ use App\Http\Controllers\ParkingListController;
 use App\Http\Controllers\SupplyListController;
 use App\Http\Controllers\StockLogController;
 use App\Http\Controllers\ItemRequestController;
+use App\Http\Controllers\ItemDamageController;
 
 //asset menu
 use App\Http\Controllers\LostAndFoundController;
@@ -150,6 +151,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('supply_lists', SupplyListController::class);
     Route::resource('stock_logs', StockLogController::class);
     Route::resource('item_requests', ItemRequestController::class);
+    Route::resource('item_damages', ItemDamageController::class);
 
     //asset menu
     Route::resource('lost_and_founds', LostAndFoundController::class);
