@@ -284,50 +284,6 @@ class RolePermissionSeeder extends Seeder
             'seat_allocations.destroy', // Delete
         ];
 
-        // inventory menu (supply list)
-        $supplyListPermissions = [
-            'supply_lists.index',   // View
-            'supply_lists.create',  // Create new
-            'supply_lists.store',   // Store new
-            'supply_lists.show',    // View individual
-            'supply_lists.edit',    // Edit
-            'supply_lists.update',  // Update
-            'supply_lists.destroy', // Delete
-        ];
-
-        // inventory menu (stock log)
-        $stockLogPermissions = [
-            'stock_logs.index',   // View
-            'stock_logs.create',  // Create new
-            'stock_logs.store',   // Store new
-            'stock_logs.show',    // View individual
-            'stock_logs.edit',    // Edit
-            'stock_logs.update',  // Update
-            'stock_logs.destroy', // Delete
-        ];
-
-        // inventory menu (item request)
-        $itemRequestPermissions = [
-            'item_requests.index',   // View
-            'item_requests.create',  // Create new
-            'item_requests.store',   // Store new
-            'item_requests.show',    // View individual
-            'item_requests.edit',    // Edit
-            'item_requests.update',  // Update
-            'item_requests.destroy', // Delete
-        ];
-
-        // inventory menu (item damage)
-        $itemDamagePermissions = [
-            'item_damages.index',   // View
-            'item_damages.create',  // Create new
-            'item_damages.store',   // Store new
-            'item_damages.show',    // View individual
-            'item_damages.edit',    // Edit
-            'item_damages.update',  // Update
-            'item_damages.destroy', // Delete
-        ];
-
         //parking menu
         $parkingListPermissions = [
             'parking_lists.index',   // View
@@ -608,34 +564,6 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Seat Allocation'
-            ]);
-        }
-
-        foreach ($supplyListPermissions as $permission) {
-            Permission::firstOrCreate([
-                'name' => $permission,
-                'module' => 'Supply List'
-            ]);
-        }
-
-        foreach ($stockLogPermissions as $permission) {
-            Permission::firstOrCreate([
-                'name' => $permission,
-                'module' => 'Stock Log'
-            ]);
-        }
-
-        foreach ($itemRequestPermissions as $permission) {
-            Permission::firstOrCreate([
-                'name' => $permission,
-                'module' => 'Item Request'
-            ]);
-        }
-
-        foreach ($itemDamagePermissions as $permission) {
-            Permission::firstOrCreate([
-                'name' => $permission,
-                'module' => 'Item Damage'
             ]);
         }
 

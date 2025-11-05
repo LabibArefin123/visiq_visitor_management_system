@@ -561,16 +561,6 @@ return [
                     ],
                 ],
                 [
-                    'text' => 'Inventory & Supplies',
-                    'icon' => 'fas fa-boxes',
-                    'submenu' => [
-                        ['text' => 'Supply List', 'route' => 'supply_lists.index'],
-                        ['text' => 'Stock-In / Stock-Out Logs', 'route' => 'stock_logs.index'],
-                        ['text' => 'Item Request Forms', 'route' => 'item_requests.index'],
-                        ['text' => 'Damaged Items', 'route' => 'item_damages.index'],
-                    ],
-                ],
-                [
                     'text' => 'Maintenance & Support',
                     'icon' => 'fas fa-tools',
                     'submenu' => [
