@@ -17,47 +17,50 @@
 @stop
 
 @section('content')
-    <div class="card shadow-lg">
-        <div class="card-body table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Item Name</th>
-                        <th>Quantity</th>
-                        <th>Reported By</th>
-                        <th>Damage Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($damages as $damage)
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover table-striped">
+                    <thead class="thead-dark">
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $damage->item_name }}</td>
-                            <td>{{ $damage->quantity }}</td>
-                            <td>{{ $damage->reported_by }}</td>
-                            <td>{{ $damage->damage_date ? \Carbon\Carbon::parse($damage->damage_date)->format('d M, Y') : '-' }}
-                            </td>
-                            <td>
-                                <a href="{{ route('item_damages.show', $damage->id) }}" class="btn btn-sm btn-info">View</a>
-                                <a href="{{ route('item_damages.edit', $damage->id) }}"
-                                    class="btn btn-sm btn-primary">Edit</a>
-                                <form action="{{ route('item_damages.destroy', $damage->id) }}" method="POST"
-                                    class="d-inline-block" onsubmit="return confirm('Are you sure?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                            </td>
+                            <th>#</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Reported By</th>
+                            <th>Damage Date</th>
+                            <th>Actions</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center">No damaged items found.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse($damages as $damage)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $damage->item_name }}</td>
+                                <td>{{ $damage->quantity }}</td>
+                                <td>{{ $damage->reported_by }}</td>
+                                <td>{{ $damage->damage_date ? \Carbon\Carbon::parse($damage->damage_date)->format('d M, Y') : '-' }}
+                                </td>
+                                <td>
+                                    <a href="{{ route('item_damages.show', $damage->id) }}"
+                                        class="btn btn-sm btn-info">View</a>
+                                    <a href="{{ route('item_damages.edit', $damage->id) }}"
+                                        class="btn btn-sm btn-primary">Edit</a>
+                                    <form action="{{ route('item_damages.destroy', $damage->id) }}" method="POST"
+                                        class="d-inline-block" onsubmit="return confirm('Are you sure?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">No damaged items found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @stop

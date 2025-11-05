@@ -273,6 +273,17 @@ class RolePermissionSeeder extends Seeder
         ];
 
         //facility menu 
+        // allotment menu (seat allotment)
+        $seatAllocationPermissions = [
+            'seat_allocations.index',   // View
+            'seat_allocations.create',  // Create new
+            'seat_allocations.store',   // Store new
+            'seat_allocations.show',    // View individual
+            'seat_allocations.edit',    // Edit
+            'seat_allocations.update',  // Update
+            'seat_allocations.destroy', // Delete
+        ];
+
         // inventory menu (supply list)
         $supplyListPermissions = [
             'supply_lists.index',   // View
@@ -590,6 +601,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Access Point Guard'
+            ]);
+        }
+
+        foreach ($seatAllocationPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Seat Allocation'
             ]);
         }
 

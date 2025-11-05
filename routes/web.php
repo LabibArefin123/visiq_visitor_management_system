@@ -49,6 +49,7 @@ use App\Http\Controllers\BlacklistMonitorController;
 use App\Http\Controllers\ParkingListController;
 
 //facility menu
+use App\Http\Controllers\SeatAllocationController;
 use App\Http\Controllers\SupplyListController;
 use App\Http\Controllers\StockLogController;
 use App\Http\Controllers\ItemRequestController;
@@ -148,6 +149,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('emergency_incidents', EmergencyIncidentController::class);
 
     //facility menu
+    Route::resource('seat_allocations', SeatAllocationController::class);
     Route::resource('supply_lists', SupplyListController::class);
     Route::resource('stock_logs', StockLogController::class);
     Route::resource('item_requests', ItemRequestController::class);

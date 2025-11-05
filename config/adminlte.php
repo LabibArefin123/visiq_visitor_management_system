@@ -554,7 +554,7 @@ return [
                     'text' => 'Seat / Space Allocation',
                     'icon' => 'fas fa-chair',
                     'submenu' => [
-                        ['text' => 'Seat Allocation', 'url' => '#'],
+                        ['text' => 'Seat Allocation', 'route' => 'seat_allocations.index'],
                         ['text' => 'Hot Desk Booking', 'url' => '#'],
                         ['text' => 'Meeting Room Reservation', 'url' => '#'],
                         ['text' => 'Seat Utilization Report', 'url' => '#'],
