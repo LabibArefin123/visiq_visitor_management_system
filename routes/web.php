@@ -37,6 +37,10 @@ use App\Http\Controllers\OfficeScheduleController;
 use App\Http\Controllers\ShiftScheduleController;
 use App\Http\Controllers\ShiftGuardScheduleController;
 
+//report menu
+use App\Http\Controllers\VisitorReportController;
+use App\Http\Controllers\EmployeeReportController;
+
 //security menu
 use App\Http\Controllers\AccessPointController;
 use App\Http\Controllers\GuardController;
@@ -143,6 +147,20 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('office_schedules', OfficeScheduleController::class);
     Route::resource('shift_schedules', ShiftScheduleController::class);
     Route::resource('shift_guard_schedules', ShiftGuardScheduleController::class);
+
+    //report menu
+    Route::get('report/visitor/daily/', [VisitorReportController::class, 'dailyIndex'])->name('report.visitor.daily');
+    Route::get('report/visitor/daily/pdf', [VisitorReportController::class, 'dailyDownloadPdf'])->name('report.visitor.daily.pdf');
+    Route::get('report/visitor/monthly/', [VisitorReportController::class, 'monthlyIndex'])->name('report.visitor.monthly');
+    Route::get('report/visitor/monthly/pdf', [VisitorReportController::class, 'monthlyDownloadPdf'])->name('report.visitor.monthly.pdf');
+    Route::get('report/visitor/yearly/', [VisitorReportController::class, 'yearlyIndex'])->name('report.visitor.yearly');
+    Route::get('report/visitor/yearly/pdf', [VisitorReportController::class, 'yearlyDownloadPdf'])->name('report.visitor.yearly.pdf');
+    Route::get('report/employee/daily/', [EmployeeReportController::class, 'dailyIndex'])->name('report.employee.daily');
+    Route::get('report/employee/daily/pdf', [EmployeeReportController::class, 'dailyDownloadPdf'])->name('report.employee.daily.pdf');
+    Route::get('report/employee/monthly/', [EmployeeReportController::class, 'monthlyIndex'])->name('report.employee.monthly');
+    Route::get('report/employee/monthly/pdf', [EmployeeReportController::class, 'monthlyDownloadPdf'])->name('report.employee.monthly.pdf');
+    Route::get('report/employee/yearly/', [EmployeeReportController::class, 'yearlyIndex'])->name('report.employee.yearly');
+    Route::get('report/employee/yearly/pdf', [EmployeeReportController::class, 'yearlyDownloadPdf'])->name('report.employee.yearly.pdf');
 
     //security menu
     Route::resource('guards', GuardController::class);

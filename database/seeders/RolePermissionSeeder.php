@@ -326,6 +326,22 @@ class RolePermissionSeeder extends Seeder
             'parking_lists.destroy', // Delete
         ];
 
+        //report menu
+        $reportPermissions = [
+            'report.visitor.daily',   // daily visitor report
+            'report.visitor.daily.pdf',   // daily visitor report pdf
+            'report.visitor.monthly',   // monthly visitor report pdf
+            'report.visitor.monthly.pdf',   // monthly visitor report pdf
+            'report.visitor.yearly',   // yearly visitor report pdf
+            'report.visitor.yearly.pdf',   // yearly visitor report pdf
+            'report.employee.daily',   // daily employee report
+            'report.employee.daily.pdf',   // daily employee report pdf
+            'report.employee.monthly',   // monthly employee report pdf
+            'report.employee.monthly.pdf',   // monthly employee report pdf
+            'report.employee.yearly',   // yearly employee report pdf
+            'report.employee.yearly.pdf',   // yearly employee report pdf
+        ];
+
         //asset menu
         $lostAndFoundPermissions = [
             'lost_and_founds.index',   // View
@@ -625,6 +641,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Parking List'
+            ]);
+        }
+
+        foreach ($reportPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Report Module'
             ]);
         }
 

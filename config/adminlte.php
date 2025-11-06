@@ -432,31 +432,39 @@ return [
                 [
                     'text' => 'Visitor List',
                     'route'  => 'visitors.index',
+                    'active' => ['visitors*'],
                 ],
                 [
                     'text' => 'Visitor Company',
                     'route'  => 'visitor_companies.index',
+                    'active' => ['visitor_companies*'],
                 ],
                 [
                     'text' => 'Pending Visitors',
                     'route'  => 'pending_visitors.index',
-                ],
-                [
-                    'text' => 'Visitor Group Member',
-                    'route'  => 'visitor_group_members.index',
-                ],
-                [
-                    'text' => 'Visitor Host Schedule',
-                    'route'  => 'visitor_host_schedules.index',
+                    'active' => ['pending_visitors*'],
                 ],
                 [
                     'text' => 'Emergency Visitors',
                     'route'  => 'visitor_emergencys.index',
+                    'active' => ['visitor_emergencys*'],
                 ],
                 [
                     'text' => 'Visitor Blacklist',
                     'route'  => 'visitor_blacklists.index',
+                    'active' => ['visitor_blacklists*'],
                 ],
+                [
+                    'text' => 'Visitor Group Member',
+                    'route'  => 'visitor_group_members.index',
+                    'active' => ['visitor_group_members*'],
+                ],
+                [
+                    'text' => 'Visitor Host Schedule',
+                    'route'  => 'visitor_host_schedules.index',
+                    'active' => ['visitor_host_schedules*'],
+                ],
+
             ],
         ],
         [
@@ -466,6 +474,7 @@ return [
                 [
                     'text' => 'Employee List',
                     'route'  => 'employees.index',
+                    'active' => ['employees*'],
                 ],
                 [
                     'text' => 'Check-In Employees',
@@ -509,12 +518,28 @@ return [
             'icon'    => 'fas fa-fw fa-chart-pie',
             'submenu' => [
                 [
-                    'text' => 'Visitor Reports',
-                    'url'  => 'visitor_report',
+                    'text' => 'Visitor Daily Reports',
+                    'route'  => 'report.visitor.daily',
                 ],
                 [
-                    'text' => 'Employee Attendance Reports',
-                    'url'  => 'employee_attendance_report',
+                    'text' => 'Visitor Monthly Reports',
+                    'route'  => 'report.visitor.monthly',
+                ],
+                [
+                    'text' => 'Visitor Yearly Reports',
+                    'route'  => 'report.visitor.yearly',
+                ],
+                [
+                    'text' => 'Employee Daily Reports',
+                    'route'  => 'report.employee.daily',
+                ],
+                [
+                    'text' => 'Employee Monthly Reports',
+                    'route'  => 'report.employee.monthly',
+                ],
+                [
+                    'text' => 'Employee Yearly Reports',
+                    'route'  => 'report.employee.yearly',
                 ],
 
             ],
@@ -538,35 +563,72 @@ return [
                     'text' => 'Access Point Management',
                     'icon' => 'fas fa-door-open',
                     'submenu' => [
-                        ['text' => 'Access Points', 'route' => 'access_points.index'],
-                        ['text' => 'Access Point Guards', 'route' => 'access_point_guards.index'],
-                        ['text' => 'Access History Logs', 'route' => 'access_point_guards.activity_log'],
+                        [
+                            'text' => 'Access Points',
+                            'route' => 'access_points.index'
+                        ],
+                        [
+                            'text' => 'Access Point Guards',
+                            'route' => 'access_point_guards.index'
+                        ],
+                        [
+                            'text' => 'Access History Logs',
+                            'route' => 'access_point_guards.activity_log'
+                        ],
                     ],
                 ],
                 [
                     'text' => 'ID Card Management',
                     'icon' => 'fas fa-id-card',
                     'submenu' => [
-                        ['text' => 'ID Card List', 'route' => 'id_cards.index'],
+                        [
+                            'text' => 'ID Card List',
+                            'route' => 'id_cards.index'
+                        ],
                     ],
                 ],
                 [
                     'text' => 'Guard Management',
                     'icon' => 'fas fa-user-lock',
                     'submenu' => [
-                        ['text' => 'Guard List', 'route' => 'guards.index'],
-                        ['text' => 'Guard Activity Log', 'route' => 'guards.activity_log'],
+                        [
+                            'text' => 'Guard List',
+                            'route' => 'guards.index'
+                        ],
+                        [
+                            'text' => 'Guard Activity Log',
+                            'route' => 'guards.activity_log'
+                        ],
                     ],
                 ],
                 [
                     'text' => 'Security Alerts & Incidents',
                     'icon' => 'fas fa-bell',
                     'submenu' => [
-                        ['text' => 'Overstay Alerts', 'route' => 'overstay_alerts.index'],
-                        ['text' => 'Emergency Incidents', 'route' => 'emergency_incidents.index'],
-                        ['text' => 'Medical Emergencies', 'route' => 'medical_emergencies.index'],
-                        ['text' => 'Evacuation Plan', 'route' => 'evacuation_plans.index'],
-                        ['text' => 'Blacklist Monitor', 'route' => 'visitor_blacklists.activity_log'],
+                        [
+                            'text' => 'Overstay Alerts',
+                            'route' => 'overstay_alerts.index'
+                        ],
+
+                        [
+                            'text' => 'Emergency Incidents',
+                            'route' => 'emergency_incidents.index'
+                        ],
+
+                        [
+                            'text' => 'Medical Emergencies',
+                            'route' => 'medical_emergencies.index'
+                        ],
+
+                        [
+                            'text' => 'Evacuation Plan',
+                            'route' => 'evacuation_plans.index'
+                        ],
+
+                        [
+                            'text' => 'Blacklist Monitor',
+                            'route' => 'visitor_blacklists.activity_log'
+                        ],
                     ],
                 ],
             ],
@@ -579,21 +641,48 @@ return [
                     'text' => 'Seat / Space Allocation',
                     'icon' => 'fas fa-chair',
                     'submenu' => [
-                        ['text' => 'Seat Allocation', 'route' => 'seat_allocations.index'],
-                        ['text' => 'Hot Desk Booking', 'url' => '#'],
-                        ['text' => 'Meeting Room Reservation', 'url' => '#'],
-                        ['text' => 'Seat Utilization Report', 'url' => '#'],
+                        [
+                            'text' => 'Seat Allocation',
+                            'route' => 'seat_allocations.index'
+                        ],
+                        [
+                            'text' => 'Hot Desk Booking',
+                            'url' => '#'
+                        ],
+                        [
+                            'text' => 'Meeting Room Reservation',
+                            'url' => '#'
+                        ],
+                        [
+                            'text' => 'Seat Utilization Report',
+                            'url' => '#'
+                        ],
                     ],
                 ],
                 [
                     'text' => 'Maintenance & Support',
                     'icon' => 'fas fa-tools',
                     'submenu' => [
-                        ['text' => 'Maintenance Requests', 'url' => '#'],
-                        ['text' => 'Assigned Technicians', 'url' => '#'],
-                        ['text' => 'Repair History', 'url' => '#'],
-                        ['text' => 'Equipment Status', 'url' => '#'],
-                        ['text' => 'Support Tickets', 'url' => '#'],
+                        [
+                            'text' => 'Maintenance Requests',
+                            'url' => '#'
+                        ],
+                        [
+                            'text' => 'Assigned Technicians',
+                            'url' => '#'
+                        ],
+                        [
+                            'text' => 'Repair History',
+                            'url' => '#'
+                        ],
+                        [
+                            'text' => 'Equipment Status',
+                            'url' => '#'
+                        ],
+                        [
+                            'text' => 'Support Tickets',
+                            'url' => '#'
+                        ],
                     ],
                 ],
             ],
@@ -613,8 +702,14 @@ return [
             'text' => 'Communication',
             'icon' => 'fas fa-comments',
             'submenu' => [
-                ['text' => 'Announcements', 'route' => 'announcements.index'],
-                ['text' => 'Visitor Feedback', 'route' => 'visitors.feedback'],
+                [
+                    'text' => 'Announcements',
+                    'route' => 'announcements.index'
+                ],
+                [
+                    'text' => 'Visitor Feedback',
+                    'route' => 'visitors.feedback'
+                ],
             ],
         ],
 
@@ -623,13 +718,16 @@ return [
             'icon' => 'fas fa-car',
             'submenu' => [
                 // ['text' => 'Vehicle Log', 'url' => 'vehicle_logs'],
-                ['text' => 'Parking List', 'route' => 'parking_lists.index'],
-                ['text' => 'Parking Permits', 'url' => 'parking_permits'],
+                [
+                    'text' => 'Parking List',
+                    'route' => 'parking_lists.index'
+                ],
+                [
+                    'text' => 'Parking Permits',
+                    'url' => 'parking_permits'
+                ],
             ],
         ],
-
-
-
         [
             'text'    => 'Setting Menu',
             'icon'    => 'fas fa-cogs',
