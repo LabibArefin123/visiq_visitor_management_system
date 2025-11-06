@@ -149,6 +149,37 @@ class RolePermissionSeeder extends Seeder
             'organizations.destroy', // Delete
         ];
 
+        // department menu
+        $branchPermissions = [
+            'branches.index',   // View
+            'branches.create',  // Create new
+            'branches.store',   // Store new
+            'branches.show',    // View individual
+            'branches.edit',    // Edit
+            'branches.update',  // Update
+            'branches.destroy', // Delete
+        ];
+
+        $divisionPermissions = [
+            'divisions.index',   // View
+            'divisions.create',  // Create new
+            'divisions.store',   // Store new
+            'divisions.show',    // View individual
+            'divisions.edit',    // Edit
+            'divisions.update',  // Update
+            'divisions.destroy', // Delete
+        ];
+
+        $departmentPermissions = [
+            'departments.index',   // View
+            'departments.create',  // Create new
+            'departments.store',   // Store new
+            'departments.show',    // View individual
+            'departments.edit',    // Edit
+            'departments.update',  // Update
+            'departments.destroy', // Delete
+        ];
+
         $blacklistVisitorPermissions = [
             'visitor_blacklists.index',   // View
             'visitor_blacklists.create',  // Create new
@@ -382,6 +413,8 @@ class RolePermissionSeeder extends Seeder
             'ajax.getBuildingsByLocation',  //  Get all building lists under a specific Location.
             'ajax.getHolders',  //  Get all holders by user type
             'ajax.getReporters',  //  Get all holders by user type
+            'ajax.getDivisionByBranch',  //  Get all division by branch
+            'ajax.getDepartmentByDivision',  //  Get all department by division
         ];
 
         foreach ($defaultPermissions as $permission) {
@@ -416,6 +449,27 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Organization'
+            ]);
+        }
+
+        foreach ($branchPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Branch'
+            ]);
+        }
+
+        foreach ($divisionPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Division'
+            ]);
+        }
+
+        foreach ($departmentPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Department'
             ]);
         }
 

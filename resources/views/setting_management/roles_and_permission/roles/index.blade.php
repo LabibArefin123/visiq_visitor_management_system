@@ -46,6 +46,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="mt-3 d-flex justify-content-center">
+                {{ $roles->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 @stop

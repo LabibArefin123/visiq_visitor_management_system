@@ -364,6 +364,31 @@ return [
                 [
                     'text' => 'Organization List',
                     'route' => 'organizations.index',
+                    'active' => ['organizations*'],
+                ],
+            ],
+        ],
+
+        [
+            'text'    => 'Department Menu',
+            'icon'    => 'fas fa-book',
+            // 'route'    => 'organization_menu',
+            'submenu' => [
+
+                [
+                    'text' => 'Branch List',
+                    'route' => 'branches.index',
+                    'active' => ['branches*'],
+                ],
+                [
+                    'text' => 'Division List',
+                    'route' => 'divisions.index',
+                    'active' => ['divisions*'],
+                ],
+                [
+                    'text' => 'Department List',
+                    'route' => 'departments.index',
+                    'active' => ['departments*'],
                 ],
             ],
         ],

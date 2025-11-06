@@ -18,6 +18,11 @@ use App\Http\Controllers\RoomListController;
 //organization menu
 use App\Http\Controllers\OrganizationController;
 
+//branch menu
+use App\Http\Controllers\BranchController;
+use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\DepartmentController;
+
 //visitor menu
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\PendingVisitorController;
@@ -93,11 +98,18 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     //ajax controller
     Route::get('/get-locations-by-area', [AjaxController::class, 'getLocationsByArea'])->name('ajax.getLocationsByArea');
     Route::get('/get-buildings-by-location', [AjaxController::class, 'getBuildingsByLocation'])->name('ajax.getBuildingsByLocation');
+    Route::get('/get-division-by-branch', [AjaxController::class, 'getDivisionByBranch'])->name('ajax.getDivisionByBranch');
+    Route::get('/get-department-by-division', [AjaxController::class, 'getDepartmentByDivision'])->name('ajax.getDepartmentByDivision');
     Route::get('/get-holders/{type}', [AjaxController::class, 'getHolders'])->name('ajax.getHolders');
     Route::get('/get-reporters/{type}', [AjaxController::class, 'getReporters'])->name('ajax.getReporters');
 
     //organization menu
     Route::resource('organizations', OrganizationController::class);
+
+    //department menu
+    Route::resource('branches', BranchController::class);
+    Route::resource('divisions', DivisionController::class);
+    Route::resource('departments', DepartmentController::class);
 
     //building menu
     Route::resource('areas', AreaController::class);
