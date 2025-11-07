@@ -28,6 +28,7 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
     public function index()
     {
         $totalVisitors = Visitor::count();
@@ -36,14 +37,12 @@ class DashboardController extends Controller
         $totalEmergencyVisitors = VisitorEmergency::count();
         $totalBlacklistVisitors = BlacklistedVisitor::count();
 
-        // Get today's date
-        $today = \Carbon\Carbon::today();
+        $today = Carbon::today();
 
         // ✅ Check if attendance table has today's date data
         $todayCheckins = EmployeeAttendance::whereDate('check_in_date', $today)->exists();
 
         if ($todayCheckins) {
-            // ✅ Count for today only
             $totalCurrentCheckinEmployees = EmployeeAttendance::whereDate('check_in_date', $today)
                 ->whereNotNull('check_in_time')
                 ->distinct('employee_id')
@@ -54,7 +53,6 @@ class DashboardController extends Controller
                 ->distinct('employee_id')
                 ->count('employee_id');
         } else {
-            // ✅ Fallback: show total count from all records
             $totalCurrentCheckinEmployees = EmployeeAttendance::whereNotNull('check_in_time')
                 ->distinct('employee_id')
                 ->count('employee_id');
@@ -64,6 +62,22 @@ class DashboardController extends Controller
                 ->count('employee_id');
         }
 
+        // ✅ Pending visitor notifications (within the last 3 days)
+        $notifications = PendingVisitor::whereDate('visit_date', '<=', $today)
+            ->orderByDesc('visit_date')
+            ->take(10)
+            ->get()
+            ->map(function ($visitor) {
+                return [
+                    'title' => 'Pending Visitor Alert',
+                    'name' => $visitor->name,
+                    'visit_date' => $visitor->visit_date,
+                    'phone' => $visitor->phone ?? 'N/A',
+                    'purpose' => $visitor->purpose ?? 'Not Specified',
+                    'type' => 'pending_visitor',
+                ];
+            });
+
         return view('dashboard', compact(
             'totalVisitors',
             'totalEmployees',
@@ -71,7 +85,8 @@ class DashboardController extends Controller
             'totalEmergencyVisitors',
             'totalBlacklistVisitors',
             'totalCurrentCheckinEmployees',
-            'totalCurrentCheckoutEmployees'
+            'totalCurrentCheckoutEmployees',
+            'notifications'
         ));
     }
 }

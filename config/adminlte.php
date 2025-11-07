@@ -312,23 +312,21 @@ return [
 
         [
             'text' => '',
-            'icon' => 'fas fa-bell',
+            'icon' => 'fas fa-bell position-relative',
             'topnav_right' => true,
+            'id' => 'notificationBell',
             'submenu' => [
                 [
-                    'text' => 'All Notifications',
-
-                    'url'  => 'system_notification', // Replace with your route
+                    'text' => 'Pending Visitor List (0)',
+                    'route' => 'pending_visitors.index',
+                    'icon' => 'fas fa-user-clock',           // Left icon
+                    'right_icon' => 'fas fa-circle-arrow-right', // Clean arrow-in-circle
+                    'label_color' => 'info',
                 ],
-                [
-                    'text' => 'Employee Notifications',
-
-                    'url'  => 'employee_notifications', // Replace with your route
-                ],
-
             ],
+            'label' => null,
+            'label_color' => 'danger',
         ],
-
         [
             'type' => 'navbar-item',
             'topnav_right' => true,
@@ -561,7 +559,7 @@ return [
                 // ],
                 [
                     'text' => 'Access Point Management',
-                    'icon' => 'fas fa-door-open',
+                    'icon' => 'fas fa-arrow-circle-right',
                     'submenu' => [
                         [
                             'text' => 'Access Points',
@@ -579,7 +577,7 @@ return [
                 ],
                 [
                     'text' => 'ID Card Management',
-                    'icon' => 'fas fa-id-card',
+                    'icon' => 'fas fa-arrow-circle-right',
                     'submenu' => [
                         [
                             'text' => 'ID Card List',
@@ -589,7 +587,7 @@ return [
                 ],
                 [
                     'text' => 'Guard Management',
-                    'icon' => 'fas fa-user-lock',
+                    'icon' => 'fas fa-arrow-circle-right',
                     'submenu' => [
                         [
                             'text' => 'Guard List',
@@ -638,7 +636,7 @@ return [
             'icon' => 'fas fa-cogs',
             'submenu' => [
                 [
-                    'text' => 'Seat / Space Allocation',
+                    'text' => 'Seat Allocation',
                     'icon' => 'fas fa-chair',
                     'submenu' => [
                         [
@@ -646,48 +644,13 @@ return [
                             'route' => 'seat_allocations.index'
                         ],
                         [
-                            'text' => 'Hot Desk Booking',
-                            'url' => '#'
-                        ],
-                        [
                             'text' => 'Meeting Room Reservation',
-                            'url' => '#'
-                        ],
-                        [
-                            'text' => 'Seat Utilization Report',
-                            'url' => '#'
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'Maintenance & Support',
-                    'icon' => 'fas fa-tools',
-                    'submenu' => [
-                        [
-                            'text' => 'Maintenance Requests',
-                            'url' => '#'
-                        ],
-                        [
-                            'text' => 'Assigned Technicians',
-                            'url' => '#'
-                        ],
-                        [
-                            'text' => 'Repair History',
-                            'url' => '#'
-                        ],
-                        [
-                            'text' => 'Equipment Status',
-                            'url' => '#'
-                        ],
-                        [
-                            'text' => 'Support Tickets',
                             'url' => '#'
                         ],
                     ],
                 ],
             ],
         ],
-
         [
             'text' => 'Assets & Equipment',
             'icon' => 'fas fa-boxes',

@@ -11,18 +11,9 @@ class PendingVisitorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-
-        $visitors = PendingVisitor::when($search, function ($query, $search) {
-            $query->where('name', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhere('phone', 'like', "%{$search}%")
-                ->orWhere('purpose', 'like', "%{$search}%");
-        })
-            ->latest()
-            ->paginate(10);
+        $visitors = PendingVisitor::orderBy('visit_date', 'asc')->paginate(10);
 
         return view('visitor_management.pending_visitors.index', compact('visitors'));
     }

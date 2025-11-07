@@ -20,10 +20,18 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form action="{{ route('room_lists.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        {{-- Room Name --}}
                         <div class="col-md-6 form-group">
                             <label for="room_name"><strong>Room Name</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="room_name" id="room_name"
@@ -34,7 +42,6 @@
                             @enderror
                         </div>
 
-                        {{-- Room Name (Bangla) --}}
                         <div class="col-md-6 form-group">
                             <label for="room_name_in_bangla"><strong>Room Name (Bangla)</strong></label>
                             <input type="text" name="room_name_in_bangla" id="room_name_in_bangla"
@@ -45,7 +52,6 @@
                             @enderror
                         </div>
 
-                        {{-- User Category --}}
                         <div class="col-md-6 form-group">
                             <label for="user_category_id"><strong>User Category</strong> <span
                                     class="text-danger">*</span></label>
@@ -64,7 +70,6 @@
                             @enderror
                         </div>
 
-                        {{-- Area --}}
                         <div class="col-md-6 form-group">
                             <label for="area_id"><strong>Area</strong> <span class="text-danger">*</span></label>
                             <select id="area_id" name="area_id" class="form-control">
@@ -77,8 +82,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
-                        {{-- Building Location --}}
                         <div class="col-md-6 form-group">
                             <label for="building_location_id"><strong>Building Location</strong> <span
                                     class="text-danger">*</span></label>
@@ -89,8 +92,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
-                        {{-- Building List --}}
                         <div class="col-md-6 form-group">
                             <label for="building_list_id"><strong>Building Name</strong> <span
                                     class="text-danger">*</span></label>
@@ -102,7 +103,6 @@
                             @enderror
                         </div>
 
-                        {{-- Level --}}
                         <div class="col-md-6 form-group">
                             <label for="level"><strong>Level</strong> <span class="text-danger">*</span></label>
                             <input type="number" name="level" id="level"
@@ -113,7 +113,6 @@
                             @enderror
                         </div>
 
-                        {{-- Remarks --}}
                         <div class="col-md-12 form-group">
                             <label for="remarks"><strong>Remarks</strong></label>
                             <textarea name="remarks" id="remarks" class="form-control @error('remarks') is-invalid @enderror"
