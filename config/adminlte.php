@@ -362,6 +362,7 @@ return [
                 [
                     'text' => 'Organization List',
                     'route' => 'organizations.index',
+                    'can' => 'organizations.index',
                     'active' => ['organizations*'],
                 ],
             ],
@@ -376,16 +377,19 @@ return [
                 [
                     'text' => 'Branch List',
                     'route' => 'branches.index',
+                    'can' => 'branches.index',
                     'active' => ['branches*'],
                 ],
                 [
                     'text' => 'Division List',
                     'route' => 'divisions.index',
+                    'can' => 'divisions.index',
                     'active' => ['divisions*'],
                 ],
                 [
                     'text' => 'Department List',
                     'route' => 'departments.index',
+                    'can' => 'departments.index',
                     'active' => ['departments*'],
                 ],
             ],
@@ -398,26 +402,31 @@ return [
                 [
                     'text' => 'Room List',
                     'route' => 'room_lists.index',
+                    'can' => 'room_lists.index',
                     'active' => ['room_lists*'],
                 ],
                 [
                     'text' => 'Building List',
                     'route' => 'building_lists.index',
+                    'can' => 'building_lists.index',
                     'active' => ['building_lists*'],
                 ],
                 [
                     'text' => 'Building Location',
                     'route' => 'building_locations.index',
+                    'can' => 'building_locations.index',
                     'active' => ['building_locations*'],
                 ],
                 [
                     'text' => 'Sub Area List',
                     'route' => 'sub_areas.index',
+                    'can' => 'sub_areas.index',
                     'active' => ['sub_areas*'],
                 ],
                 [
                     'text' => 'Area List',
                     'route' => 'areas.index',
+                    'can' => 'areas.index',
                     'active' => ['areas*'],
                 ],
             ],
@@ -430,36 +439,43 @@ return [
                 [
                     'text' => 'Visitor List',
                     'route'  => 'visitors.index',
+                    'can'  => 'visitors.index',
                     'active' => ['visitors*'],
                 ],
                 [
                     'text' => 'Visitor Company',
                     'route'  => 'visitor_companies.index',
+                    'can'  => 'visitor_companies.index',
                     'active' => ['visitor_companies*'],
                 ],
                 [
                     'text' => 'Pending Visitors',
                     'route'  => 'pending_visitors.index',
+                    'can'  => 'pending_visitors.index',
                     'active' => ['pending_visitors*'],
                 ],
                 [
                     'text' => 'Emergency Visitors',
                     'route'  => 'visitor_emergencys.index',
+                    'can'  => 'visitor_emergencys.index',
                     'active' => ['visitor_emergencys*'],
                 ],
                 [
                     'text' => 'Visitor Blacklist',
                     'route'  => 'visitor_blacklists.index',
+                    'can'  => 'visitor_blacklists.index',
                     'active' => ['visitor_blacklists*'],
                 ],
                 [
                     'text' => 'Visitor Group Member',
                     'route'  => 'visitor_group_members.index',
+                    'can'  => 'visitor_group_members.index',
                     'active' => ['visitor_group_members*'],
                 ],
                 [
                     'text' => 'Visitor Host Schedule',
                     'route'  => 'visitor_host_schedules.index',
+                    'can'  => 'visitor_host_schedules.index',
                     'active' => ['visitor_host_schedules*'],
                 ],
 
@@ -472,19 +488,23 @@ return [
                 [
                     'text' => 'Employee List',
                     'route'  => 'employees.index',
-                    'active' => ['employees*'],
+                    'can'  => 'employees.index',
+                    'active' => ['employees*']
                 ],
                 [
                     'text' => 'Check-In Employees',
                     'route'  => 'employees.check_in_employee.index',
+                    'can'  => 'employees.check_in_employee.index'
                 ],
                 [
                     'text' => 'Check-Out Employees',
                     'route'  => 'employees.check_out_employee.index',
+                    'can'  => 'employees.check_out_employee.index'
                 ],
                 [
                     'text' => 'Attendance Tracking',
                     'route'  => 'employee_attendances.index',
+                    'can'  => 'employee_attendances.index'
                 ],
 
 
@@ -497,16 +517,19 @@ return [
                 [
                     'text' => 'Office Schedule',
                     'route'  => 'office_schedules.index',
+                    'can'  => 'office_schedules.index',
                     'active' => ['office_schedules*'],
                 ],
                 [
                     'text' => 'Shift Schedule',
                     'route'  => 'shift_schedules.index',
+                    'can'  => 'shift_schedules.index',
                     'active' => ['shift_schedules*'],
                 ],
                 [
                     'text' => 'Guard Shift Schedule',
                     'route'  => 'shift_guard_schedules.index',
+                    'can'  => 'shift_guard_schedules.index',
                     'active' => ['shift_guard_schedules*'],
                 ],
             ],
@@ -518,26 +541,32 @@ return [
                 [
                     'text' => 'Visitor Daily Reports',
                     'route'  => 'report.visitor.daily',
+                    'can'  => 'report.visitor.daily'
                 ],
                 [
                     'text' => 'Visitor Monthly Reports',
                     'route'  => 'report.visitor.monthly',
+                    'can'  => 'report.visitor.monthly'
                 ],
                 [
                     'text' => 'Visitor Yearly Reports',
                     'route'  => 'report.visitor.yearly',
+                    'can'  => 'report.visitor.yearly'
                 ],
                 [
                     'text' => 'Employee Daily Reports',
                     'route'  => 'report.employee.daily',
+                    'can'  => 'report.employee.daily'
                 ],
                 [
                     'text' => 'Employee Monthly Reports',
                     'route'  => 'report.employee.monthly',
+                    'can'  => 'report.employee.monthly'
                 ],
                 [
                     'text' => 'Employee Yearly Reports',
                     'route'  => 'report.employee.yearly',
+                    'can'  => 'report.employee.yearly'
                 ],
 
             ],
@@ -563,15 +592,18 @@ return [
                     'submenu' => [
                         [
                             'text' => 'Access Points',
-                            'route' => 'access_points.index'
+                            'route' => 'access_points.index',
+                            'can' => 'access_points.index'
                         ],
                         [
                             'text' => 'Access Point Guards',
-                            'route' => 'access_point_guards.index'
+                            'route' => 'access_point_guards.index',
+                            'can' => 'access_point_guards.index'
                         ],
                         [
                             'text' => 'Access History Logs',
-                            'route' => 'access_point_guards.activity_log'
+                            'route' => 'access_point_guards.activity_log',
+                            'can' => 'access_point_guards.activity_log'
                         ],
                     ],
                 ],

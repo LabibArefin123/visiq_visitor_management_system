@@ -23,11 +23,11 @@
                 <div class="row">
                     {{-- Parking Name --}}
                     <div class="col-md-6 form-group mb-3">
-                        <label><strong>Parking Name</strong></label>
+                        <label><strong>Area Name</strong></label>
                         <input type="text" class="form-control" value="{{ $area->name }}" readonly>
                     </div>
                     <div class="col-md-6 form-group mb-3">
-                        <label><strong>Parking Name</strong></label>
+                        <label><strong>Area Name in Bangla</strong></label>
                         <input type="text" class="form-control" value="{{ $area->name_in_bangla }}" readonly>
                     </div>
 

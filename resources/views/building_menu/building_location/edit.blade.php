@@ -21,12 +21,20 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('building_locations.update', $building_location->id) }}" method="POST">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form action="{{ route('building_locations.update', $building_location->id) }}" method="POST"
+                    data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">
-
-                        {{-- User Category --}}
                         <div class="col-md-6 form-group">
                             <label for="user_category_id"><strong>User Category</strong></label>
                             <select name="user_category_id" id="user_category_id"

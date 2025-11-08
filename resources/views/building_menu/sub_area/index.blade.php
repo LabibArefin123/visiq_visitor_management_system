@@ -41,11 +41,13 @@
                                 <a href="{{ route('sub_areas.edit', $subArea->id) }}"
                                     class="btn btn-sm btn-primary">Edit</a>
                                 <form action="{{ route('sub_areas.destroy', $subArea->id) }}" method="POST"
-                                    style="display:inline-block;">
+                                    class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Are you sure to delete this Sub Area?')">Delete</button>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        onclick="triggerDeleteModal('{{ route('sub_areas.destroy', $subArea->id) }}')">
+                                        Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>

@@ -19,20 +19,20 @@ class IdCardController extends Controller
     public function create()
     {
         $employees = Employee::all();
-        $visitors = Visitor::all();
         $guards = Guard::all();
-        return view('security_management.id_card.create', compact('employees', 'visitors', 'guards'));
+        return view('security_management.id_card.create', compact('employees', 'guards'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'card_number' => 'required|unique:id_cards,card_number',
-            'holder_type' => 'required|in:employee,visitor,guard',
+            'holder_type' => 'required|in:employee,guard',
             'holder_id' => 'required',
-            'issue_date' => 'nullable|date',
-            'expiry_date' => 'nullable|date|after_or_equal:issue_date',
+            'issue_date' => 'required|date',
+            'expiry_date' => 'required|date',
             'status' => 'required|string',
+            'remarks' => 'nullable|string',
         ]);
 
         IdCard::create($request->all());
@@ -47,20 +47,20 @@ class IdCardController extends Controller
     public function edit(IdCard $idCard)
     {
         $employees = Employee::all();
-        $visitors = Visitor::all();
         $guards = Guard::all();
-        return view('security_management.id_card.edit', compact('idCard', 'employees', 'visitors', 'guards'));
+        return view('security_management.id_card.edit', compact('idCard', 'employees', 'guards'));
     }
 
     public function update(Request $request, IdCard $idCard)
     {
         $request->validate([
             'card_number' => 'required|unique:id_cards,card_number,' . $idCard->id,
-            'holder_type' => 'required|in:employee,visitor,guard',
+            'holder_type' => 'required|in:employee,guard',
             'holder_id' => 'required',
-            'issue_date' => 'nullable|date',
-            'expiry_date' => 'nullable|date|after_or_equal:issue_date',
+            'issue_date' => 'required|date',
+            'expiry_date' => 'required|date',
             'status' => 'required|string',
+            'remarks' => 'nullable|string',
         ]);
 
         $idCard->update($request->all());

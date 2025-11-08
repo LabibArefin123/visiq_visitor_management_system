@@ -20,7 +20,7 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                   @if ($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0">
                             @foreach ($errors->all() as $error)
@@ -29,7 +29,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('sub_areas.store') }}" method="POST">
+                <form action="{{ route('sub_areas.store') }}" method="POST" data-confirm="create">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 form-group">

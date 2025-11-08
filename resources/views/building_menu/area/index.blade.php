@@ -40,8 +40,10 @@
                                 <form action="{{ route('areas.destroy', $area->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Are you sure you want to delete this area?')">Delete</button>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        onclick="triggerDeleteModal('{{ route('areas.destroy', $area->id) }}')">
+                                        Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>

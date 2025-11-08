@@ -5,7 +5,7 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Edit Sub Area</h3>
-        <a href="{{ route('sub_areas.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2">
+        <a href="{{ route('sub_areas.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -29,12 +29,10 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('sub_areas.update', $subArea->id) }}" method="POST">
+                <form action="{{ route('sub_areas.update', $subArea->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
-
                     <div class="row">
-                        {{-- Area --}}
                         <div class="col-md-6 form-group">
                             <label for="area_id"><strong>Select Area</strong></label>
                             <select name="area_id" id="area_id"
@@ -49,14 +47,12 @@
                             </select>
                         </div>
 
-                        {{-- Sub Area Name --}}
                         <div class="col-md-6 form-group">
                             <label><strong>Sub Area Name</strong></label>
                             <input type="text" name="sub_area_name" class="form-control"
                                 value="{{ $subArea->sub_area_name }}">
                         </div>
 
-                        {{-- Bangla Name --}}
                         <div class="col-md-6 form-group">
                             <label><strong>Sub Area Name (in Bangla)</strong></label>
                             <input type="text" name="sub_area_name_in_bangla" class="form-control"

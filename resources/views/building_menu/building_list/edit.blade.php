@@ -21,12 +21,19 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('building_lists.update', $buildingList->id) }}" method="POST">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form action="{{ route('building_lists.update', $buildingList->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">
-
-                        {{-- User Category --}}
                         <div class="col-md-6 form-group">
                             <label for="user_category_id"><strong>Building Category</strong></label>
                             <select name="user_category_id" id="user_category_id"
@@ -44,7 +51,6 @@
                             @enderror
                         </div>
 
-                        {{-- Area --}}
                         <div class="col-md-6 form-group">
                             <label for="area_id"><strong>Naval Area</strong></label>
                             <select name="area_id" id="area_id"
@@ -62,7 +68,6 @@
                             @enderror
                         </div>
 
-                        {{-- Building Location --}}
                         <div class="col-md-6 form-group">
                             <label for="building_location_id"><strong>Location</strong></label>
                             <select name="building_location_id" id="building_location_id"
@@ -80,7 +85,6 @@
                             @enderror
                         </div>
 
-                        {{-- Level --}}
                         <div class="col-md-6 form-group">
                             <label for="level"><strong>Level</strong></label>
                             <input type="number" name="level" id="level"
@@ -91,7 +95,6 @@
                             @enderror
                         </div>
 
-                        {{-- Unit Per Level --}}
                         <div class="col-md-6 form-group">
                             <label for="unit_per_level"><strong>Unit Per Level</strong></label>
                             <input type="number" name="unit_per_level" id="unit_per_level"
@@ -102,7 +105,6 @@
                             @enderror
                         </div>
 
-                        {{-- Remarks --}}
                         <div class="col-md-6 form-group">
                             <label for="remarks"><strong>Remarks</strong></label>
                             <textarea name="remarks" id="remarks" class="form-control @error('remarks') is-invalid @enderror"

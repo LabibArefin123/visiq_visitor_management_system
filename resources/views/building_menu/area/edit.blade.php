@@ -20,7 +20,7 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('areas.update', $area->id) }}" method="POST">
+                <form action="{{ route('areas.update', $area->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
 
@@ -46,7 +46,6 @@
                             @enderror
                         </div>
                     </div>
-
 
                     <div class="text-end mt-3">
                         <button type="submit" class="btn btn-success">

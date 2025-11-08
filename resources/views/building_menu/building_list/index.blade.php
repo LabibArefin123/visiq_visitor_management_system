@@ -52,11 +52,13 @@
                                         <a href="{{ route('building_lists.edit', $list->id) }}"
                                             class="btn btn-sm btn-primary">Edit</a>
                                         <form action="{{ route('building_lists.destroy', $list->id) }}" method="POST"
-                                            class="d-inline-block"
-                                            onsubmit="return confirm('Are you sure you want to delete this building?');">
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                onclick="triggerDeleteModal('{{ route('building_lists.destroy', $list->id) }}')">
+                                                Delete
+                                            </button>
                                         </form>
                                     </div>
                                 </td>

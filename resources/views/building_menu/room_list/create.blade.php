@@ -29,7 +29,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('room_lists.store') }}" method="POST">
+                <form action="{{ route('room_lists.store') }}" method="POST" data-confirm="create">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 form-group">

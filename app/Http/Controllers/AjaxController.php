@@ -79,11 +79,6 @@ class AjaxController extends Controller
                     ->get(['id', 'name', 'emp_id as unique_code']);
                 break;
 
-            case 'visitor':
-                $data = \App\Models\Visitor::orderBy('name', 'asc')
-                    ->get(['id', 'name', 'visitor_id as unique_code']);
-                break;
-
             case 'guard':
                 $data = \App\Models\Guard::orderBy('name', 'asc')
                     ->get(['id', 'name', 'guard_id as unique_code']);

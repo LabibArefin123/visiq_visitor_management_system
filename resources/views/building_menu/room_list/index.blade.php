@@ -53,10 +53,13 @@
                                     <a href="{{ route('room_lists.edit', $flat->id) }}" class="btn btn-sm btn-primary"><i
                                             class="fas fa-edit"></i></a>
                                     <form action="{{ route('room_lists.destroy', $flat->id) }}" method="POST"
-                                        class="d-inline" onsubmit="return confirm('Are you sure?')">
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('room_lists.destroy', $flat->id) }}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
