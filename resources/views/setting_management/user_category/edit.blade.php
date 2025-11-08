@@ -21,12 +21,19 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('user_categories.update', $userCategory->id) }}" method="POST">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form action="{{ route('user_categories.update', $userCategory->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
-
                     <div class="row">
-                        {{-- User Category Name --}}
                         <div class="col-md-6 form-group">
                             <label><strong>Name</strong></label>
                             <input type="text" name="category_name" class="form-control"

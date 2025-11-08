@@ -5,14 +5,14 @@
 @section('content_header')
     <div class="d-flex justify-content-between">
         <h1>Edit System User</h1>
-        <a href="{{ route('system_users.index') }}" class="btn btn-sm btn-warning d-flex align-items-center gap-1">
+        <a href="{{ route('system_users.index') }}" class="btn btn-sm btn-warning d-flex align-items-center gap-1 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l4.147
-                                               4.146a.5.5 0 0 1-.708.708l-5-5a.5.5
-                                               0 0 1 0-.708l5-5a.5.5 0 0
-                                               1 .708.708L2.707 7.5H14.5A.5.5
-                                               0 0 1 15 8z" />
+                                    4.146a.5.5 0 0 1-.708.708l-5-5a.5.5
+                                    0 0 1 0-.708l5-5a.5.5 0 0
+                                    1 .708.708L2.707 7.5H14.5A.5.5
+                                    0 0 1 15 8z" />
             </svg>
             Go Back
         </a>
@@ -20,25 +20,21 @@
 @stop
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
     <div class="card">
         <div class="card-body">
-            @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
-
-            <form action="{{ route('system_users.update', $user->id) }}" method="POST">
+            <form action="{{ route('system_users.update', $user->id) }}" method="POST" data-confirm="edit">
                 @csrf
                 @method('PUT')
-
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="role">Assign Role<span class="text-danger">*</span></label>
@@ -119,8 +115,11 @@
                         @enderror
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Update</button>
+                <div class="text-end mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        Update
+                    </button>
+                </div>
             </form>
         </div>
     </div>

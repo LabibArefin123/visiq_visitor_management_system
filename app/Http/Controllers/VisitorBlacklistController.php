@@ -18,7 +18,7 @@ class VisitorBlacklistController extends Controller
             $query->search($search);
         })
             ->orderBy('id', 'asc')
-            ->paginate(25);
+            ->get();
 
         return view('visitor_management.visitor_blacklist.index', compact('blacklistedVisitors', 'search'));
     }

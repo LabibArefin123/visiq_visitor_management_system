@@ -11,7 +11,7 @@ class OverstayAlertController extends Controller
 {
     public function index()
     {
-        $alerts = OverstayAlert::with('visitor')->latest()->paginate(10);
+        $alerts = OverstayAlert::with('visitor')->latest()->get();
         return view('security_management.overstay_alert.index', compact('alerts'));
     }
 

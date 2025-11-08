@@ -26,8 +26,8 @@
         @endif
 
         <div class="card shadow-sm">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-striped table-hover text-nowrap">
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-hover text-nowrap" id="dataTables">
                     <thead class="thead-dark">
                         <tr>
                             <th>ID</th>
@@ -69,11 +69,6 @@
                         @endforelse
                     </tbody>
                 </table>
-
-                <!-- Pagination -->
-                <div class="mt-3 d-flex justify-content-center">
-                    {{ $employees->links('pagination::bootstrap-5') }}
-                </div>
             </div>
         </div>
     </div>

@@ -9,7 +9,7 @@ class UserCategoryController extends Controller
 {
     public function index()
     {
-        $userCategories = UserCategory::orderBy('id', 'asc')->paginate(10);
+        $userCategories = UserCategory::orderBy('id', 'asc')->get();
         return view('setting_management.user_category.index', compact('userCategories'));
     }
 

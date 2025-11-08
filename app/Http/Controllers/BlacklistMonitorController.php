@@ -9,7 +9,7 @@ class BlacklistMonitorController extends Controller
 {
     public function index()
     {
-        $monitors = BlacklistMonitor::with('visitor')->orderBy('monitor_date', 'asc')->paginate(15);
+        $monitors = BlacklistMonitor::with('visitor')->orderBy('monitor_date', 'asc')->get();
         return view('security_management.blacklist_monitor.index', compact('monitors'));
     }
 }

@@ -13,7 +13,7 @@ class EmergencyIncidentController extends Controller
      */
     public function index()
     {
-        $incidents = EmergencyIncident::latest()->paginate(10);
+        $incidents = EmergencyIncident::latest()->get();
         return view('security_management.emergency_incident.index', compact('incidents'));
     }
 

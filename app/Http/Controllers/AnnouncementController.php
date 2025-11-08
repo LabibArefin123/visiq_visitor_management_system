@@ -9,7 +9,7 @@ class AnnouncementController extends Controller
 {
     public function index()
     {
-        $announcements = Announcement::orderBy('start_date', 'desc')->paginate(10);
+        $announcements = Announcement::orderBy('start_date', 'asc')->get();
         return view('communication_management.announcement.index', compact('announcements'));
     }
 
@@ -43,7 +43,7 @@ class AnnouncementController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'end_date' => 'nullable|date',
             'status' => 'required|in:Active,Inactive',
         ]);
 

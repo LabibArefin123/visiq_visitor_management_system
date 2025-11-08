@@ -12,7 +12,7 @@ class IdCardController extends Controller
 {
     public function index()
     {
-        $idCards = IdCard::latest()->paginate(10);
+        $idCards = IdCard::orderBy('id', 'asc')->get();
         return view('security_management.id_card.index', compact('idCards'));
     }
 

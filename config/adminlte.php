@@ -593,12 +593,14 @@ return [
                         [
                             'text' => 'Access Points',
                             'route' => 'access_points.index',
-                            'can' => 'access_points.index'
+                            'can' => 'access_points.index',
+                            'active' => ['access_points*'],
                         ],
                         [
                             'text' => 'Access Point Guards',
                             'route' => 'access_point_guards.index',
-                            'can' => 'access_point_guards.index'
+                            'can' => 'access_point_guards.index',
+                            'active' => ['access_point_guards*'],
                         ],
                         [
                             'text' => 'Access History Logs',
@@ -613,7 +615,9 @@ return [
                     'submenu' => [
                         [
                             'text' => 'ID Card List',
-                            'route' => 'id_cards.index'
+                            'route' => 'id_cards.index',
+                            'can' => 'id_cards.index',
+                            'active' => ['id_cards*'],
                         ],
                     ],
                 ],
@@ -623,11 +627,14 @@ return [
                     'submenu' => [
                         [
                             'text' => 'Guard List',
-                            'route' => 'guards.index'
+                            'route' => 'guards.index',
+                            'can' => 'guards.index',
+                            'active' => ['guards*'],
                         ],
                         [
                             'text' => 'Guard Activity Log',
-                            'route' => 'guards.activity_log'
+                            'route' => 'guards.activity_log',
+                            'can' => 'guards.activity_log',
                         ],
                     ],
                 ],
@@ -637,27 +644,36 @@ return [
                     'submenu' => [
                         [
                             'text' => 'Overstay Alerts',
-                            'route' => 'overstay_alerts.index'
+                            'route' => 'overstay_alerts.index',
+                            'can' => 'overstay_alerts.index',
+                            'active' => ['overstay_alerts*'],
                         ],
 
                         [
                             'text' => 'Emergency Incidents',
-                            'route' => 'emergency_incidents.index'
+                            'route' => 'emergency_incidents.index',
+                            'can' => 'emergency_incidents.index',
+                            'active' => ['emergency_incidents*'],
                         ],
 
                         [
                             'text' => 'Medical Emergencies',
-                            'route' => 'medical_emergencies.index'
+                            'route' => 'medical_emergencies.index',
+                            'can' => 'medical_emergencies.index',
+                            'active' => ['medical_emergencies*'],
                         ],
 
                         [
                             'text' => 'Evacuation Plan',
-                            'route' => 'evacuation_plans.index'
+                            'route' => 'evacuation_plans.index',
+                            'can' => 'evacuation_plans.index',
+                            'active' => ['evacuation_plans*'],
                         ],
 
                         [
                             'text' => 'Blacklist Monitor',
-                            'route' => 'visitor_blacklists.activity_log'
+                            'route' => 'visitor_blacklists.activity_log',
+                            'can' => 'visitor_blacklists.activity_log',
                         ],
                     ],
                 ],
@@ -673,7 +689,9 @@ return [
                     'submenu' => [
                         [
                             'text' => 'Seat Allocation',
-                            'route' => 'seat_allocations.index'
+                            'route' => 'seat_allocations.index',
+                            'can' => 'seat_allocations.index',
+                            'active' => ['seat_allocations*'],
                         ],
                         [
                             'text' => 'Meeting Room Reservation',
@@ -689,7 +707,12 @@ return [
             'submenu' => [
                 // ['text' => 'Asset Inventory', 'url' => 'assets'],
                 // ['text' => 'Equipment Maintenance', 'url' => 'equipment_maintenance'],
-                ['text' => 'Lost & Found', 'route' => 'lost_and_founds.index'],
+                [
+                    'text' => 'Lost & Found',
+                    'route' => 'lost_and_founds.index',
+                    'can' => 'lost_and_founds.index',
+                    'active' => ['lost_and_founds*'],
+                ],
             ],
         ],
 
@@ -699,11 +722,14 @@ return [
             'submenu' => [
                 [
                     'text' => 'Announcements',
-                    'route' => 'announcements.index'
+                    'route' => 'announcements.index',
+                    'can' => 'announcements.index',
+                    'active' => ['announcements*'],
                 ],
                 [
                     'text' => 'Visitor Feedback',
-                    'route' => 'visitors.feedback'
+                    'route' => 'visitors.feedback',
+                    'can' => 'visitors.feedback',
                 ],
             ],
         ],
@@ -715,12 +741,13 @@ return [
                 // ['text' => 'Vehicle Log', 'url' => 'vehicle_logs'],
                 [
                     'text' => 'Parking List',
-                    'route' => 'parking_lists.index'
+                    'route' => 'parking_lists.index',
+                    'can' => 'parking_lists.index',
                 ],
-                [
-                    'text' => 'Parking Permits',
-                    'url' => 'parking_permits'
-                ],
+                // [
+                //     'text' => 'Parking Permits',
+                //     'url' => 'parking_permits'
+                // ],
             ],
         ],
         [
@@ -730,23 +757,27 @@ return [
             // 'can'   => 'menu.setting',
             'submenu' => [
                 [
-                    'text' => 'User Catogory List',
+                    'text' => 'User Category List',
                     'route' => 'user_categories.index',
+                    'can' => 'user_categories.index',
                     'active' => ['user_categories*'],
                 ],
                 [
                     'text' => 'Role List',
                     'route' => 'roles.index',
+                    'can' => 'roles.index',
                     'active' => ['roles*'],
                 ],
                 [
                     'text' => 'Permission List',
                     'route' => 'permissions.index',
+                    'can' => 'permissions.index',
                     'active' => ['permissions*'],
                 ],
                 [
                     'text' => 'System Users',
                     'route' => 'system_users.index',
+                    'can' => 'system_users.index',
                     'active' => ['system_users*'],
                 ],
             ],

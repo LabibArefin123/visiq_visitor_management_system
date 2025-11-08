@@ -13,7 +13,7 @@ class VisitorCompanyController extends Controller
      */
     public function index()
     {
-        $visitorCompanies = VisitorCompany::orderBy('id', 'asc')->paginate(10);
+        $visitorCompanies = VisitorCompany::orderBy('id', 'asc')->get();
         return view('visitor_management.visitor_company.index', compact('visitorCompanies'));
     }
 

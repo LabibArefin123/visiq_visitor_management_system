@@ -10,7 +10,7 @@ class SubAreaController extends Controller
 {
     public function index()
     {
-        $subAreas = SubArea::with('area')->orderBy('id', 'asc')->paginate(10);
+        $subAreas = SubArea::with('area')->orderBy('id', 'asc')->get();
         return view('building_menu.sub_area.index', compact('subAreas'));
     }
 

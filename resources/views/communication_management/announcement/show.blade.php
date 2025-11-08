@@ -25,14 +25,12 @@
 
                     <div class="col-md-6 form-group">
                         <label><strong>Start Date</strong></label>
-                        <input type="text" class="form-control" value="{{ $announcement->start_date->format('d M, Y') }}"
-                            readonly>
+                        <input type="text" class="form-control" value="{{ $announcement->start_date }}" readonly>
                     </div>
 
                     <div class="col-md-6 form-group">
                         <label><strong>End Date</strong></label>
-                        <input type="text" class="form-control"
-                            value="{{ $announcement->end_date?->format('d M, Y') ?? 'N/A' }}" readonly>
+                        <input type="text" class="form-control" value="{{ $announcement->end_date }}" readonly>
                     </div>
 
                     <div class="col-md-6 form-group">

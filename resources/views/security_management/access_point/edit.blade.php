@@ -21,12 +21,19 @@
     <div class="container">
         <div class="card shadow-lg mt-3">
             <div class="card-body">
-                <form action="{{ route('access_points.update', $accessPoint->id) }}" method="POST">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form action="{{ route('access_points.update', $accessPoint->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">
-
-                        {{-- Name --}}
                         <div class="col-md-6 form-group">
                             <label for="name"><strong>Name</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="name" id="name"
@@ -37,7 +44,6 @@
                             @enderror
                         </div>
 
-                        {{-- Location --}}
                         <div class="col-md-6 form-group">
                             <label for="location"><strong>Location</strong></label>
                             <input type="text" name="location" id="location"
@@ -49,7 +55,6 @@
                             @enderror
                         </div>
 
-                        {{-- Description --}}
                         <div class="col-md-6 form-group">
                             <label for="description"><strong>Description</strong></label>
                             <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
@@ -58,7 +63,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
                     </div>
 
                     <div class="text-end mt-3">

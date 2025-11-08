@@ -17,49 +17,49 @@
 @stop
 
 @section('content')
-    <div class="card shadow-lg">
-        <div class="card-body table-responsive">
-            <table class="table table-bordered table-striped align-middle text-center">
-                <thead class="table-dark">
-                    <tr>
-                        <th>SL</th>
-                        <th>Area Name</th>
-                        <th>Sub Area Name</th>
-                        <th>Sub Area Name (in Bangla)</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($subAreas as $key => $subArea)
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-hover text-nowrap" id="dataTables">
+                    <thead class="thead-dark">
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $subArea->area->name ?? 'N/A' }}</td>
-                            <td>{{ $subArea->sub_area_name }}</td>
-                            <td>{{ $subArea->sub_area_name_in_bangla ?? '-' }}</td>
-                            <td>
-                                <a href="{{ route('sub_areas.show', $subArea->id) }}" class="btn btn-sm btn-info">View</a>
-                                <a href="{{ route('sub_areas.edit', $subArea->id) }}"
-                                    class="btn btn-sm btn-primary">Edit</a>
-                                <form action="{{ route('sub_areas.destroy', $subArea->id) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-danger btn-sm"
-                                        onclick="triggerDeleteModal('{{ route('sub_areas.destroy', $subArea->id) }}')">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
+                            <th>SL</th>
+                            <th>Area Name</th>
+                            <th>Sub Area Name</th>
+                            <th>Sub Area Name (in Bangla)</th>
+                            <th>Action</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center">No Sub Areas found</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            <div class="mt-3 d-flex justify-content-center">
-                {{ $subAreas->links('pagination::bootstrap-5') }}
+                    </thead>
+                    <tbody>
+                        @forelse ($subAreas as $key => $subArea)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $subArea->area->name ?? 'N/A' }}</td>
+                                <td>{{ $subArea->sub_area_name }}</td>
+                                <td>{{ $subArea->sub_area_name_in_bangla ?? '-' }}</td>
+                                <td>
+                                    <a href="{{ route('sub_areas.show', $subArea->id) }}"
+                                        class="btn btn-sm btn-info">View</a>
+                                    <a href="{{ route('sub_areas.edit', $subArea->id) }}"
+                                        class="btn btn-sm btn-primary">Edit</a>
+                                    <form action="{{ route('sub_areas.destroy', $subArea->id) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('sub_areas.destroy', $subArea->id) }}')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center">No Sub Areas found</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -17,43 +17,45 @@
 @stop
 
 @section('content')
-    <div class="card shadow-sm">
-        <div class="card-body table-responsive p-0">
-            <table class="table table-hover table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>SL</th>
-                        <th class="text-center">Area Name</th>
-                        <th class="text-center">Area Name (in Bangla)</th>
-                        <th class="text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($areas as $index => $area)
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-hover text-nowrap" id="dataTables">
+                    <thead class="thead-dark">
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td class="text-center">{{ $area->name }}</td>
-                            <td class="text-center">{{ $area->name_in_bangla }}</td>
-                            <td class="text-center">
-                                <a href="{{ route('areas.show', $area->id) }}" class="btn btn-sm btn-info">View</a>
-                                <a href="{{ route('areas.edit', $area->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                <form action="{{ route('areas.destroy', $area->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-danger btn-sm"
-                                        onclick="triggerDeleteModal('{{ route('areas.destroy', $area->id) }}')">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
+                            <th>SL</th>
+                            <th class="text-center">Area Name</th>
+                            <th class="text-center">Area Name (in Bangla)</th>
+                            <th class="text-center">Action</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center text-muted">No Area Records Found</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($areas as $index => $area)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $area->name }}</td>
+                                <td class="text-center">{{ $area->name_in_bangla }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('areas.show', $area->id) }}" class="btn btn-sm btn-info">View</a>
+                                    <a href="{{ route('areas.edit', $area->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <form action="{{ route('areas.destroy', $area->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('areas.destroy', $area->id) }}')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">No Area Records Found</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @stop

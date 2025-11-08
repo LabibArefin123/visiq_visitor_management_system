@@ -6,15 +6,15 @@
     <div class="d-flex justify-content-between">
         <h1>Create System User</h1>
         <a href="{{ route('system_users.index') }}"
-            class="btn btn-warning btn-sm d-flex align-items-center gap-2 shadow rounded-pill px-3 py-2">
+            class="btn btn-warning btn-sm d-flex align-items-center gap-2 shadow rounded-pill px-3 py-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.354
-                     11.354a.5.5 0 0 0 0-.708L6.707 9H11.5a.5.5
-                     0 0 0 0-1H6.707l1.647-1.646a.5.5 0 0
-                     0-.708-.708l-2.5 2.5a.5.5 0 0
-                     0 0 .708l2.5 2.5a.5.5 0 0
-                     0 .708 0z" />
+                                     11.354a.5.5 0 0 0 0-.708L6.707 9H11.5a.5.5
+                                     0 0 0 0-1H6.707l1.647-1.646a.5.5 0 0
+                                     0-.708-.708l-2.5 2.5a.5.5 0 0
+                                     0 0 .708l2.5 2.5a.5.5 0 0
+                                     0 .708 0z" />
             </svg>
             <span class="fw-bold">Back to List</span>
         </a>
@@ -23,22 +23,18 @@
 
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
     <div class="card">
         <div class="card-body">
-            @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
-
-            <form action="{{ route('system_users.store') }}" method="POST">
+            <form action="{{ route('system_users.store') }}" method="POST" data-confirm="create">
                 @csrf
                 <div class="row">
                     <div class="form-group col-md-6">
@@ -118,11 +114,12 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
-
                 </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="text-end mt-3">
+                    <button type="submit" class="btn btn-success">
+                        Save
+                    </button>
+                </div>
             </form>
         </div>
     </div>

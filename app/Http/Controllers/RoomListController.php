@@ -16,7 +16,7 @@ class RoomListController extends Controller
      */
     public function index()
     {
-        $rooms = RoomList::with(['category', 'area', 'location', 'building'])->latest()->paginate(10);
+        $rooms = RoomList::with(['category', 'area', 'location', 'building'])->latest()->get();
         return view('building_menu.room_list.index', compact('rooms'));
     }
 

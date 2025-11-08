@@ -1,18 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'Add Role')
+@section('title', 'Add New Role')
 
 @section('content_header')
     <div class="d-flex justify-content-between">
-        <h1>Add Roles</h1>
-        <button class="btn btn-sm btn-warning d-flex align-items-center gap-1" onclick="history.back()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
-                viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                    d="M15 8a.5.5 0 0 1-.5.5H2.707l4.147 4.146a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 0 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z" />
+        <h1>Add New Role</h1>
+        <a href="{{ route('roles.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            Go Back
-        </button>
+            Back
+        </a>
     </div>
 @stop
 
@@ -27,69 +27,74 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('roles.store') }}">
+    <form method="POST" action="{{ route('roles.store') }}" data-confirm="create">
         @csrf
 
         <div class="form-group">
-            <label for="role">Role Name</label>
-            <input type="text" name="name" class="form-control" required>
+            <label for="name">Role Name</label>
+            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                value="{{ old('name') }}">
+            @error('name')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
-        <h4 class="mt-4">Assign Permissions (Grouped by Controller)</h4>
-
-        @foreach ($routes as $controller => $controllerRoutes)
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <h5 class="text-primary mb-0">{{ $controller }}</h5>
-                <button type="button" class="btn btn-sm btn-outline-primary select-all-btn"
-                    data-controller="{{ \Illuminate\Support\Str::slug($controller) }}">
-                    Select All
-                </button>
+        @foreach ($routes as $group => $groupRoutes)
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <h5 class="text-primary mb-0 text-uppercase">{{ ucfirst($group) }}</h5>
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-primary select-all-btn"
+                        data-group="{{ $group }}">
+                        Select All
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger unselect-all-btn"
+                        data-group="{{ $group }}">
+                        Unselect All
+                    </button>
+                </div>
             </div>
 
-            <table class="table table-bordered mb-4" id="table-{{ \Illuminate\Support\Str::slug($controller) }}">
-                <thead>
-                    <tr>
-                        <th>Select</th>
-                        <th>Permission Name (Route Name)</th>
-                        <th>URI</th>
-                        <th>Guard</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($controllerRoutes as $route)
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="permissions[]" value="{{ $route->getName() }}"
-                                    id="perm_{{ $route->getName() }}"
-                                    class="perm-checkbox-{{ \Illuminate\Support\Str::slug($controller) }}">
-                            </td>
-                            <td>
-                                <label for="perm_{{ $route->getName() }}">{{ $route->getName() }}</label>
-                            </td>
-                            <td>{{ $route->uri() }}</td>
-                            <td>web</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <div class="row">
+                        @foreach ($groupRoutes as $route)
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="permissions[]" value="{{ $route->getName() }}"
+                                        class="form-check-input perm-{{ $group }}"
+                                        id="route_{{ md5($route->getName()) }}">
+                                    <label class="form-check-label" for="route_{{ md5($route->getName()) }}">
+                                        {{ $route->getName() }}
+                                    </label>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         @endforeach
-        <button type="submit" class="btn btn-success">Save</button>
+        <div class="text-end mt-3">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
     </form>
-@endsection
+@stop
 
 @section('js')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.querySelectorAll('.select-all-btn');
+            document.querySelectorAll('.select-all-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const group = this.getAttribute('data-group');
+                    document.querySelectorAll(`.perm-${group}`).forEach(cb => cb.checked = true);
+                });
+            });
 
-            buttons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const controllerSlug = this.getAttribute('data-controller');
-                    const checkboxes = document.querySelectorAll('.perm-checkbox-' +
-                        controllerSlug);
-                    checkboxes.forEach(cb => cb.checked = true);
+            document.querySelectorAll('.unselect-all-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const group = this.getAttribute('data-group');
+                    document.querySelectorAll(`.perm-${group}`).forEach(cb => cb.checked = false);
                 });
             });
         });
     </script>
-@endsection
+@stop

@@ -5,9 +5,14 @@
 @section('content_header')
     <div class="d-flex justify-content-between">
         <h1>Edit Role: {{ $role->name }}</h1>
-        <button class="btn btn-sm btn-warning d-flex align-items-center gap-1" onclick="history.back()">
-            <i class="fas fa-arrow-left"></i> Go Back
-        </button>
+        <a href="{{ route('roles.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
+        </a>
     </div>
 @stop
 
@@ -22,13 +27,13 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('roles.update', $role->id) }}">
+    <form method="POST" action="{{ route('roles.update', $role->id) }}" data-confirm="edit">
         @csrf
         @method('PUT')
 
         <div class="form-group">
             <label for="name">Role Name</label>
-            <input type="text" name="name" class="form-control" value="{{ old('name', $role->name) }}" required>
+            <input type="text" name="name" class="form-control" value="{{ old('name', $role->name) }}">
         </div>
 
         @foreach ($permissions as $group => $groupPermissions)
@@ -45,25 +50,27 @@
                     </button>
                 </div>
             </div>
-
-            <div class="row">
-                @foreach ($groupPermissions as $permission)
-                    <div class="col-md-4">
-                        <div class="form-check">
-                            <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
-                                class="form-check-input perm-{{ $group }}" id="perm_{{ $permission->id }}"
-                                {{ in_array($permission->name, $rolePermissions) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="perm_{{ $permission->id }}">
-                                {{ $permission->name }}
-                            </label>
-                        </div>
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <div class="row">
+                        @foreach ($groupPermissions as $permission)
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
+                                        class="form-check-input perm-{{ $group }}" id="perm_{{ $permission->id }}"
+                                        {{ in_array($permission->name, $rolePermissions) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="perm_{{ $permission->id }}">
+                                        {{ $permission->name }}
+                                    </label>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
             </div>
         @endforeach
-
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Update Role</button>
+        <div class="text-end mt-3">
+            <button type="submit" class="btn btn-success">Update</button>
         </div>
     </form>
 @stop

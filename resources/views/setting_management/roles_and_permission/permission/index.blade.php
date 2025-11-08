@@ -41,13 +41,13 @@
             </form>
 
             <!-- Permissions Table -->
-            <table id="permissionsTable" class="table table-bordered table-striped">
+            <table id="dataTables" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>SL</th>
                         <th>Permission Name</th>
-                        <th>Guard</th>
-                        <th>Action</th>
+                        <th class="text-center">Guard</th>
+                        <th class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,8 +55,8 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $permission->name }}</td>
-                            <td>{{ $permission->guard_name }}</td>
-                            <td>
+                            <td class="text-center">{{ $permission->guard_name }}</td>
+                            <td class="text-center">
                                 <a href="{{ route('permissions.edit', $permission->id) }}"
                                     class="btn btn-warning btn-sm">Edit</a>
                                 <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST"
@@ -73,9 +73,6 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="mt-3 d-flex justify-content-center">
-                {{ $permissions->links('pagination::bootstrap-5') }}
-            </div>
         </div>
     </div>
 @stop

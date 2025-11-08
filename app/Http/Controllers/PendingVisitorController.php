@@ -13,8 +13,7 @@ class PendingVisitorController extends Controller
      */
     public function index()
     {
-        $visitors = PendingVisitor::orderBy('visit_date', 'asc')->paginate(10);
-
+        $visitors = PendingVisitor::orderBy('visit_date', 'asc')->get();
         return view('visitor_management.pending_visitors.index', compact('visitors'));
     }
 

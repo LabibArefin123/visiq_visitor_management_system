@@ -10,7 +10,7 @@ class LostAndFoundController extends Controller
 {
     public function index()
     {
-        $lostAndFounds = LostAndFound::with('visitor')->latest()->paginate(10);
+        $lostAndFounds = LostAndFound::with('visitor')->latest()->get();
         return view('asset_management.lost_and_found.index', compact('lostAndFounds'));
     }
 

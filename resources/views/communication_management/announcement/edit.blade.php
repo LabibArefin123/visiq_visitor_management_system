@@ -65,7 +65,7 @@
                             <label for="start_date"><strong>Start Date</strong> <span class="text-danger">*</span></label>
                             <input type="date" name="start_date" id="start_date"
                                 class="form-control @error('start_date') is-invalid @enderror"
-                                value="{{ old('start_date', $announcement->start_date->format('Y-m-d')) }}">
+                                value="{{ old('start_date', $announcement->start_date) }}">
                             @error('start_date')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -75,7 +75,7 @@
                             <label for="end_date"><strong>End Date</strong> <span class="text-danger">*</span></label>
                             <input type="date" name="end_date" id="end_date"
                                 class="form-control @error('end_date') is-invalid @enderror"
-                                value="{{ old('end_date', $announcement->end_date?->format('Y-m-d')) }}">
+                                value="{{ old('end_date', $announcement->end_date) }}">
                             @error('end_date')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror

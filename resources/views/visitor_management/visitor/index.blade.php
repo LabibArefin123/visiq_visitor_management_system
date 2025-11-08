@@ -19,8 +19,8 @@
 @section('content')
     <div class="container">
         <div class="card shadow-sm">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover table-striped">
+            <div class="card-body table-responsive">
+                <table class="table table-hover table-striped" id="dataTables">
                     <thead class="thead-dark">
                         <tr>
                             <th>ID</th>
@@ -76,10 +76,6 @@
                         @endforelse
                     </tbody>
                 </table>
-                <!-- Pagination Links -->
-                <div class="mt-3 d-flex justify-content-center">
-                    {{ $visitors->links('pagination::bootstrap-5') }}
-                </div>
             </div>
         </div>
     </div>

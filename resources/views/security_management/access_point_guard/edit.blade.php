@@ -21,12 +21,20 @@
     <div class="container">
         <div class="card shadow-lg mt-3">
             <div class="card-body">
-                <form action="{{ route('access_point_guards.update', $accessPointGuard->id) }}" method="POST">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form action="{{ route('access_point_guards.update', $accessPointGuard->id) }}" method="POST"
+                    data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">
-
-                        {{-- Access Point --}}
                         <div class="col-md-6 form-group">
                             <label for="access_point_id"><strong>Access Point</strong> <span
                                     class="text-danger">*</span></label>

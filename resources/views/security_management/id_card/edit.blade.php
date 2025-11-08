@@ -19,10 +19,18 @@
 @section('content')
     <div class="card shadow-lg">
         <div class="card-body">
-            <form action="{{ route('id_cards.update', $idCard->id) }}" method="POST">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <form action="{{ route('id_cards.update', $idCard->id) }}" method="POST" data-confirm="edit">
                 @csrf
                 @method('PUT')
-
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="card_number"><strong>Card Number</strong> <span class="text-danger">*</span></label>
@@ -66,7 +74,7 @@
                         <label for="issue_date"><strong>Issue Date</strong> <span class="text-danger">*</span></label>
                         <input type="date" name="issue_date" id="issue_date"
                             class="form-control @error('issue_date') is-invalid @enderror"
-                            value="{{ old('issue_date', $idCard->issue_date) }}">
+                            value="{{ old('issue_date', optional($idCard->issue_date)->format('Y-m-d')) }}">
                         @error('issue_date')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -76,7 +84,7 @@
                         <label for="expiry_date"><strong>Expiry Date</strong> <span class="text-danger">*</span></label>
                         <input type="date" name="expiry_date" id="expiry_date"
                             class="form-control @error('expiry_date') is-invalid @enderror"
-                            value="{{ old('expiry_date', $idCard->expiry_date) }}">
+                            value="{{ old('expiry_date', optional($idCard->expiry_date)->format('Y-m-d')) }}">
                         @error('expiry_date')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -116,7 +124,6 @@
 @section('js')
     <script>
         let holderData = [];
-
         const holderType = document.getElementById('holder_type');
         const holderSelect = document.getElementById('holder_id');
         const cardNumberInput = document.getElementById('card_number');

@@ -19,11 +19,18 @@
 @section('content')
     <div class="card shadow-lg">
         <div class="card-body">
-            <form action="{{ route('id_cards.store') }}" method="POST">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <form action="{{ route('id_cards.store') }}" method="POST" data-confirm="create">
                 @csrf
                 <div class="row">
-
-                    {{-- Card Number --}}
                     <div class="col-md-6 form-group">
                         <label for="card_number"><strong>Card Number</strong> <span class="text-danger">*</span></label>
                         <input type="text" name="card_number" id="card_number"

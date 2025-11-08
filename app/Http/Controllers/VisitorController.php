@@ -20,7 +20,7 @@ class VisitorController extends Controller
 {
     public function index()
     {
-        $visitors = Visitor::orderBy('id', 'asc')->paginate(10);
+        $visitors = Visitor::orderBy('id', 'asc')->get();
         return view('visitor_management.visitor.index', compact('visitors'));
     }
 

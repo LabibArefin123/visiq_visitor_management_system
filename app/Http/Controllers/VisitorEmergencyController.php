@@ -13,7 +13,7 @@ class VisitorEmergencyController extends Controller
      */
     public function index(Request $request)
     {
-        $emergencies = VisitorEmergency::orderBy('id', 'asc')->paginate(25);
+        $emergencies = VisitorEmergency::orderBy('id', 'asc')->get();
         return view('visitor_management.visitor_emergency.index', compact('emergencies'));
     }
 

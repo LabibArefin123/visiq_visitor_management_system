@@ -14,9 +14,9 @@
 @section('content')
     <div class="container">
         <div class="card shadow-sm">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover table-striped">
-                    <thead class="table-dark">
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-hover text-nowrap" id="dataTables">
+                    <thead class="thead-dark">
                         <tr>
                             <th>#</th>
                             <th>Visitor ID</th>
@@ -69,10 +69,6 @@
                         @endforelse
                     </tbody>
                 </table>
-
-                <div class="mt-3 d-flex justify-content-center">
-                    {{ $visitors->links('pagination::bootstrap-5') }}
-                </div>
             </div>
         </div>
     </div>

@@ -18,8 +18,8 @@
 
 @section('content')
     <div class="card shadow-sm">
-        <div class="card-body table-responsive p-0">
-            <table class="table table-hover">
+        <div class="card-body table-responsive">
+            <table class="table table-hover" id="dataTables">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
@@ -63,10 +63,6 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
-
-        <div class="card-footer d-flex justify-content-center">
-            {{ $emergencies->links('pagination::bootstrap-5') }}
         </div>
     </div>
 @stop
