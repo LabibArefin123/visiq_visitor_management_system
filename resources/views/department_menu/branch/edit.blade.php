@@ -29,11 +29,10 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('branches.update', $branch->id) }}" method="POST">
+                <form action="{{ route('branches.update', $branch->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">
-                        {{-- Guard ID --}}
                         <div class="col-md-6 form-group">
                             <label for="branch_code"><strong>Branch Code</strong></label>
                             <input type="text" name="branch_code" id="branch_code"
@@ -44,7 +43,6 @@
                             @enderror
                         </div>
 
-                        {{-- Name --}}
                         <div class="col-md-6 form-group">
                             <label for="name"><strong>Name</strong></label>
                             <input type="text" name="name" id="name"
@@ -55,7 +53,6 @@
                             @enderror
                         </div>
 
-                        {{-- Phone --}}
                         <div class="col-md-6 form-group">
                             <label for="phone"><strong>Phone</strong></label>
                             <input type="text" name="phone" id="phone"

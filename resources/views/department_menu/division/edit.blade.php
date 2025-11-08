@@ -29,7 +29,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('divisions.update', $division->id) }}" method="POST">
+                <form action="{{ route('divisions.update', $division->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">

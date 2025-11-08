@@ -52,12 +52,12 @@
                                             Edit
                                         </a>
                                         <form action="{{ route('divisions.destroy', $division->id) }}" method="POST"
-                                            class="d-inline"
-                                            onsubmit="return confirm('Are you sure you want to delete this branch?');">
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                Delete
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                onclick="triggerDeleteModal('{{ route('divisions.destroy', $division->id) }}')">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>

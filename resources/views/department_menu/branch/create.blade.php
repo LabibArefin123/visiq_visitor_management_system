@@ -29,7 +29,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('branches.store') }}" method="POST">
+                <form action="{{ route('branches.store') }}" method="POST" data-confirm="create">
                     @csrf
                     <div class="row">
                         {{-- Guard ID --}}

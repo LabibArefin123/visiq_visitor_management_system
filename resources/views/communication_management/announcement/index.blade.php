@@ -1,11 +1,11 @@
 {{-- resources/views/communication_management/announcement/index.blade.php --}}
 @extends('adminlte::page')
 
-@section('title', 'Announcements')
+@section('title', 'Announcement List')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Announcements List</h3>
+        <h3 class="mb-0">Announcement List</h3>
         <a href="{{ route('announcements.create') }}" class="btn btn-sm btn-success d-flex align-items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-plus" viewBox="0 0 24 24">
@@ -19,10 +19,10 @@
 
 @section('content')
     <div class="container">
-        <div class="card shadow-lg mt-3">
-            <div class="card-body table-responsive">
-                <table class="table table-bordered table-striped align-middle">
-                    <thead class="table-dark">
+        <div class="card shadow-sm">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover table-striped">
+                    <thead class="thead-dark">
                         <tr>
                             <th>#</th>
                             <th>Title</th>
@@ -53,10 +53,13 @@
                                     <a href="{{ route('announcements.edit', $announcement->id) }}"
                                         class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
                                     <form action="{{ route('announcements.destroy', $announcement->id) }}" method="POST"
-                                        class="d-inline" onsubmit="return confirm('Are you sure?')">
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('announcements.destroy', $announcement->id) }}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -68,7 +71,7 @@
                     </tbody>
                 </table>
 
-                <div class="mt-3">
+                <div class="mt-3 d-flex justify-content-center">
                     {{ $announcements->links('pagination::bootstrap-5') }}
                 </div>
             </div>
