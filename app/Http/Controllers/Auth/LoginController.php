@@ -37,7 +37,7 @@ class LoginController extends Controller
     protected function attemptLogin(Request $request)
     {
         $login = $request->input('login');
-        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
         return Auth::attempt([
             $field => $login,

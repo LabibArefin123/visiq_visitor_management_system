@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PendingVisitor;
+use App\Models\Visitor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -11,11 +12,53 @@ class PendingVisitorController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function approve($id, Request $request)
+    {
+        $pendingVisitor = PendingVisitor::findOrFail($id);
+
+        // Update status & remarks in PendingVisitor
+        $pendingVisitor->update([
+            'status' => 'approved',
+            'remarks' => $request->input('remarks') ?? 'Approved by admin',
+        ]);
+
+        // Prevent duplicate entries
+        $existingVisitor = Visitor::where('visitor_id', $pendingVisitor->visitor_id)->first();
+        if (!$existingVisitor) {
+            Visitor::create([
+                'visitor_id'   => $pendingVisitor->visitor_id,
+                'name'         => $pendingVisitor->name,
+                'email'        => $pendingVisitor->email,
+                'phone'        => $pendingVisitor->phone,
+                'purpose'      => $pendingVisitor->purpose,
+                'visit_date'   => $pendingVisitor->visit_date,
+                'date_of_birth' => $pendingVisitor->date_of_birth,
+                'national_id'  => $pendingVisitor->national_id,
+                'gender'       => $pendingVisitor->gender,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Visitor approved and added successfully.');
+    }
+
     public function index()
     {
-        $visitors = PendingVisitor::orderBy('visit_date', 'asc')->get();
-        return view('visitor_management.pending_visitors.index', compact('visitors'));
+        // Get all visitors that are not approved yet
+        $pendingVisitors = PendingVisitor::where('status', '!=', 'approved')
+            ->orWhereNull('status')
+            ->orderBy('visit_date', 'asc')
+            ->get();
+
+        // Get all approved visitors
+        $approvedVisitors = PendingVisitor::where('status', 'approved')
+            ->orderBy('visit_date', 'desc')
+            ->get();
+
+        return view('visitor_management.pending_visitors.index', compact('pendingVisitors', 'approvedVisitors'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.

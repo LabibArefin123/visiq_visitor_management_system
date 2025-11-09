@@ -17,6 +17,8 @@ return new class extends Migration {
             $table->string('purpose');
             $table->date('visit_date');
             $table->date('date_of_birth');
+            $table->string('status');
+            $table->string('remarks');
             $table->timestamps();
         });
     }

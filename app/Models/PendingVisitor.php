@@ -18,6 +18,8 @@ class PendingVisitor extends Model
         'purpose',
         'visit_date',
         'date_of_birth',
+        'status',
+        'remarks',
     ];
 
     // Optional: Mutators for handling date formatting (e.g., Date of Birth) or custom attributes

@@ -115,6 +115,17 @@ class DashboardController extends Controller
                 'totalCurrentCheckoutEmployees',
                 'notifications'
             ));
+        } elseif ($user->hasRole('employee')) {
+            return view('dashboard_employee', compact(
+                'totalVisitors',
+                'totalEmployees',
+                'totalPendingVisitors',
+                'totalEmergencyVisitors',
+                'totalBlacklistVisitors',
+                'totalCurrentCheckinEmployees',
+                'totalCurrentCheckoutEmployees',
+                'notifications'
+            ));
         } else {
             abort(403, 'Unauthorized access.');
         }

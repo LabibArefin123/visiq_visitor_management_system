@@ -127,6 +127,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     //visitor menu
     Route::resource('visitors', VisitorController::class);
     Route::resource('pending_visitors', PendingVisitorController::class);
+    Route::post('/pending-visitors/{id}/approve', [PendingVisitorController::class, 'approve'])->name('pending_visitors.approve');
     Route::resource('visitor_blacklists', VisitorBlacklistController::class);
     Route::get('/visitor_blacklist_monitor', [BlacklistMonitorController::class, 'index'])->name('visitor_blacklists.activity_log');
     Route::resource('visitor_emergencys', VisitorEmergencyController::class);
