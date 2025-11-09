@@ -9,15 +9,15 @@
 @section('content')
     <div class="container">
         <div class="card shadow-sm">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover table-striped align-middle">
-                    <thead class="table-dark">
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-hover text-nowrap" id="dataTables">
+                    <thead class="thead-dark">
                         <tr>
                             <th>#</th>
                             <th>Guard Name</th>
-                            <th>Date</th>
-                            <th>Check In Time</th>
-                            <th>Check Out Time</th>
+                            <th class="text-center">Date</th>
+                            <th class="text-center">Check In Time</th>
+                            <th class="text-center">Check Out Time</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,9 +25,11 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $log->guard_module->name ?? 'N/A' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($log->log_date)->format('d M, Y') }}</td>
-                                <td>{{ $log->check_in ? \Carbon\Carbon::parse($log->check_in)->format('h:i A') : '-' }}</td>
-                                <td>{{ $log->check_out ? \Carbon\Carbon::parse($log->check_out)->format('h:i A') : '-' }}
+                                <td class="text-center">{{ \Carbon\Carbon::parse($log->log_date)->format('d M, Y') }}</td>
+                                <td class="text-center">
+                                    {{ $log->check_in ? \Carbon\Carbon::parse($log->check_in)->format('h:i A') : '-' }}</td>
+                                <td class="text-center">
+                                    {{ $log->check_out ? \Carbon\Carbon::parse($log->check_out)->format('h:i A') : '-' }}
                                 </td>
                             </tr>
                         @empty
@@ -37,10 +39,6 @@
                         @endforelse
                     </tbody>
                 </table>
-
-                <div class="mt-3 d-flex justify-content-center">
-                    {{ $logs->links('pagination::bootstrap-5') }}
-                </div>
             </div>
         </div>
     </div>

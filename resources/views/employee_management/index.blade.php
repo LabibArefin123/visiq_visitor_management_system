@@ -54,11 +54,13 @@
                                     <a href="{{ route('employees.edit', $employee->id) }}"
                                         class="btn btn-primary btn-sm">Edit</a>
                                     <form action="{{ route('employees.destroy', $employee->id) }}" method="POST"
-                                        class="d-inline"
-                                        onsubmit="return confirm('Are you sure to delete this employee?');">
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('employees.destroy', $employee->id) }}')">
+                                            Delete
+                                        </button>
                                     </form>
                                 </td>
                             </tr>

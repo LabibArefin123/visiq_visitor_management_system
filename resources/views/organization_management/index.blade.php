@@ -12,52 +12,54 @@
 @stop
 
 @section('content')
-    <div class="card">
-        <div class="card-body table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th style="width: 60px;" class="text-center">SL</th>
-                        <th>Organization Name</th>
-                        <th style="width: 160px;" class="text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($organizations as $key => $organization)
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-hover text-nowrap" id="dataTables">
+                    <thead class="thead-dark">
                         <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
-                            <td>{{ $organization->name }}</td>
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('organizations.edit', $organization->id) }}"
-                                        class="btn btn-sm btn-primary">
-                                        Edit
-                                    </a>
-                                    <a href="{{ route('organizations.show', $organization->id) }}"
-                                        class="btn btn-sm btn-warning">
-                                        Show
-                                    </a>
-                                    <form action="{{ route('organizations.destroy', $organization->id) }}" method="POST"
-                                        class="d-inline"
-                                        onsubmit="return confirm('Are you sure you want to delete this organization?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
+                            <th style="width: 60px;" class="text-center">SL</th>
+                            <th>Organization Name</th>
+                            <th style="width: 160px;" class="text-center">Action</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="3" class="text-center text-muted">
-                                No organizations found.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse($organizations as $key => $organization)
+                            <tr>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $organization->name }}</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-1">
+                                        <a href="{{ route('organizations.edit', $organization->id) }}"
+                                            class="btn btn-sm btn-primary">
+                                            Edit
+                                        </a>
+                                        <a href="{{ route('organizations.show', $organization->id) }}"
+                                            class="btn btn-sm btn-warning">
+                                            Show
+                                        </a>
+                                        <form action="{{ route('organizations.destroy', $organization->id) }}"
+                                            method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                onclick="triggerDeleteModal('{{ route('organizations.destroy', $organization->id) }}')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">
+                                    No organizations found.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @stop

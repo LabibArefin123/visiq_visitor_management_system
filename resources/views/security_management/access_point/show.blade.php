@@ -22,8 +22,6 @@
         <div class="card shadow-lg mt-3">
             <div class="card-body">
                 <div class="row">
-
-                    {{-- Name --}}
                     <div class="col-md-6 form-group">
                         <label><strong>Name:</strong></label>
                         <p>{{ $accessPoint->name }}</p>

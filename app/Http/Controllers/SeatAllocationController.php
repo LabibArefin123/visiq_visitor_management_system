@@ -14,7 +14,7 @@ class SeatAllocationController extends Controller
     public function index()
     {
         $allocations = SeatAllocation::with(['userCategory', 'room', 'employee', 'visitor'])
-            ->latest()->paginate(10);
+            ->latest()->get();
 
         return view('facility_menu.allocation_menu.seat_allocation.index', compact('allocations'));
     }

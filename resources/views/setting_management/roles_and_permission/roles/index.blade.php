@@ -39,21 +39,19 @@
                             <td>
                                 <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning btn-sm">Edit</a>
 
-                                <form action="{{ route('roles.destroy', $role->id) }}" method="POST"
-                                    style="display:inline-block;"
-                                    onsubmit="return confirm('Are you sure you want to delete this role?');">
+                                <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm ml-1">Delete</button>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        onclick="triggerDeleteModal('{{ route('roles.destroy', $role->id) }}')">
+                                        Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            <div class="mt-3 d-flex justify-content-center">
-                {{ $roles->links('pagination::bootstrap-5') }}
-            </div>
         </div>
     </div>
 @stop

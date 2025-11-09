@@ -2,23 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ParkingList;
+use App\Models\ParkingLocation;
 use App\Models\UserCategory;
 use App\Models\Area;
 use App\Models\BuildingLocation;
 use App\Models\BuildingList;
-use App\Models\ParkingLocation;
 use Illuminate\Http\Request;
 
-class ParkingListController extends Controller
+class ParkingLocationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $parkingLists = ParkingList::with(['userCategory', 'area', 'location', 'building'])->latest()->get();
-        return view('parking_management.parking_list.index', compact('parkingLists'));
+        $parkingLocations = ParkingLocation::with(['userCategory', 'area', 'location', 'building'])->latest()->get();
+        return view('parking_management.parking_location.index', compact('parkingLocations'));
     }
 
     /**
@@ -28,7 +27,8 @@ class ParkingListController extends Controller
     {
         $categories = UserCategory::all();
         $areas = Area::all();
-        return view('parking_management.parking_list.create', compact('categories', 'areas'));
+
+        return view('parking_management.parking_location.create', compact('categories', 'areas'));
     }
 
     /**
@@ -43,39 +43,37 @@ class ParkingListController extends Controller
             'area_id' => 'required|exists:areas,id',
             'building_location_id' => 'required|exists:building_locations,id',
             'building_list_id' => 'required|exists:building_lists,id',
-            'parking_location_id' => 'required|exists:parking_locations,id',
             'level' => 'required|integer|min:0',
             'remarks' => 'nullable|string',
         ]);
 
-        ParkingList::create($request->all());
+        ParkingLocation::create($request->all());
 
-        return redirect()->route('parking_lists.index')->with('success', 'Parking list added successfully.');
+        return redirect()->route('parking_locations.index')->with('success', 'Parking location added successfully.');
     }
 
-    public function show(ParkingList $parkingList)
+    public function show(ParkingLocation $parkingLocation)
     {
-        return view('parking_management.parking_list.show', compact('parkingList'));
+        return view('parking_management.parking_location.show', compact('parkingLocation'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ParkingList $parkingList)
+    public function edit(ParkingLocation $parkingLocation)
     {
         $categories = UserCategory::all();
         $areas = Area::all();
         $locations = BuildingLocation::all();
         $buildings = BuildingList::all();
-        $plocations = ParkingLocation::all();
 
-        return view('parking_management.parking_list.edit', compact('parkingList', 'categories', 'areas', 'locations', 'buildings', 'plocations'));
+        return view('parking_management.parking_location.edit', compact('parkingLocation', 'categories', 'areas', 'locations', 'buildings'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ParkingList $parkingList)
+    public function update(Request $request, ParkingLocation $parkingLocation)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -84,22 +82,21 @@ class ParkingListController extends Controller
             'area_id' => 'nullable|exists:areas,id',
             'building_location_id' => 'nullable|exists:building_locations,id',
             'building_list_id' => 'nullable|exists:building_lists,id',
-            'parking_location_id' => 'required|exists:parking_locations,id',
             'level' => 'nullable|integer|min:0',
             'remarks' => 'nullable|string',
         ]);
 
-        $parkingList->update($request->all());
+        $parkingLocation->update($request->all());
 
-        return redirect()->route('parking_lists.index')->with('success', 'Parking list updated successfully.');
+        return redirect()->route('parking_locations.index')->with('success', 'Parking location updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ParkingList $parkingList)
+    public function destroy(ParkingLocation $parkingLocation)
     {
-        $parkingList->delete();
-        return redirect()->route('parking_lists.index')->with('success', 'Parking list deleted successfully.');
+        $parkingLocation->delete();
+        return redirect()->route('parking_locations.index')->with('success', 'Parking location deleted successfully.');
     }
 }

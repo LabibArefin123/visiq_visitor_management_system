@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Models\Visitor;
 use App\Models\Guard;
 use App\Models\BuildingLocation;
+use App\Models\ParkingLocation;
 use App\Models\BuildingList;
 
 class AjaxController extends Controller
@@ -42,6 +43,18 @@ class AjaxController extends Controller
             ->get();
 
         return response()->json($buildings);
+    }
+
+    public function getParkingLocationByBuildingName(Request $request)
+    {
+        $parkingLocationId = $request->building_list_id;
+
+        $parkingLocations = ParkingLocation::where('building_list_id', $parkingLocationId)
+            ->select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return response()->json($parkingLocations);
     }
 
     public function getDivisionByBranch(Request $request)

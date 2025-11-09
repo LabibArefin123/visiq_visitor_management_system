@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'Edit Parking')
+@section('title', 'Edit Parking Location')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Edit Parking</h3>
-        <a href="{{ route('parking_lists.index') }}"
+        <h3 class="mb-0">Edit Parking Location</h3>
+        <a href="{{ route('parking_locations.index') }}"
             class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -30,12 +30,13 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('parking_lists.update', $parkingList->id) }}" method="POST" data-confirm="edit">
+                <form action="{{ route('parking_locations.update', $parkingList->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">
+                        {{-- Location Name --}}
                         <div class="col-md-6 form-group">
-                            <label><strong>Parking Name</strong> <span class="text-danger">*</span></label>
+                            <label><strong>Location Name</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
                                 value="{{ old('name', $parkingList->name) }}" placeholder="Enter Location Name">
                             @error('name')
@@ -45,7 +46,7 @@
 
                         {{-- Location Name in Bangla --}}
                         <div class="col-md-6 form-group">
-                            <label><strong>Parking Name (Bangla)</strong></label>
+                            <label><strong>Location Name (Bangla)</strong></label>
                             <input type="text" name="name_in_bangla"
                                 class="form-control @error('name_in_bangla') is-invalid @enderror"
                                 value="{{ old('name_in_bangla', $parkingList->name_in_bangla) }}"
@@ -111,7 +112,7 @@
 
                         {{-- Building --}}
                         <div class="col-md-6 form-group">
-                            <label><strong>Building Name</strong> <span class="text-danger">*</span></label>
+                            <label><strong>Building</strong> <span class="text-danger">*</span></label>
                             <select id="building_list_id" name="building_list_id"
                                 class="form-control @error('building_list_id') is-invalid @enderror">
                                 <option value="">-- Select Building --</option>
@@ -128,14 +129,15 @@
                         </div>
 
                         <div class="col-md-6 form-group">
-                            <label><strong>Building Name</strong> <span class="text-danger">*</span></label>
+                            <label for="parking_location_id"><strong>Parking Location</strong> <span
+                                    class="text-danger">*</span></label>
                             <select id="parking_location_id" name="parking_location_id"
                                 class="form-control @error('parking_location_id') is-invalid @enderror">
-                                <option value="">-- Select Building --</option>
-                                @foreach ($plocations as $ploc)
+                                <option value="">-- Select Parking Location --</option>
+                                @foreach ($plocations as $location)
                                     <option value="{{ $building->id }}"
-                                        {{ old('parking_location_id', $parkingList->parking_location_id) == $ploc->id ? 'selected' : '' }}>
-                                        {{ $ploc->name }}
+                                        {{ old('parking_location_id', $parkingList->parking_location_id) == $location->id ? 'selected' : '' }}>
+                                        {{ $location->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -143,7 +145,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
                         {{-- Level --}}
                         <div class="col-md-6 form-group">
                             <label><strong>Level</strong> <span class="text-danger">*</span></label>
@@ -183,7 +184,6 @@
                 var areaID = $(this).val();
                 $('#building_location_id').html('<option value="">Loading...</option>');
                 $('#building_list_id').html('<option value="">-- Select Building --</option>');
-                $('#parking_location_id').html('<option value="">-- Select Parking Location --</option>');
 
                 if (areaID) {
                     $.ajax({
@@ -227,31 +227,6 @@
                     });
                 }
             });
-        });
-
-        // When building changes -> load parking locations
-        $('#building_list_id').on('change', function() {
-            var buildingID = $(this).val();
-
-            $('#parking_location_id').html('<option value="">Loading...</option>');
-
-            if (buildingID) {
-                $.ajax({
-                    url: '{{ route('ajax.getParkingLocationByBuildingName') }}',
-                    type: 'GET',
-                    data: {
-                        building_list_id: buildingID
-                    },
-                    success: function(data) {
-                        $('#parking_location_id').html(
-                            '<option value="">-- Select Parking Location --</option>');
-                        $.each(data, function(key, value) {
-                            $('#parking_location_id').append('<option value="' + value.id +
-                                '">' + value.name + '</option>');
-                        });
-                    }
-                });
-            }
         });
     </script>
 @endsection

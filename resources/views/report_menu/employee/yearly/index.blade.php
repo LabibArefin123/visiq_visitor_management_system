@@ -37,7 +37,7 @@
             </form>
 
             <!-- Table -->
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped" id="dataTables">
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>

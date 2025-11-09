@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -15,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all(); // Paginate with 10 items per page
+        $users = User::all();
         return view('setting_management.system_user.index', compact('users'));
     }
 
@@ -33,7 +34,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Validation
+        // ✅ Validate input
         $request->validate([
             'name'      => 'required|string|max:50',
             'username'  => 'required|string|max:255|unique:users,username',
@@ -41,9 +42,18 @@ class UserController extends Controller
             'phone'     => 'required|string|max:15',
             'password'  => 'required|string|min:8|confirmed',
             'role'      => 'required|string|exists:roles,name',
+            'current_password' => 'required|string',
         ]);
 
-        // User Create
+        // ✅ Check if the logged-in admin’s current password is correct
+        $admin = Auth::user();
+        if (!Hash::check($request->current_password, $admin->password)) {
+            return back()->withErrors([
+                'current_password' => 'বর্তমান পাসওয়ার্ড সঠিক নয়।',
+            ])->withInput();
+        }
+
+        // ✅ Create the new user
         $user = User::create([
             'name'      => $request->name,
             'username'  => $request->username,
@@ -52,7 +62,7 @@ class UserController extends Controller
             'password'  => Hash::make($request->password),
         ]);
 
-        // Assign Role
+        // ✅ Assign role
         $role = Role::where('name', $request->role)->first();
         if ($role) {
             $user->assignRole($role->name);
@@ -72,11 +82,9 @@ class UserController extends Controller
         return view('setting_management.system_user.view', compact('user'));
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
-
     public function edit($id)
     {
         $user = User::findOrFail($id);
@@ -91,35 +99,39 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Validation
+        // ✅ Validate
         $request->validate([
             'name'      => 'required|string|max:50',
             'username'  => 'required|string|max:255|unique:users,username,' . $user->id,
             'email'     => 'required|email|unique:users,email,' . $user->id,
             'phone'     => 'required|string|max:15',
             'role'      => 'required|string|exists:roles,name',
-            'current_password'      => 'nullable|required_with:password|string',
-            'password'              => 'nullable|string|min:8|confirmed',
+            'current_password' => 'required|string',
+            'password'  => 'nullable|string|min:8|confirmed',
         ]);
 
-        // যদি password পরিবর্তন করতে চায়, তবে current password check হবে
+        // ✅ Check the admin’s current password before allowing update
+        $admin = Auth::user();
+        if (!Hash::check($request->current_password, $admin->password)) {
+            return back()->withErrors([
+                'current_password' => 'বর্তমান পাসওয়ার্ড সঠিক নয়।',
+            ])->withInput();
+        }
+
+        // ✅ If new password is provided, update it
         if ($request->filled('password')) {
-            if (!Hash::check($request->current_password, $user->password)) {
-                return back()->withErrors([
-                    'current_password' => 'বর্তমান পাসওয়ার্ড সঠিক নয়।',
-                ]);
-            }
             $user->password = Hash::make($request->password);
         }
 
-        // User data update
-        $user->name     = $request->name;
-        $user->username = $request->username;
-        $user->email    = $request->email;
-        $user->phone    = $request->phone;
-        $user->save();
+        // ✅ Update user info
+        $user->update([
+            'name'      => $request->name,
+            'username'  => $request->username,
+            'email'     => $request->email,
+            'phone'     => $request->phone,
+        ]);
 
-        // Role update
+        // ✅ Update user role
         $role = Role::where('name', $request->role)->first();
         if ($role) {
             $user->syncRoles([$role->name]);

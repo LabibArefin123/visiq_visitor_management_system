@@ -9,15 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('parking_lists', function (Blueprint $table) {
+        Schema::create('parking_locations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_category_id')->nullable()->index();
             $table->foreignId('area_id')->nullable()->index();
             $table->foreignId('building_location_id')->nullable()->index();
             $table->foreignId('building_list_id')->nullable()->index();
-            $table->foreignId('parking_location_id')->nullable()->index();
             $table->string('name');
             $table->string('name_in_bangla')->nullable();
             $table->integer('level')->nullable();
@@ -26,12 +25,11 @@ return new class extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('parking_lists');
+        Schema::dropIfExists('parking_locations');
     }
 };

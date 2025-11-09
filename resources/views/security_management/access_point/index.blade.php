@@ -39,13 +39,12 @@
                                     <a href="{{ route('access_points.edit', $point->id) }}" class="btn btn-sm btn-warning">
                                         Edit
                                     </a>
-
                                     <form action="{{ route('access_points.destroy', $point->id) }}" method="POST"
-                                        class="d-inline"
-                                        onsubmit="return confirm('Are you sure you want to delete this access point?');">
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-danger">
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('access_points.destroy', $point->id) }}')">
                                             Delete
                                         </button>
                                     </form>

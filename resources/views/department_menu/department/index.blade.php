@@ -60,7 +60,7 @@
                                             @method('DELETE')
                                             <button type="button" class="btn btn-danger btn-sm"
                                                 onclick="triggerDeleteModal('{{ route('departments.destroy', $department->id) }}')">
-                                                <i class="fas fa-trash"></i>
+                                                Delete
                                             </button>
                                         </form>
                                     </div>

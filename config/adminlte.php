@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'VMS :: Visitor Management System ::',
+    'title' => 'VisiQ :: Visitor Management System ::',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -735,7 +735,7 @@ return [
         ],
 
         [
-            'text' => 'Vehicle & Parking',
+            'text' => 'Parking Management',
             'icon' => 'fas fa-car',
             'submenu' => [
                 // ['text' => 'Vehicle Log', 'url' => 'vehicle_logs'],
@@ -743,6 +743,13 @@ return [
                     'text' => 'Parking List',
                     'route' => 'parking_lists.index',
                     'can' => 'parking_lists.index',
+                    'active' => ['parking_lists*'],
+                ],
+                [
+                    'text' => 'Parking Location',
+                    'route' => 'parking_locations.index',
+                    'can' => 'parking_locations.index',
+                    'active' => ['parking_locations*'],
                 ],
                 // [
                 //     'text' => 'Parking Permits',

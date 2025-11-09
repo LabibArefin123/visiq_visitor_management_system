@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
 use App\Models\EmployeeAttendance;
 use App\Models\Visitor;
@@ -78,16 +79,45 @@ class DashboardController extends Controller
                 ];
             });
 
-        return view('dashboard', compact(
-            'totalVisitors',
-            'totalEmployees',
-            'totalPendingVisitors',
-            'totalEmergencyVisitors',
-            'totalBlacklistVisitors',
-            'totalCurrentCheckinEmployees',
-            'totalCurrentCheckoutEmployees',
-            'notifications'
-        ));
+        $user = Auth::user();
+
+        // ✅ Check role and load appropriate dashboard
+        if ($user->hasRole('admin')) {
+            return view('dashboard', compact(
+                'totalVisitors',
+                'totalEmployees',
+                'totalPendingVisitors',
+                'totalEmergencyVisitors',
+                'totalBlacklistVisitors',
+                'totalCurrentCheckinEmployees',
+                'totalCurrentCheckoutEmployees',
+                'notifications'
+            ));
+        } elseif ($user->hasRole('receiptionist')) {
+            return view('dashboard_receiptionist', compact(
+                'totalVisitors',
+                'totalEmployees',
+                'totalPendingVisitors',
+                'totalEmergencyVisitors',
+                'totalBlacklistVisitors',
+                'totalCurrentCheckinEmployees',
+                'totalCurrentCheckoutEmployees',
+                'notifications'
+            ));
+        } elseif ($user->hasRole('it_officer')) {
+            return view('dashboard_it_officer', compact(
+                'totalVisitors',
+                'totalEmployees',
+                'totalPendingVisitors',
+                'totalEmergencyVisitors',
+                'totalBlacklistVisitors',
+                'totalCurrentCheckinEmployees',
+                'totalCurrentCheckoutEmployees',
+                'notifications'
+            ));
+        } else {
+            abort(403, 'Unauthorized access.');
+        }
     }
 }
 

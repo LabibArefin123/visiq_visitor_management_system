@@ -10,10 +10,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus"
                 viewBox="0 0 16 16">
                 <path d="M6 8c1.657 0 3-1.343 3-3S7.657 2 6 2 3 3.343 3 5s1.343 3 3 3zm0 1c-2.21
-                                        0-4 1.79-4 4v1h8v-1c0-2.21-1.79-4-4-4z" />
+                                            0-4 1.79-4 4v1h8v-1c0-2.21-1.79-4-4-4z" />
                 <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 0-.5.5V7h-1.5a.5.5 0 0 0
-                                        0 1H13v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0
-                                        0 0-1H14V5.5a.5.5 0 0 0-.5-.5z" />
+                                            0 1H13v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0
+                                            0 0-1H14V5.5a.5.5 0 0 0-.5-.5z" />
             </svg>
             <span>Add New</span>
         </a>
@@ -50,11 +50,13 @@
                                         class="btn btn-warning btn-sm">Edit</a>
 
                                     <form action="{{ route('system_users.destroy', $user->id) }}" method="POST"
-                                        style="display:inline-block;"
-                                        onsubmit="return confirm('Are you sure you want to delete this role?');">
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm ml-1">Delete</button>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('system_users.destroy', $user->id) }}')">
+                                            Delete
+                                        </button>
                                     </form>
                                 </td>
 

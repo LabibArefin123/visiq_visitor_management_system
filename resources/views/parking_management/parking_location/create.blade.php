@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'Add Parking List')
+@section('title', 'Add Parking Location')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Add Parking List</h3>
-        <a href="{{ route('parking_lists.index') }}"
+        <h3 class="mb-0">Add Parking Location</h3>
+        <a href="{{ route('parking_locations.index') }}"
             class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -30,7 +30,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('parking_lists.store') }}" method="POST" data-confirm="create">
+                <form action="{{ route('parking_locations.store') }}" method="POST" data-confirm="create">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 form-group">
@@ -83,7 +83,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
                         <div class="col-md-6 form-group">
                             <label for="building_location_id"><strong>Building Location</strong> <span
                                     class="text-danger">*</span></label>
@@ -94,7 +93,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
                         <div class="col-md-6 form-group">
                             <label for="building_list_id"><strong>Building Name</strong> <span
                                     class="text-danger">*</span></label>
@@ -102,17 +100,6 @@
                                 <option value="">-- Select Building --</option>
                             </select>
                             @error('building_list_id')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-6 form-group">
-                            <label for="parking_location_id"><strong>Parking Location</strong> <span
-                                    class="text-danger">*</span></label>
-                            <select id="parking_location_id" name="parking_location_id" class="form-control">
-                                <option value="">-- Select Parking Location --</option>
-                            </select>
-                            @error('parking_location_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -148,13 +135,11 @@
 
 @section('js')
     <script>
-        // When area changes -> load locations
         $('#area_id').on('change', function() {
             var areaID = $(this).val();
 
             $('#building_location_id').html('<option value="">Loading...</option>');
             $('#building_list_id').html('<option value="">-- Select Building --</option>');
-            $('#parking_location_id').html('<option value="">-- Select Parking Location --</option>');
 
             if (areaID) {
                 $.ajax({
@@ -175,12 +160,10 @@
             }
         });
 
-        // When location changes -> load buildings
         $('#building_location_id').on('change', function() {
             var locationID = $(this).val();
 
             $('#building_list_id').html('<option value="">Loading...</option>');
-            $('#parking_location_id').html('<option value="">-- Select Parking Location --</option>');
 
             if (locationID) {
                 $.ajax({
@@ -199,31 +182,5 @@
                 });
             }
         });
-
-        // When building changes -> load parking locations
-        $('#building_list_id').on('change', function() {
-            var buildingID = $(this).val();
-
-            $('#parking_location_id').html('<option value="">Loading...</option>');
-
-            if (buildingID) {
-                $.ajax({
-                    url: '{{ route('ajax.getParkingLocationByBuildingName') }}',
-                    type: 'GET',
-                    data: {
-                        building_list_id: buildingID
-                    }, 
-                    success: function(data) {
-                        $('#parking_location_id').html(
-                            '<option value="">-- Select Parking Location --</option>');
-                        $.each(data, function(key, value) {
-                            $('#parking_location_id').append('<option value="' + value.id +
-                                '">' + value.name + '</option>');
-                        });
-                    }
-                });
-            }
-        });
     </script>
-
 @endsection

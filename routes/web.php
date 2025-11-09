@@ -55,6 +55,7 @@ use App\Http\Controllers\EmergencyIncidentController;
 use App\Http\Controllers\BlacklistMonitorController;
 
 //parking menu
+use App\Http\Controllers\ParkingLocationController;
 use App\Http\Controllers\ParkingListController;
 
 //facility menu
@@ -102,6 +103,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     //ajax controller
     Route::get('/get-locations-by-area', [AjaxController::class, 'getLocationsByArea'])->name('ajax.getLocationsByArea');
     Route::get('/get-buildings-by-location', [AjaxController::class, 'getBuildingsByLocation'])->name('ajax.getBuildingsByLocation');
+    Route::get('/get-parking-location-by-buidling-name', [AjaxController::class, 'getParkingLocationByBuildingName'])->name('ajax.getParkingLocationByBuildingName');
     Route::get('/get-division-by-branch', [AjaxController::class, 'getDivisionByBranch'])->name('ajax.getDivisionByBranch');
     Route::get('/get-department-by-division', [AjaxController::class, 'getDepartmentByDivision'])->name('ajax.getDepartmentByDivision');
     Route::get('/get-holders/{type}', [AjaxController::class, 'getHolders'])->name('ajax.getHolders');
@@ -141,6 +143,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/check-out-employees', [EmployeeAttendanceController::class, 'checkOutEmployees'])->name('employees.check_out_employee.index');
 
     //parking menu
+    Route::resource('parking_locations', ParkingLocationController::class);
     Route::resource('parking_lists', ParkingListController::class);
 
     //schedule menu

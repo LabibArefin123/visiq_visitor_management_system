@@ -29,7 +29,6 @@
 
     <form method="POST" action="{{ route('roles.store') }}" data-confirm="create">
         @csrf
-
         <div class="form-group">
             <label for="name">Role Name</label>
             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"

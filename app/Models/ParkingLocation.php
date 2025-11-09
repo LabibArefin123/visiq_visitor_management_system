@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ParkingList extends Model
+class ParkingLocation extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,6 @@ class ParkingList extends Model
         'area_id',
         'building_location_id',
         'building_list_id',
-        'parking_location_id',
         'name',
         'name_in_bangla',
         'level',
@@ -39,10 +38,5 @@ class ParkingList extends Model
     public function building()
     {
         return $this->belongsTo(BuildingList::class, 'building_list_id');
-    }
-
-    public function plocation()
-    {
-        return $this->belongsTo(ParkingLocation::class, 'parking_location_id');
     }
 }

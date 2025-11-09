@@ -12,7 +12,7 @@
 @stop
 
 @section('content')
-   <div class="container">
+    <div class="container">
         <div class="card shadow-sm">
             <div class="card-body table-responsive">
                 <table class="table table-striped table-hover text-nowrap text-center" id="dataTables">
@@ -48,13 +48,12 @@
                                         class="btn btn-sm btn-info">
                                         View
                                     </a>
-
                                     <form action="{{ route('access_point_guards.destroy', $assignment->id) }}"
-                                        method="POST" class="d-inline"
-                                        onsubmit="return confirm('Are you sure you want to delete this assignment?');">
+                                        method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-danger">
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('access_point_guards.destroy', $assignment->id) }}')">
                                             Delete
                                         </button>
                                     </form>

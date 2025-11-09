@@ -12,11 +12,11 @@
 @stop
 
 @section('content')
-    <div class="container-fluid mt-3">
-        <div class="card shadow-lg">
-            <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead class="table-dark text-center">
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-hover text-nowrap" id="dataTables">
+                    <thead class="thead-dark">
                         <tr>
                             <th>#</th>
                             <th class="text-center">User Category</th>
@@ -66,10 +66,13 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('seat_allocations.destroy', $allocation->id) }}" method="POST"
-                                        class="d-inline" onsubmit="return confirm('Are you sure?');">
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('seat_allocations.destroy', $allocation->id) }}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -80,10 +83,6 @@
                         @endforelse
                     </tbody>
                 </table>
-
-                <div class="d-flex justify-content-end mt-3">
-                    {{ $allocations->links() }}
-                </div>
             </div>
         </div>
     </div>

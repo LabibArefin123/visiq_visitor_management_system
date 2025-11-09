@@ -14,7 +14,7 @@ class GuardController extends Controller
      */
     public function index()
     {
-        $guards = Guard::latest()->paginate(10);
+        $guards = Guard::latest()->get();
         return view('security_management.guard.index', compact('guards'));
     }
 

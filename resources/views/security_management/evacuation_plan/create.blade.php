@@ -21,7 +21,16 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('evacuation_plans.store') }}" method="POST">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form action="{{ route('evacuation_plans.store') }}" method="POST" data-confirm="create">
                     @csrf
                     <div class="row">
                         {{-- Plan Name --}}
