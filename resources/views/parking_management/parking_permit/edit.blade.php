@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'Edit Parking Allotment')
+@section('title', 'Edit Parking Permit')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Edit Parking Allotment</h3>
-        <a href="{{ route('parking_allotments.index') }}"
+        <h3 class="mb-0">Edit Parking Permit</h3>
+        <a href="{{ route('parking_permits.index') }}"
             class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -30,8 +30,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('parking_allotments.update', $parkingAllotment->id) }}" method="POST"
-                    data-confirm="edit">
+                <form action="{{ route('parking_permits.update', $parkingPermit->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">
@@ -44,7 +43,7 @@
                                 <option value="">-- Select User Category --</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
-                                        {{ old('user_category_id', $parkingAllotment->user_category_id) == $category->id ? 'selected' : '' }}>
+                                        {{ old('user_category_id', $parkingPermit->user_category_id) == $category->id ? 'selected' : '' }}>
                                         {{ $category->category_name }}
                                     </option>
                                 @endforeach
@@ -55,18 +54,35 @@
                         </div>
 
                         <div class="col-md-6 form-group">
-                            <label for="alloted_by"><strong>Alloted By</strong> <span class="text-danger">*</span></label>
-                            <select name="alloted_by" id="alloted_by"
-                                class="form-control @error('alloted_by') is-invalid @enderror">
+                            <label for="visitor_id"><strong>Issued By</strong> <span class="text-danger">*</span></label>
+                            <select name="visitor_id" id="visitor_id"
+                                class="form-control @error('visitor_id') is-invalid @enderror">
+                                <option value="">-- Select User --</option>
+                                @foreach ($visitors as $visitor)
+                                    <option value="{{ $visitor->id }}"
+                                        {{ old('visitor_id', $parkingPermit->visitor_id) == $visitor->id ? 'selected' : '' }}>
+                                        {{ $visitor->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('visitor_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="issued_by"><strong>Issued By</strong> <span class="text-danger">*</span></label>
+                            <select name="issued_by" id="issued_by"
+                                class="form-control @error('issued_by') is-invalid @enderror">
                                 <option value="">-- Select User --</option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}"
-                                        {{ old('alloted_by', $parkingAllotment->alloted_by) == $user->id ? 'selected' : '' }}>
+                                        {{ old('issued_by', $parkingPermit->issued_by) == $user->id ? 'selected' : '' }}>
                                         {{ $user->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('alloted_by')
+                            @error('issued_by')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -79,7 +95,7 @@
                                 <option value="">-- Select Area --</option>
                                 @foreach ($areas as $area)
                                     <option value="{{ $area->id }}"
-                                        {{ old('area_id', $parkingAllotment->area_id) == $area->id ? 'selected' : '' }}>
+                                        {{ old('area_id', $parkingPermit->area_id) == $area->id ? 'selected' : '' }}>
                                         {{ $area->name }}
                                     </option>
                                 @endforeach
@@ -97,7 +113,7 @@
                                 <option value="">-- Select Location --</option>
                                 @foreach ($locations as $location)
                                     <option value="{{ $location->id }}"
-                                        {{ old('building_location_id', $parkingAllotment->building_location_id) == $location->id ? 'selected' : '' }}>
+                                        {{ old('building_location_id', $parkingPermit->building_location_id) == $location->id ? 'selected' : '' }}>
                                         {{ $location->name }}
                                     </option>
                                 @endforeach
@@ -115,7 +131,7 @@
                                 <option value="">-- Select Building --</option>
                                 @foreach ($buildings as $building)
                                     <option value="{{ $building->id }}"
-                                        {{ old('building_list_id', $parkingAllotment->building_list_id) == $building->id ? 'selected' : '' }}>
+                                        {{ old('building_list_id', $parkingPermit->building_list_id) == $building->id ? 'selected' : '' }}>
                                         {{ $building->name }}
                                     </option>
                                 @endforeach
@@ -132,7 +148,7 @@
                                 <option value="">-- Select Building --</option>
                                 @foreach ($plocations as $ploc)
                                     <option value="{{ $building->id }}"
-                                        {{ old('parking_location_id', $parkingAllotment->parking_location_id) == $ploc->id ? 'selected' : '' }}>
+                                        {{ old('parking_location_id', $parkingPermit->parking_location_id) == $ploc->id ? 'selected' : '' }}>
                                         {{ $ploc->name }}
                                     </option>
                                 @endforeach
@@ -149,7 +165,7 @@
                                 <option value="">-- Select Parking --</option>
                                 @foreach ($parkingLists as $park)
                                     <option value="{{ $building->id }}"
-                                        {{ old('parking_list_id', $parkingAllotment->parking_list_id) == $park->id ? 'selected' : '' }}>
+                                        {{ old('parking_list_id', $parkingPermit->parking_list_id) == $park->id ? 'selected' : '' }}>
                                         {{ $park->name }}
                                     </option>
                                 @endforeach
@@ -160,21 +176,21 @@
                         </div>
 
                         <div class="col-md-6 form-group">
-                            <label for="start_date"><strong>Start Date</strong> <span class="text-danger">*</span></label>
-                            <input type="date" name="start_date" id="start_date"
-                                class="form-control @error('start_date') is-invalid @enderror"
-                                value="{{ old('start_date', $parkingAllotment->start_date) }}">
-                            @error('start_date')
+                            <label for="issue_date"><strong>Issue Date</strong> <span class="text-danger">*</span></label>
+                            <input type="date" name="issue_date" id="issue_date"
+                                class="form-control @error('issue_date') is-invalid @enderror"
+                                value="{{ old('issue_date', $parkingPermit->issue_date) }}">
+                            @error('issue_date')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-6 form-group">
-                            <label for="end_date"><strong>End Date</strong> <span class="text-danger">*</span></label>
-                            <input type="date" name="end_date" id="end_date"
-                                class="form-control @error('end_date') is-invalid @enderror"
-                                value="{{ old('end_date', $parkingAllotment->end_date) }}">
-                            @error('end_date')
+                            <label for="expiry_date"><strong>Expiry Date</strong> <span class="text-danger">*</span></label>
+                            <input type="date" name="expiry_date" id="expiry_date"
+                                class="form-control @error('expiry_date') is-invalid @enderror"
+                                value="{{ old('expiry_date', $parkingPermit->expiry_date) }}">
+                            @error('expiry_date')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -184,9 +200,9 @@
                             <select name="status" class="form-control @error('status') is-invalid @enderror">
                                 <option value="">
                                     Select Status</option>
-                                <option value="Vacant" {{ $parkingAllotment->status == 'Vacant' ? 'selected' : '' }}>
+                                <option value="Vacant" {{ $parkingPermit->status == 'Vacant' ? 'selected' : '' }}>
                                     Vacant</option>
-                                <option value="Occupied" {{ $parkingAllotment->status == 'Occupied' ? 'selected' : '' }}>
+                                <option value="Occupied" {{ $parkingPermit->status == 'Occupied' ? 'selected' : '' }}>
                                     Occupied
                                 </option>
                             </select>
@@ -199,7 +215,7 @@
                         <div class="col-md-12 form-group">
                             <label><strong>Remarks</strong></label>
                             <textarea name="remarks" id="remarks" class="form-control @error('remarks') is-invalid @enderror"
-                                placeholder="Enter remarks">{{ old('remarks', $parkingAllotment->remarks) }}</textarea>
+                                placeholder="Enter remarks">{{ old('remarks', $parkingPermit->remarks) }}</textarea>
                             @error('remarks')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror

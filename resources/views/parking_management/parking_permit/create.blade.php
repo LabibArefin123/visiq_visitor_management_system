@@ -145,9 +145,9 @@
                             <label for="status"><strong>Status</strong> <span class="text-danger">*</span></label>
                             <select name="status" id="status"
                                 class="form-control @error('status') is-invalid @enderror">
-                                <option value="Lost" {{ old('status') == 'Lost' ? 'selected' : '' }}>Lost</option>
-                                <option value="Found" {{ old('status') == 'Found' ? 'selected' : '' }}>Found</option>
-                                <option value="Returned" {{ old('status') == 'Returned' ? 'selected' : '' }}>Returned
+                                <option value="">Select Status</option>
+                                <option value="Vacant" {{ old('status') == 'Vacant' ? 'selected' : '' }}>Vacant</option>
+                                <option value="Occupied" {{ old('status') == 'Occupied' ? 'selected' : '' }}>Occupied
                                 </option>
                             </select>
                             @error('status')
@@ -240,7 +240,7 @@
                                                 'selected' : '';
                                             group.append(
                                                 `<option value="${value.id}" ${selected}>${value.name}</option>`
-                                                );
+                                            );
                                         });
                                     $(targetSelect).append(group);
                                 });
@@ -248,10 +248,10 @@
                                 // Normal dropdown
                                 $.each(data, function(_, value) {
                                     let selected = (selectedValue == value.id) ? 'selected' :
-                                    '';
+                                        '';
                                     $(targetSelect).append(
                                         `<option value="${value.id}" ${selected}>${value.name}</option>`
-                                        );
+                                    );
                                 });
                             }
                         } else {

@@ -66,9 +66,9 @@ class AjaxController extends Controller
             ->whereDoesntHave('allotments', function ($query) {
                 $query->where('status', 'occupied');
             })
-            ->orderBy('level', 'asc')   // Level ascending
-            ->orderBy('name', 'asc')    // Name ascending
-            ->get(['id', 'name', 'level']); // Include level
+            ->orderBy('level', 'asc')
+            ->orderBy('name', 'asc')
+            ->get(['id', 'name', 'level']);
 
         return response()->json($parkingLists);
     }

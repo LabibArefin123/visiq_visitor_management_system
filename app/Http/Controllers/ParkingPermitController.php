@@ -32,7 +32,7 @@ class ParkingPermitController extends Controller
             'plist',
             'issuedByEmployee'
         ])
-            ->where('status', 'active')
+            ->where('status', 'occupied')
             ->get();
 
         // Get all occupied parking slots from ParkingAllotment
@@ -49,8 +49,8 @@ class ParkingPermitController extends Controller
 
         // Collect all parking_list_ids that are either occupied or have active permits
         $occupiedListIds = array_unique(array_merge(
-            $activePermits->pluck('parking_list_id')->toArray(),
-            $occupiedAllotments->pluck('parking_list_id')->toArray()
+            $occupiedAllotments->pluck('parking_list_id')->toArray(),
+            $activePermits->pluck('parking_list_id')->toArray()
         ));
 
         // Get all vacant parking slots (not used anywhere)
@@ -65,9 +65,7 @@ class ParkingPermitController extends Controller
         foreach ($activePermits as $permit) {
             $parkingData->push([
                 'id'            => $permit->id,
-                'visitor_name'  => $permit->visitor->name
-                    ?? $permit->employee->name
-                    ?? 'N/A',
+                'visitor_name'  => $permit->visitor->name ?? 'N/A',
                 'category'      => $permit->userCategory->category_name ?? 'N/A',
                 'area'          => $permit->area->name ?? 'N/A',
                 'location'      => $permit->location->name ?? 'N/A',
@@ -98,7 +96,7 @@ class ParkingPermitController extends Controller
                 'issued_by'     => $item->allottedByEmployee->name ?? '--',
                 'issue_date'    => \Carbon\Carbon::parse($item->start_date)->format('d F Y'),
                 'expiry_date'   => \Carbon\Carbon::parse($item->end_date)->format('d F Y'),
-                'status'        => 'Occupied',
+                'status'        => 'Taken',
                 'remarks'       => $item->remarks ?? '--',
                 'source'        => 'allotment',
                 'row_class'     => 'table-danger', // 🔴 highlight row red
@@ -175,8 +173,8 @@ class ParkingPermitController extends Controller
             'parking_list_id'       => 'required|exists:parking_lists,id',
             'issued_by'             => 'required|exists:employees,id',
             'issue_date'            => 'required|date',
-            'expiry_date'           => 'required|date|after_or_equal:issue_date',
-            'status'                => 'required|in:active,expired,cancelled',
+            'expiry_date'           => 'required|date',
+            'status'                => 'required',
             'remarks'               => 'nullable|string|max:255',
         ]);
 
@@ -201,6 +199,7 @@ class ParkingPermitController extends Controller
     public function edit(ParkingPermit $parkingPermit)
     {
         $visitors = Visitor::orderBy('name')->get();
+        $users = Employee::orderBy('name')->get();
         $categories = UserCategory::orderBy('category_name')->get();
         $areas = Area::orderBy('name')->get();
         $employees = Employee::orderBy('name')->get();
@@ -213,6 +212,7 @@ class ParkingPermitController extends Controller
             'parkingPermit',
             'visitors',
             'categories',
+            'users',
             'areas',
             'employees',
             'locations',
@@ -237,8 +237,8 @@ class ParkingPermitController extends Controller
             'parking_list_id'       => 'required|exists:parking_lists,id',
             'issued_by'             => 'required|exists:employees,id',
             'issue_date'            => 'required|date',
-            'expiry_date'           => 'required|date|after_or_equal:issue_date',
-            'status'                => 'required|in:active,expired,cancelled',
+            'expiry_date'           => 'required|date',
+            'status'                => 'required|string',
             'remarks'               => 'nullable|string|max:255',
         ]);
 

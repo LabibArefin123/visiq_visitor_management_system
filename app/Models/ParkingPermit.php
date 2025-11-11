@@ -30,11 +30,6 @@ class ParkingPermit extends Model
         return $this->belongsTo(Visitor::class, 'visitor_id');
     }
 
-    public function employee()
-    {
-        return $this->belongsTo(Employee::class, 'employee_id');
-    }
-
     public function userCategory()
     {
         return $this->belongsTo(UserCategory::class, 'user_category_id');

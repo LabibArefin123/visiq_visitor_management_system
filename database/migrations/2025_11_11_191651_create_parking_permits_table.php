@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('parking_permits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('visitor_id')->nullable()->index();
-            $table->foreignId('employee_id')->nullable()->index();
             $table->foreignId('user_category_id')->nullable()->index();
             $table->foreignId('area_id')->nullable()->index();
             $table->foreignId('building_location_id')->nullable()->index();

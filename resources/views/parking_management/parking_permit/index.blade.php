@@ -42,17 +42,10 @@
                     </thead>
                     <tbody>
                         @forelse ($parkingData as $index => $item)
-                            <tr>
+                            <tr class="{{ $item['row_class'] ?? '' }}">
+
                                 <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    @if (!empty($item['visitor']))
-                                        {{ $item['visitor'] }}
-                                    @elseif (!empty($item['employee']))
-                                        {{ $item['employee'] }}
-                                    @else
-                                        N/A
-                                    @endif
-                                </td>
+                                <td>{{ $item['visitor_name'] ?? 'N/A' }}</td>
                                 <td>{{ $item['category'] ?? 'N/A' }}</td>
                                 <td>{{ $item['area'] ?? 'N/A' }}</td>
                                 <td>{{ $item['location'] ?? 'N/A' }}</td>
@@ -72,10 +65,10 @@
                                     @endphp
                                     @if ($status === 'active')
                                         <span class="badge badge-success px-2 py-1">Active</span>
+                                    @elseif ($status === 'taken')
+                                        <span class="badge badge-danger px-2 py-1">Taken</span>
                                     @elseif ($status === 'occupied')
-                                        <span class="badge badge-danger px-2 py-1">Occupied</span>
-                                    @elseif ($status === 'occupied')
-                                        <span class="badge badge-warning px-2 py-1">Pending</span>
+                                        <span class="badge badge-warning px-2 py-1">Occupied</span>
                                     @else
                                         <span class="badge badge-secondary px-2 py-1">{{ $item['status'] ?? 'N/A' }}</span>
                                     @endif
@@ -85,20 +78,27 @@
                                     <a href="{{ route('parking_permits.show', $item['id']) }}" class="btn btn-sm btn-info">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('parking_permits.edit', $item['id']) }}"
-                                        class="btn btn-sm btn-primary">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{{ route('parking_permits.destroy', $item['id']) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-danger"
-                                            onclick="triggerDeleteModal('{{ route('parking_permits.destroy', $item['id']) }}')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+
+                                    @if ($item['source'] === 'permit')
+                                        <a href="{{ route('parking_permits.edit', $item['id']) }}"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endif
+
+                                    @if ($item['source'] === 'permit')
+                                        <form action="{{ route('parking_permits.destroy', $item['id']) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                onclick="triggerDeleteModal('{{ route('parking_permits.destroy', $item['id']) }}')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 </td>
+
                             </tr>
                         @empty
                             <tr>
