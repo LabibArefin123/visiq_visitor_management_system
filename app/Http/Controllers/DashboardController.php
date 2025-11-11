@@ -9,6 +9,7 @@ use App\Models\Visitor;
 use App\Models\PendingVisitor;
 use App\Models\VisitorEmergency;
 use App\Models\BlacklistedVisitor;
+use App\Models\ParkingList;
 use Carbon\Carbon;
 
 
@@ -34,9 +35,10 @@ class DashboardController extends Controller
     {
         $totalVisitors = Visitor::count();
         $totalEmployees = Employee::count();
-        $totalPendingVisitors = PendingVisitor::count();
+        $totalPendingVisitors = PendingVisitor::orWhereNull('status')->count();
         $totalEmergencyVisitors = VisitorEmergency::count();
         $totalBlacklistVisitors = BlacklistedVisitor::count();
+        $totalParkingSlots = ParkingList::count();
 
         $today = Carbon::today();
 
@@ -91,6 +93,7 @@ class DashboardController extends Controller
                 'totalBlacklistVisitors',
                 'totalCurrentCheckinEmployees',
                 'totalCurrentCheckoutEmployees',
+                'totalParkingSlots',
                 'notifications'
             ));
         } elseif ($user->hasRole('receiptionist')) {
@@ -113,6 +116,7 @@ class DashboardController extends Controller
                 'totalBlacklistVisitors',
                 'totalCurrentCheckinEmployees',
                 'totalCurrentCheckoutEmployees',
+                'totalParkingSlots',
                 'notifications'
             ));
         } elseif ($user->hasRole('employee')) {

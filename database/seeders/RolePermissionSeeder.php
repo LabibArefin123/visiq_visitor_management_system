@@ -209,6 +209,7 @@ class RolePermissionSeeder extends Seeder
             'pending_visitors.edit',    // Edit
             'pending_visitors.update',  // Update
             'pending_visitors.destroy', // Delete
+            'pending_visitors.approve', // Approve visitors
         ];
 
         $visitorGroupMemberPermissions = [
@@ -324,6 +325,26 @@ class RolePermissionSeeder extends Seeder
             'parking_lists.edit',    // Edit
             'parking_lists.update',  // Update
             'parking_lists.destroy', // Delete
+        ];
+
+        $parkingLocationPermissions = [
+            'parking_locations.index',   // View
+            'parking_locations.create',  // Create new
+            'parking_locations.store',   // Store new
+            'parking_locations.show',    // View individual
+            'parking_locations.edit',    // Edit
+            'parking_locations.update',  // Update
+            'parking_locations.destroy', // Delete
+        ];
+
+        $parkingAllotmentPermissions = [
+            'parking_allotments.index',   // View
+            'parking_allotments.create',  // Create new
+            'parking_allotments.store',   // Store new
+            'parking_allotments.show',    // View individual
+            'parking_allotments.edit',    // Edit
+            'parking_allotments.update',  // Update
+            'parking_allotments.destroy', // Delete
         ];
 
         //report menu
@@ -637,10 +658,24 @@ class RolePermissionSeeder extends Seeder
             ]);
         }
 
+        foreach ($parkingLocationPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Parking Location'
+            ]);
+        }
+
         foreach ($parkingListPermissions as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Parking List'
+            ]);
+        }
+
+        foreach ($parkingAllotmentPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Parking Allotment'
             ]);
         }
 

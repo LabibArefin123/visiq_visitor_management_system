@@ -81,8 +81,6 @@
                             @enderror
                         </div>
 
-
-
                         {{-- Description --}}
                         <div class="col-md-12 form-group">
                             <label for="description"><strong>Description</strong></label>

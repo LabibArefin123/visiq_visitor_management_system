@@ -86,8 +86,8 @@
     </style>
 
     <div class="container py-6">
-        <h1 class="text-2xl font-bold mb-4">Visitor Management Dashboard</h1>
-        <p class="text-gray-600 mb-6">Welcome to your VisiQ Dashboard. Here is the summary of your visitor data.</p>
+        <h1 class="text-2xl font-bold">Visitor Management Dashboard</h1>
+        <p class="text-gray-600">Welcome to your VisiQ Dashboard. Here is the summary of your visitor data.</p>
 
         <div class="row g-4">
             <div class="col-lg-3 col-md-6 col-sm-12">
@@ -115,6 +115,21 @@
                         <i class="fas fa-ambulance"></i>
                     </div>
                     <a href="{{ route('visitor_emergencys.index') }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-indigo text-white shadow-sm dashboard-box hover-box ">
+                    <div class="inner">
+                        <h3>{{ $totalPendingVisitors ?? '00' }}</h3>
+                        <p>Total Pending Visitors</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <a href="{{ route('pending_visitors.index') }}" class="small-box-footer">
                         More info <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
@@ -181,19 +196,20 @@
             </div>
 
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="small-box bg-indigo text-white shadow-sm dashboard-box hover-box ">
+                <div class="small-box bg-teal text-white shadow-sm dashboard-box hover-box">
                     <div class="inner">
-                        <h3>{{ $totalPendingVisitors ?? '00' }}</h3>
-                        <p>Total Pending Visitors</p>
+                        <h3>{{ $totalParkingSlots ?? '00' }}</h3>
+                        <p>Total Parking Slots</p>
                     </div>
                     <div class="icon">
-                        <i class="fas fa-clock"></i>
+                        <i class="fas fa-parking"></i>
                     </div>
-                    <a href="{{ route('pending_visitors.index') }}" class="small-box-footer">
+                    <a href="{{ route('parking_lists.index') ?? '#' }}" class="small-box-footer">
                         More info <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
             </div>
+
         </div>
     </div>
 @stop

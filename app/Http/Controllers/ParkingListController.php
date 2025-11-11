@@ -17,7 +17,7 @@ class ParkingListController extends Controller
      */
     public function index()
     {
-        $parkingLists = ParkingList::with(['userCategory', 'area', 'location', 'building'])->latest()->get();
+        $parkingLists = ParkingList::with(['userCategory', 'area', 'location', 'building'])->get();
         return view('parking_management.parking_list.index', compact('parkingLists'));
     }
 

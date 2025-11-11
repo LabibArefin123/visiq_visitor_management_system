@@ -685,19 +685,13 @@ return [
             'submenu' => [
                 [
                     'text' => 'Seat Allocation',
-                    'icon' => 'fas fa-chair',
-                    'submenu' => [
-                        [
-                            'text' => 'Seat Allocation',
-                            'route' => 'seat_allocations.index',
-                            'can' => 'seat_allocations.index',
-                            'active' => ['seat_allocations*'],
-                        ],
-                        [
-                            'text' => 'Meeting Room Reservation',
-                            'url' => '#'
-                        ],
-                    ],
+                    'route' => 'seat_allocations.index',
+                    'can' => 'seat_allocations.index',
+                    'active' => ['seat_allocations*'],
+                ],
+                [
+                    'text' => 'Meeting Reservation',
+                    'url' => '#'
                 ],
             ],
         ],
@@ -739,6 +733,12 @@ return [
             'icon' => 'fas fa-car',
             'submenu' => [
                 // ['text' => 'Vehicle Log', 'url' => 'vehicle_logs'],
+                [
+                    'text' => 'Parking Allotment',
+                    'route' => 'parking_allotments.index',
+                    'can' => 'parking_allotments.index',
+                    'active' => ['parking_allotments*'],
+                ],
                 [
                     'text' => 'Parking List',
                     'route' => 'parking_lists.index',

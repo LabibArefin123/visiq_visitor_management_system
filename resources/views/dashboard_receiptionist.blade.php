@@ -86,8 +86,8 @@
     </style>
 
     <div class="container py-6">
-        <h1 class="text-2xl font-bold mb-4">Visitor Management Dashboard</h1>
-        <p class="text-gray-600 mb-6">Welcome to your VisiQ Dashboard. Here is the summary of your visitor data.</p>
+        <h1 class="text-2xl font-bold">Visitor Management Dashboard</h1>
+        <p class="text-gray-600">Welcome to your VisiQ Dashboard. Here is the summary of your visitor data.</p>
 
         <div class="row g-4">
             <div class="col-lg-3 col-md-6 col-sm-12">

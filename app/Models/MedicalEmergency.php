@@ -28,7 +28,6 @@ class MedicalEmergency extends Model
         return match ($this->reported_by_type) {
             'employee' => $this->belongsTo(Employee::class, 'reported_by_id'),
             'visitor' => $this->belongsTo(Visitor::class, 'reported_by_id'),
-            'guard' => $this->belongsTo(Guard::class, 'reported_by_id'),
             default => null,
         };
     }

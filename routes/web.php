@@ -57,6 +57,7 @@ use App\Http\Controllers\BlacklistMonitorController;
 //parking menu
 use App\Http\Controllers\ParkingLocationController;
 use App\Http\Controllers\ParkingListController;
+use App\Http\Controllers\ParkingAllotmentController;
 
 //facility menu
 use App\Http\Controllers\SeatAllocationController;
@@ -104,6 +105,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/get-locations-by-area', [AjaxController::class, 'getLocationsByArea'])->name('ajax.getLocationsByArea');
     Route::get('/get-buildings-by-location', [AjaxController::class, 'getBuildingsByLocation'])->name('ajax.getBuildingsByLocation');
     Route::get('/get-parking-location-by-buidling-name', [AjaxController::class, 'getParkingLocationByBuildingName'])->name('ajax.getParkingLocationByBuildingName');
+    Route::get('/get-parking-by-parking-location', [AjaxController::class, 'getParkingByParkingLocationName'])->name('ajax.getParkingByParkingLocationName');
     Route::get('/get-division-by-branch', [AjaxController::class, 'getDivisionByBranch'])->name('ajax.getDivisionByBranch');
     Route::get('/get-department-by-division', [AjaxController::class, 'getDepartmentByDivision'])->name('ajax.getDepartmentByDivision');
     Route::get('/get-holders/{type}', [AjaxController::class, 'getHolders'])->name('ajax.getHolders');
@@ -139,13 +141,14 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
 
     //employee menu
     Route::resource('employees', EmployeeController::class);
-    Route::resource('employee_attendances', EmployeeAttendanceController::class);
+    Route::get('employee_attendances', [EmployeeAttendanceController::class, 'index'])->name('employee_attendances.index');
     Route::get('/check-in-employees', [EmployeeAttendanceController::class, 'checkInEmployees'])->name('employees.check_in_employee.index');
     Route::get('/check-out-employees', [EmployeeAttendanceController::class, 'checkOutEmployees'])->name('employees.check_out_employee.index');
 
     //parking menu
     Route::resource('parking_locations', ParkingLocationController::class);
     Route::resource('parking_lists', ParkingListController::class);
+    Route::resource('parking_allotments', ParkingAllotmentController::class);
 
     //schedule menu
     Route::resource('office_schedules', OfficeScheduleController::class);
