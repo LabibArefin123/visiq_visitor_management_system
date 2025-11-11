@@ -55,16 +55,17 @@
                                 <td>{{ $visitor->gender ?? 'N/A' }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="{{ route('visitors.show', $visitor->id) }}"
-                                            class="btn btn-info btn-sm">View</a>
+                                        <a href="{{ route('visitors.show', $visitor->id) }}" class="btn btn-info btn-sm"><i
+                                                class="fas fa-eye"> </i></a>
                                         <a href="{{ route('visitors.edit', $visitor->id) }}"
-                                            class="btn btn-primary btn-sm">Edit</a>
+                                            class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('visitors.destroy', $visitor->id) }}" method="POST"
                                             class="d-inline"
                                             onsubmit="return confirm('Are you sure you want to delete this visitor?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            <button type="submit" class="btn btn-danger btn-sm"><i
+                                                    class="fas fa-trash"></i></button>
                                         </form>
                                     </div>
                                 </td>

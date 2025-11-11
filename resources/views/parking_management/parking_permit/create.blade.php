@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'Add Parking Allotment')
+@section('title', 'Add Parking Permit')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Add Parking Allotment</h3>
-        <a href="{{ route('parking_allotments.index') }}"
+        <h3 class="mb-0">Add Parking Permit</h3>
+        <a href="{{ route('parking_permits.index') }}"
             class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -30,7 +30,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('parking_allotments.store') }}" method="POST" data-confirm="create">
+                <form action="{{ route('parking_permits.store') }}" method="POST" data-confirm="create">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 form-group">
@@ -41,7 +41,7 @@
                                 <option value="">-- Select User Category --</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
-                                        {{ old('alloted_by') == $category->id ? 'selected' : '' }}>
+                                        {{ old('issued_by') == $category->id ? 'selected' : '' }}>
                                         {{ $category->category_name }}
                                     </option>
                                 @endforeach
@@ -50,20 +50,36 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        <div class="col-md-6 form-group">
+                            <label for="visitor_id"><strong>Visitor Name</strong> <span class="text-danger">*</span></label>
+                            <select name="visitor_id" id="visitor_id"
+                                class="form-control @error('visitor_id') is-invalid @enderror">
+                                <option value="">-- Select Visitor --</option>
+                                @foreach ($visitors as $visitor)
+                                    <option value="{{ $visitor->id }}"
+                                        {{ old('issued_by') == $visitor->id ? 'selected' : '' }}>
+                                        {{ $visitor->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('visitor_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
 
                         <div class="col-md-6 form-group">
-                            <label for="alloted_by"><strong>Alloted By</strong> <span class="text-danger">*</span></label>
-                            <select name="alloted_by" id="alloted_by"
-                                class="form-control @error('alloted_by') is-invalid @enderror">
+                            <label for="issued_by"><strong>Issued By</strong> <span class="text-danger">*</span></label>
+                            <select name="issued_by" id="issued_by"
+                                class="form-control @error('issued_by') is-invalid @enderror">
                                 <option value="">-- Select User --</option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}"
-                                        {{ old('alloted_by') == $user->id ? 'selected' : '' }}>
+                                        {{ old('issued_by') == $user->id ? 'selected' : '' }}>
                                         {{ $user->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('alloted_by')
+                            @error('issued_by')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -129,8 +145,9 @@
                             <label for="status"><strong>Status</strong> <span class="text-danger">*</span></label>
                             <select name="status" id="status"
                                 class="form-control @error('status') is-invalid @enderror">
-                                <option value="Vacant" {{ old('status') == 'Vacant' ? 'selected' : '' }}>Vacant</option>
-                                <option value="Occupied" {{ old('status') == 'Occupied' ? 'selected' : '' }}>Occupied
+                                <option value="Lost" {{ old('status') == 'Lost' ? 'selected' : '' }}>Lost</option>
+                                <option value="Found" {{ old('status') == 'Found' ? 'selected' : '' }}>Found</option>
+                                <option value="Returned" {{ old('status') == 'Returned' ? 'selected' : '' }}>Returned
                                 </option>
                             </select>
                             @error('status')
@@ -139,21 +156,21 @@
                         </div>
 
                         <div class="col-md-6 form-group">
-                            <label for="start_date"><strong>Start Date</strong> <span class="text-danger">*</span></label>
-                            <input type="date" name="start_date" id="start_date"
-                                class="form-control @error('start_date') is-invalid @enderror"
-                                value="{{ old('start_date') }}">
-                            @error('start_date')
+                            <label for="issue_date"><strong>Issue Date</strong> <span class="text-danger">*</span></label>
+                            <input type="date" name="issue_date" id="issue_date"
+                                class="form-control @error('issue_date') is-invalid @enderror"
+                                value="{{ old('issue_date') }}">
+                            @error('issue_date')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-6 form-group">
-                            <label for="end_date"><strong>End Date</strong></label>
-                            <input type="date" name="end_date" id="end_date"
-                                class="form-control @error('end_date') is-invalid @enderror"
-                                value="{{ old('end_date') }}">
-                            @error('end_date')
+                            <label for="expiry_date"><strong>Expiry Date</strong></label>
+                            <input type="date" name="expiry_date" id="expiry_date"
+                                class="form-control @error('expiry_date') is-invalid @enderror"
+                                value="{{ old('expiry_date') }}">
+                            @error('expiry_date')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -223,7 +240,7 @@
                                                 'selected' : '';
                                             group.append(
                                                 `<option value="${value.id}" ${selected}>${value.name}</option>`
-                                            );
+                                                );
                                         });
                                     $(targetSelect).append(group);
                                 });
@@ -231,10 +248,10 @@
                                 // Normal dropdown
                                 $.each(data, function(_, value) {
                                     let selected = (selectedValue == value.id) ? 'selected' :
-                                        '';
+                                    '';
                                     $(targetSelect).append(
                                         `<option value="${value.id}" ${selected}>${value.name}</option>`
-                                    );
+                                        );
                                 });
                             }
                         } else {

@@ -57,6 +57,7 @@ use App\Http\Controllers\BlacklistMonitorController;
 //parking menu
 use App\Http\Controllers\ParkingLocationController;
 use App\Http\Controllers\ParkingListController;
+use App\Http\Controllers\ParkingPermitController;
 use App\Http\Controllers\ParkingAllotmentController;
 
 //facility menu
@@ -148,6 +149,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     //parking menu
     Route::resource('parking_locations', ParkingLocationController::class);
     Route::resource('parking_lists', ParkingListController::class);
+    Route::resource('parking_permits', ParkingPermitController::class);
     Route::resource('parking_allotments', ParkingAllotmentController::class);
 
     //schedule menu

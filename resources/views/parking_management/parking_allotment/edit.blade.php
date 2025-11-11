@@ -214,27 +214,67 @@
         </div>
     </div>
 @stop
-
 @section('js')
     <script>
         $(document).ready(function() {
 
             // --- Helper function to load dropdowns dynamically ---
-            function loadOptions(url, targetSelect, placeholder, requestData, selectedValue = null) {
+            function loadOptions(url, targetSelect, placeholder, requestData, selectedValue = null, groupByLevel =
+                false) {
                 $(targetSelect).html('<option value="">Loading...</option>');
                 $.ajax({
                     url: url,
                     type: 'GET',
                     data: requestData,
                     success: function(data) {
-                        $(targetSelect).html(`<option value="">${placeholder}</option>`);
-                        if (data.length > 0) {
-                            $.each(data, function(_, value) {
-                                let selected = (selectedValue == value.id) ? 'selected' : '';
-                                $(targetSelect).append(
-                                    `<option value="${value.id}" ${selected}>${value.name}</option>`
-                                );
-                            });
+                        $(targetSelect).empty().append(`<option value="">${placeholder}</option>`);
+
+                        if (data && data.length > 0) {
+
+                            // ✅ Group by level if enabled
+                            if (groupByLevel) {
+                                // Group parking lists by level
+                                const grouped = {};
+                                data.forEach(item => {
+                                    const level = item.level ? `Level ${item.level}` :
+                                        'No Level Info';
+                                    if (!grouped[level]) grouped[level] = [];
+                                    grouped[level].push(item);
+                                });
+
+                                // Sort levels numerically (1, 2, 3…)
+                                const sortedLevels = Object.keys(grouped).sort((a, b) => {
+                                    const numA = parseInt(a.replace(/\D/g, '')) || 0;
+                                    const numB = parseInt(b.replace(/\D/g, '')) || 0;
+                                    return numA - numB;
+                                });
+
+                                // Append optgroups by level and names in ascending order
+                                sortedLevels.forEach(levelLabel => {
+                                    let group = $('<optgroup>', {
+                                        label: levelLabel
+                                    });
+                                    grouped[levelLabel]
+                                        .sort((a, b) => a.name.localeCompare(b.name))
+                                        .forEach(value => {
+                                            let selected = (selectedValue == value.id) ?
+                                                'selected' : '';
+                                            group.append(
+                                                `<option value="${value.id}" ${selected}>${value.name}</option>`
+                                            );
+                                        });
+                                    $(targetSelect).append(group);
+                                });
+                            } else {
+                                // Normal dropdown
+                                $.each(data, function(_, value) {
+                                    let selected = (selectedValue == value.id) ? 'selected' :
+                                        '';
+                                    $(targetSelect).append(
+                                        `<option value="${value.id}" ${selected}>${value.name}</option>`
+                                    );
+                                });
+                            }
                         } else {
                             $(targetSelect).append('<option value="">No data found</option>');
                         }
@@ -248,13 +288,11 @@
             // --- Area → Location ---
             $('#area_id').on('change', function() {
                 let areaID = $(this).val();
-                $('#building_location_id').html('<option value="">-- Select Location --</option>');
-                $('#building_list_id').html('<option value="">-- Select Building Name --</option>');
-                $('#parking_location_id').html('<option value="">-- Select Parking Location --</option>');
-                $('#parking_list_id').html('<option value="">-- Select Parking Name --</option>');
+                $('#building_location_id, #building_list_id, #parking_location_id, #parking_list_id')
+                    .html('<option value="">-- Select --</option>');
+                $('#level').val('');
                 if (areaID) {
-                    loadOptions('{{ route('ajax.getLocationsByArea') }}',
-                        '#building_location_id',
+                    loadOptions('{{ route('ajax.getLocationsByArea') }}', '#building_location_id',
                         '-- Select Location --', {
                             area_id: areaID
                         });
@@ -264,12 +302,11 @@
             // --- Location → Building ---
             $('#building_location_id').on('change', function() {
                 let locationID = $(this).val();
-                $('#building_list_id').html('<option value="">Loading...</option>');
-                $('#parking_location_id').html('<option value="">-- Select Parking Location --</option>');
-                $('#parking_list_id').html('<option value="">-- Select Parking Name --</option>');
+                $('#building_list_id, #parking_location_id, #parking_list_id').html(
+                    '<option value="">-- Select --</option>');
+                $('#level').val('');
                 if (locationID) {
-                    loadOptions('{{ route('ajax.getBuildingsByLocation') }}',
-                        '#building_list_id',
+                    loadOptions('{{ route('ajax.getBuildingsByLocation') }}', '#building_list_id',
                         '-- Select Building Name --', {
                             building_location_id: locationID
                         });
@@ -279,79 +316,73 @@
             // --- Building → Parking Location ---
             $('#building_list_id').on('change', function() {
                 let buildingID = $(this).val();
-                $('#parking_location_id').html('<option value="">Loading...</option>');
-                $('#parking_list_id').html('<option value="">-- Select Parking Name --</option>');
+                $('#parking_location_id, #parking_list_id').html('<option value="">-- Select --</option>');
+                $('#level').val('');
                 if (buildingID) {
                     loadOptions('{{ route('ajax.getParkingLocationByBuildingName') }}',
-                        '#parking_location_id',
-                        '-- Select Parking Location --', {
+                        '#parking_location_id', '-- Select Parking Location --', {
                             building_list_id: buildingID
                         });
                 }
             });
 
-            // --- Parking Location → Parking Name ---
+            // --- Parking Location → Parking Name (✅ grouped by level) ---
             $('#parking_location_id').on('change', function() {
                 let parkingLocationID = $(this).val();
                 $('#parking_list_id').html('<option value="">Loading...</option>');
+                $('#level').val('');
+
                 if (parkingLocationID) {
                     loadOptions('{{ route('ajax.getParkingByParkingLocationName') }}',
-                        '#parking_list_id',
-                        '-- Select Parking Name --', {
+                        '#parking_list_id', '-- Select Parking Name --', {
                             parking_location_id: parkingLocationID
-                        });
+                        },
+                        null, true // enable level grouping
+                    );
                 }
             });
 
-            // --- 🔹 Auto-load old values when validation fails ---
+            // --- Restore old values when validation fails ---
             let oldArea = "{{ old('area_id') }}";
             let oldLocation = "{{ old('building_location_id') }}";
             let oldBuilding = "{{ old('building_list_id') }}";
             let oldParkingLocation = "{{ old('parking_location_id') }}";
             let oldParking = "{{ old('parking_list_id') }}";
+            let oldLevel = "{{ old('level') }}";
 
             if (oldArea) {
-                // Load locations first
-                loadOptions('{{ route('ajax.getLocationsByArea') }}',
-                    '#building_location_id', '-- Select Location --', {
+                loadOptions('{{ route('ajax.getLocationsByArea') }}', '#building_location_id',
+                    '-- Select Location --', {
                         area_id: oldArea
-                    },
-                    oldLocation
-                );
+                    }, oldLocation);
 
-                // Then buildings
                 if (oldLocation) {
-                    setTimeout(function() {
-                        loadOptions('{{ route('ajax.getBuildingsByLocation') }}',
-                            '#building_list_id', '-- Select Building Name --', {
+                    setTimeout(() => {
+                        loadOptions('{{ route('ajax.getBuildingsByLocation') }}', '#building_list_id',
+                            '-- Select Building Name --', {
                                 building_location_id: oldLocation
-                            },
-                            oldBuilding
-                        );
+                            }, oldBuilding);
                     }, 400);
                 }
 
-                // Then parking locations
                 if (oldBuilding) {
-                    setTimeout(function() {
+                    setTimeout(() => {
                         loadOptions('{{ route('ajax.getParkingLocationByBuildingName') }}',
-                            '#parking_location_id', '-- Select Parking Location --', {
+                            '#parking_location_id',
+                            '-- Select Parking Location --', {
                                 building_list_id: oldBuilding
-                            },
-                            oldParkingLocation
-                        );
+                            }, oldParkingLocation);
                     }, 800);
                 }
 
-                // Then parking names
                 if (oldParkingLocation) {
-                    setTimeout(function() {
+                    setTimeout(() => {
                         loadOptions('{{ route('ajax.getParkingByParkingLocationName') }}',
-                            '#parking_list_id', '-- Select Parking Name --', {
+                            '#parking_list_id',
+                            '-- Select Parking Name --', {
                                 parking_location_id: oldParkingLocation
-                            },
-                            oldParking
-                        );
+                            }, oldParking, true);
+                        $('#level').val(oldLevel);
                     }, 1200);
                 }
             }

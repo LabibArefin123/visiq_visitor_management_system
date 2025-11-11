@@ -60,12 +60,15 @@ class AjaxController extends Controller
 
     public function getParkingByParkingLocationName(Request $request)
     {
-        $parkingListId = $request->parking_location_id;
+        $parkingLocationId = $request->parking_location_id;
 
-        $parkingLists = ParkingList::where('parking_location_id', $parkingListId)
-            ->select('id', 'name')
-            ->orderBy('name', 'asc')
-            ->get();
+        $parkingLists = ParkingList::where('parking_location_id', $parkingLocationId)
+            ->whereDoesntHave('allotments', function ($query) {
+                $query->where('status', 'occupied');
+            })
+            ->orderBy('level', 'asc')   // Level ascending
+            ->orderBy('name', 'asc')    // Name ascending
+            ->get(['id', 'name', 'level']); // Include level
 
         return response()->json($parkingLists);
     }

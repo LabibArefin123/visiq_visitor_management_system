@@ -1,10 +1,10 @@
 @extends('adminlte::page')
 
-@section('title', 'Parking Allocation List')
+@section('title', 'Parking Allotment List')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Parking Allocation List</h3>
+        <h3 class="mb-0">Parking Allotment List</h3>
         <a href="{{ route('parking_allotments.create') }}" class="btn btn-sm btn-success d-flex align-items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-plus" viewBox="0 0 24 24">
@@ -41,8 +41,8 @@
                     <tbody>
                         @forelse ($parkingData as $index => $item)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $item['category'] }}</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $item['category'] }}</td>
                                 <td>{{ $item['area'] }}</td>
                                 <td>{{ $item['location'] }}</td>
                                 <td>{{ $item['building'] }}</td>

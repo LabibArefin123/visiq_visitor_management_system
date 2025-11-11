@@ -52,4 +52,9 @@ class ParkingAllotment extends Model
     {
         return $this->belongsTo(ParkingList::class, 'parking_list_id');
     }
+
+    public function allottedByEmployee()
+    {
+        return $this->belongsTo(Employee::class, 'alloted_by');
+    }
 }

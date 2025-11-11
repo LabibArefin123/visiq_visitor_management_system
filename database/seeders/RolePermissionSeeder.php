@@ -327,6 +327,16 @@ class RolePermissionSeeder extends Seeder
             'parking_lists.destroy', // Delete
         ];
 
+        $parkingPermitPermissions = [
+            'parking_permits.index',   // View
+            'parking_permits.create',  // Create new
+            'parking_permits.store',   // Store new
+            'parking_permits.show',    // View individual
+            'parking_permits.edit',    // Edit
+            'parking_permits.update',  // Update
+            'parking_permits.destroy', // Delete
+        ];
+
         $parkingLocationPermissions = [
             'parking_locations.index',   // View
             'parking_locations.create',  // Create new
@@ -669,6 +679,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Parking List'
+            ]);
+        }
+
+        foreach ($parkingPermitPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Parking Permit'
             ]);
         }
 

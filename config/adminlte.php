@@ -740,6 +740,12 @@ return [
                     'active' => ['parking_allotments*'],
                 ],
                 [
+                    'text' => 'Parking Permit',
+                    'route' => 'parking_permits.index',
+                    'can' => 'parking_permits.index',
+                    'active' => ['parking_permits*'],
+                ],
+                [
                     'text' => 'Parking List',
                     'route' => 'parking_lists.index',
                     'can' => 'parking_lists.index',

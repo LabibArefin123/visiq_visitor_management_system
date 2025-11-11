@@ -20,7 +20,14 @@ class ParkingAllotmentController extends Controller
     public function index()
     {
         // Get all occupied parking slots from ParkingAllotment
-        $occupiedAllotments = ParkingAllotment::with(['userCategory', 'area', 'location', 'building', 'plist'])
+        $occupiedAllotments = ParkingAllotment::with([
+            'userCategory',
+            'area',
+            'location',
+            'building',
+            'plist',
+            'allottedByEmployee'
+        ])
             ->where('status', 'occupied')
             ->get();
 
@@ -44,7 +51,7 @@ class ParkingAllotmentController extends Controller
                 'building' => $item->building->name ?? 'N/A',
                 'parking_name' => $item->plist->name ?? 'N/A',
                 'level' => $item->plist->level ?? 'N/A',
-                'alloted_by' => $item->alloted_by ?? '--',
+                'alloted_by' => $item->allottedByEmployee->name ?? '--',
                 'start_date' => $item->start_date,
                 'end_date' => $item->end_date,
                 'status' => 'Occupied',
@@ -64,7 +71,7 @@ class ParkingAllotmentController extends Controller
                 'parking_name' => $item->name ?? 'N/A',
                 'level' => $item->level ?? 'N/A',
                 'alloted_by' => '--',
-                'start_date' => null, // vacant — no date
+                'start_date' => null,
                 'end_date' => null,
                 'status' => 'Vacant',
                 'remarks' => '--',
@@ -74,8 +81,6 @@ class ParkingAllotmentController extends Controller
 
         return view('parking_management.parking_allotment.index', compact('parkingData'));
     }
-
-
 
     /**
      * Show the form for creating a new resource.
