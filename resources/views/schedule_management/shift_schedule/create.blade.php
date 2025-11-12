@@ -21,7 +21,7 @@
     <div class="container">
         <div class="card shadow-lg mt-3">
             <div class="card-body">
-                <form action="{{ route('shift_schedules.store') }}" method="POST">
+                <form action="{{ route('shift_schedules.store') }}" method="POST" data-confirm="create">
                     @csrf
                     <div class="row">
                         {{-- Shift Name --}}

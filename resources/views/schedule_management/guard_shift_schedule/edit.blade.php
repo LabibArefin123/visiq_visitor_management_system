@@ -21,7 +21,8 @@
     <div class="container">
         <div class="card shadow-lg mt-3">
             <div class="card-body">
-                <form action="{{ route('shift_guard_schedules.update', $shift_guard_schedule->id) }}" method="POST">
+                <form action="{{ route('shift_guard_schedules.update', $shift_guard_schedule->id) }}" method="POST"
+                    data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">

@@ -21,7 +21,7 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('office_schedules.store') }}" method="POST">
+                <form action="{{ route('office_schedules.store') }}" method="POST" data-confirm="create">
                     @csrf
                     <div class="row">
 

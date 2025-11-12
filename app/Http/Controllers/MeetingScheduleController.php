@@ -14,59 +14,78 @@ class MeetingScheduleController extends Controller
     {
         $month = $request->input('month', Carbon::now()->month);
         $year = $request->input('year', Carbon::now()->year);
+        $selectedScheduleId = $request->input('office_schedule_id');
 
-        // Get all meeting schedules for that month/year
+        // Active office schedules for dropdown
+        $officeSchedules = OfficeSchedule::where('status', 'Active')->get();
+
+        // Filter schedules by month/year
         $schedules = MeetingSchedule::whereYear('meeting_date', $year)
             ->whereMonth('meeting_date', $month)
             ->get();
 
-        // Get active office schedules
-        $officeSchedules = OfficeSchedule::where('status', 'Active')->get();
+        // Determine selected office schedule
+        $selectedOffice = $selectedScheduleId
+            ? $officeSchedules->firstWhere('id', $selectedScheduleId)
+            : $officeSchedules->first();
+
+        if (!$selectedOffice) {
+            return view('schedule_management.meeting_schedule.index', [
+                'days' => [],
+                'month' => $month,
+                'year' => $year,
+                'officeSchedules' => $officeSchedules,
+                'selectedScheduleId' => null,
+                'selectedOffice' => null,
+            ]);
+        }
 
         $startOfMonth = Carbon::createFromDate($year, $month, 1);
         $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
         $days = [];
 
-        foreach ($officeSchedules as $office) {
-            // Convert start & end to Carbon
-            $officeStart = Carbon::parse($office->start_time);
-            $officeEnd = Carbon::parse($office->end_time);
+        // Office start & end
+        $officeStart = Carbon::parse($selectedOffice->start_time);
+        $officeEnd = Carbon::parse($selectedOffice->end_time);
 
-            // Handle overnight schedule safely
-            if ($officeEnd->lessThan($officeStart)) {
-                $officeEnd->addDay();
-            }
+        if ($officeEnd->lessThan($officeStart)) {
+            $officeEnd->addDay();
+        }
 
-            // Loop through each date in month
-            for ($date = $startOfMonth->copy(); $date->lte($endOfMonth); $date->addDay()) {
+        // Loop through each day
+        for ($date = $startOfMonth->copy(); $date->lte($endOfMonth); $date->addDay()) {
+            for ($slot = $officeStart->copy(); $slot->lt($officeEnd); $slot->addHour()) {
+                $nextSlot = $slot->copy()->addHour();
 
-                // Loop hourly slots
-                for ($slot = $officeStart->copy(); $slot->lt($officeEnd); $slot->addHour()) {
-                    $nextSlot = $slot->copy()->addHour();
+                $meeting = $schedules->first(function ($m) use ($date, $slot, $nextSlot, $selectedOffice) {
+                    return $m->office_schedule_id == $selectedOffice->id &&
+                        $m->meeting_date == $date->format('Y-m-d') &&
+                        Carbon::parse($m->start_time)->betweenIncluded($slot, $nextSlot);
+                });
 
-                    // Find a meeting that matches this day and slot
-                    $meeting = $schedules->first(function ($m) use ($date, $slot, $nextSlot) {
-                        return $m->meeting_date == $date->format('Y-m-d') &&
-                            Carbon::parse($m->start_time)->betweenIncluded($slot, $nextSlot);
-                    });
-
-                    $days[] = [
-                        'schedule_name' => $office->schedule_name,
-                        'date' => $date->format('Y-m-d'),
-                        'day_name' => $date->format('l'),
-                        'slot' => $slot->format('H:i') . ' - ' . $nextSlot->format('H:i'),
-                        'title' => optional($meeting)->title ?? 'N/A',
-                        'meeting_type' => optional($meeting)->meeting_type ?? 'N/A',
-                        'status' => optional($meeting)->status ?? 'N/A',
-                        'description' => optional($meeting)->description ?? 'N/A',
-                        'id' => optional($meeting)->id,
-                    ];
-                }
+                $days[] = [
+                    'schedule_name' => $selectedOffice->schedule_name,
+                    'date' => $date->format('Y-m-d'),
+                    'day_name' => $date->format('l'),
+                    'slot' => $slot->format('H:i A') . ' - ' . $nextSlot->format('H:i A'),
+                    'title' => optional($meeting)->title ?? 'N/A',
+                    'meeting_type' => optional($meeting)->meeting_type ?? 'N/A',
+                    'status' => optional($meeting)->status ?? 'N/A',
+                    'description' => optional($meeting)->description ?? 'N/A',
+                    'id' => optional($meeting)->id,
+                ];
             }
         }
 
-        return view('schedule_management.meeting_schedule.index', compact('days', 'month', 'year'));
+        return view('schedule_management.meeting_schedule.index', compact(
+            'days',
+            'month',
+            'year',
+            'officeSchedules',
+            'selectedScheduleId',
+            'selectedOffice'
+        ));
     }
 
     public function create()

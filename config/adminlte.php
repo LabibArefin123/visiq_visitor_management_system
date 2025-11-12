@@ -515,16 +515,16 @@ return [
             'icon'    => 'fas fa-calendar-alt',
             'submenu' => [
                 [
-                    'text' => 'Office Schedule',
-                    'route'  => 'office_schedules.index',
-                    'can'  => 'office_schedules.index',
-                    'active' => ['office_schedules*'],
-                ],
-                [
                     'text' => 'Meeting Schedule',
                     'route'  => 'meeting_schedules.index',
                     'can'  => 'meeting_schedules.index',
                     'active' => ['meeting_schedules*'],
+                ],
+                [
+                    'text' => 'Office Schedule',
+                    'route'  => 'office_schedules.index',
+                    'can'  => 'office_schedules.index',
+                    'active' => ['office_schedules*'],
                 ],
                 [
                     'text' => 'Shift Schedule',

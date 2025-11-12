@@ -5,9 +5,14 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mb-0">Meeting Schedule List</h1>
-        <a href="{{ route('meeting_schedules.create') }}" class="btn btn-sm btn-success d-flex align-items-center gap-2">
-            <i class="fas fa-plus"></i> Add New
-        </a>
+        <div class="d-flex gap-2">
+            <a href="{{ route('meeting_schedules.create') }}" class="btn btn-sm btn-success d-flex align-items-center gap-2">
+                <i class="fas fa-plus"></i> Add New
+            </a>
+            <button type="button" id="toggleView" class="btn btn-secondary">
+                <i class="fas fa-list"></i> Switch to List View
+            </button>
+        </div>
     </div>
 @stop
 
@@ -15,10 +20,23 @@
     <div class="container">
         <div class="card shadow-sm">
             <div class="card-body">
-
-                {{-- Filter Form --}}
-                <form method="GET" action="{{ route('meeting_schedules.index') }}" class="row g-2 mb-3">
+                <form method="GET" action="{{ route('meeting_schedules.index') }}" class="row g-2 align-items-end mb-3">
                     <div class="col-md-3">
+                        <label for="office_schedule_id"><strong>Filter By Schedule</strong> <span
+                                class="text-danger">*</span></label>
+                        <select name="office_schedule_id" class="form-select">
+                            <option value="">Select Schedule</option>
+                            @foreach ($officeSchedules as $schedule)
+                                <option value="{{ $schedule->id }}"
+                                    {{ $selectedScheduleId == $schedule->id ? 'selected' : '' }}>
+                                    {{ $schedule->schedule_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="month"><strong>Filter By Month</strong> <span class="text-danger">*</span></label>
                         <select name="month" class="form-select">
                             @foreach (range(1, 12) as $m)
                                 <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }}>
@@ -27,7 +45,9 @@
                             @endforeach
                         </select>
                     </div>
+
                     <div class="col-md-3">
+                        <label for="year"><strong>Filter By Year</strong> <span class="text-danger">*</span></label>
                         <select name="year" class="form-select">
                             @foreach (range(date('Y') - 2, date('Y') + 2) as $y)
                                 <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>{{ $y }}
@@ -35,16 +55,10 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-filter"></i> Filter
-                        </button>
-                    </div>
 
-                    <div class="col-md-3 text-end">
-                        {{-- View Toggle Button --}}
-                        <button type="button" id="toggleView" class="btn btn-secondary w-100">
-                            <i class="fas fa-list"></i> Switch to List View
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-filter"></i> Filter
                         </button>
                     </div>
                 </form>
