@@ -9,31 +9,24 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
+     * Redirect users after login.
      */
     protected $redirectTo = '/home';
 
+    /**
+     * Custom login field (username or email).
+     */
     public function username()
     {
-        return 'login'; // your input name
+        return 'login';
     }
 
+    /**
+     * Handle login using either email or username.
+     */
     protected function attemptLogin(Request $request)
     {
         $login = $request->input('login');
@@ -45,12 +38,32 @@ class LoginController extends Controller
         ], $request->filled('remember'));
     }
 
+    /**
+     * Handle actions after successful login.
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        // Flash a session variable for SweetAlert
+        session()->flash('login_success', 'Welcome back, ' . $user->name . '!');
+    }
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Handle logout request.
      */
+    public function logout(Request $request)
+    {
+        $userName = Auth::user()->name ?? 'User';
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Flash message for logout
+        session()->flash('logout_success', 'Goodbye, ' . $userName . '! You have logged out successfully.');
+
+        return redirect('/login');
+    }
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
