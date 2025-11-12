@@ -23,25 +23,26 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <strong>Incident Type:</strong>
-                        <p>{{ $emergency_incident->incident_type }}</p>
+                        <p class="form-control">{{ $emergency_incident->incident_type }}</p>
                     </div>
                     <div class="col-md-6">
                         <strong>Reported By:</strong>
-                        <p>{{ $emergency_incident->reported_by }}</p>
+                        <p class="form-control">{{ $emergency_incident->reported_by }}</p>
                     </div>
 
                     <div class="col-md-6">
                         <strong>Location:</strong>
-                        <p>{{ $emergency_incident->location }}</p>
+                        <p class="form-control">{{ $emergency_incident->location }}</p>
                     </div>
                     <div class="col-md-6">
                         <strong>Incident Time:</strong>
-                        <p>{{ \Carbon\Carbon::parse($emergency_incident->incident_time)->format('d M Y, h:i A') }}</p>
+                        <p class="form-control">
+                            {{ \Carbon\Carbon::parse($emergency_incident->incident_time)->format('d M Y, h:i A') }}</p>
                     </div>
 
                     <div class="col-md-12">
                         <strong>Description:</strong>
-                        <p>{{ $emergency_incident->description }}</p>
+                        <p class="form-control">{{ $emergency_incident->description }}</p>
                     </div>
 
                     <div class="col-md-6">

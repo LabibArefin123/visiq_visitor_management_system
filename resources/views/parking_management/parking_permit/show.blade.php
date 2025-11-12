@@ -71,12 +71,14 @@
 
                     <div class="col-md-6 form-group">
                         <label><strong>Issue Date</strong></label>
-                        <input type="text" class="form-control" value="{{ $parkingPermit->issue_date }}" readonly>
+                        <p class="form-control">
+                            {{ \Carbon\Carbon::parse($parkingPermit->issue_date)->format('d M Y') }}</p>
                     </div>
 
                     <div class="col-md-6 form-group">
                         <label><strong>Expiry Date</strong></label>
-                        <input type="text" class="form-control" value="{{ $parkingPermit->expiry_date }}" readonly>
+                        <p class="form-control">
+                            {{ \Carbon\Carbon::parse($parkingPermit->expiry_date)->format('d M Y') }}</p>
                     </div>
 
                     <div class="col-md-6 form-group">
