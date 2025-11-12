@@ -87,16 +87,6 @@ class RoomListSeeder extends Seeder
                 'remarks' => 'Small team meeting room near workstations'
             ],
             [
-                'user_category_id' => 6,
-                'area_id' => 3,
-                'building_location_id' => 1,
-                'building_list_id' => 1,
-                'room_name' => 'Printer Station A',
-                'room_name_in_bangla' => 'প্রিন্টার স্টেশন এ',
-                'level' => 2,
-                'remarks' => 'Printer and copier station for shared use'
-            ],
-            [
                 'user_category_id' => 4,
                 'area_id' => 3,
                 'building_location_id' => 1,
@@ -170,17 +160,6 @@ class RoomListSeeder extends Seeder
                 'level' => 4,
                 'remarks' => 'Open workspace with walking lane'
             ],
-            [
-                'user_category_id' => 6,
-                'area_id' => 3,
-                'building_location_id' => 1,
-                'building_list_id' => 1,
-                'room_name' => 'Printer Station B',
-                'room_name_in_bangla' => 'প্রিন্টার স্টেশন বি',
-                'level' => 4,
-                'remarks' => 'Shared printer area for teams'
-            ],
-
             // 💼 Level 5
             [
                 'user_category_id' => 4,

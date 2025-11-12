@@ -35,6 +35,7 @@ use App\Http\Controllers\VisitorGroupMemberController;
 //schedule menu
 use App\Http\Controllers\OfficeScheduleController;
 use App\Http\Controllers\ShiftScheduleController;
+use App\Http\Controllers\MeetingScheduleController;
 use App\Http\Controllers\ShiftGuardScheduleController;
 
 //report menu
@@ -155,6 +156,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     //schedule menu
     Route::resource('office_schedules', OfficeScheduleController::class);
     Route::resource('shift_schedules', ShiftScheduleController::class);
+    Route::resource('meeting_schedules', MeetingScheduleController::class);
     Route::resource('shift_guard_schedules', ShiftGuardScheduleController::class);
 
     //report menu

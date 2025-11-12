@@ -521,6 +521,12 @@ return [
                     'active' => ['office_schedules*'],
                 ],
                 [
+                    'text' => 'Meeting Schedule',
+                    'route'  => 'meeting_schedules.index',
+                    'can'  => 'meeting_schedules.index',
+                    'active' => ['meeting_schedules*'],
+                ],
+                [
                     'text' => 'Shift Schedule',
                     'route'  => 'shift_schedules.index',
                     'can'  => 'shift_schedules.index',

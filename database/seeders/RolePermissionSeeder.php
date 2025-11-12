@@ -252,6 +252,16 @@ class RolePermissionSeeder extends Seeder
             'office_schedules.destroy', // Delete
         ];
 
+        $meetingSchedulePermissions = [
+            'meeting_schedules.index',   // View
+            'meeting_schedules.create',  // Create new
+            'meeting_schedules.store',   // Store new
+            'meeting_schedules.show',    // View individual
+            'meeting_schedules.edit',    // Edit
+            'meeting_schedules.update',  // Update
+            'meeting_schedules.destroy', // Delete
+        ];
+
         $shiftGuardSchedulePermissions = [
             'shift_guard_schedules.index',   // View
             'shift_guard_schedules.create',  // Create new
@@ -622,6 +632,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Office Schedule'
+            ]);
+        }
+
+        foreach ($meetingSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Meeting Schedule'
             ]);
         }
 
