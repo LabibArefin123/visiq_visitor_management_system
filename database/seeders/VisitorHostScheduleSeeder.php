@@ -25,7 +25,6 @@ class VisitorHostScheduleSeeder extends Seeder
         $startDate = Carbon::create(2025, 11, 1);
         $endDate = Carbon::create(2026, 2, 15);
 
-        // Common Bangladeshi office visit purposes
         $purposes = [
             'Official meeting regarding project update',
             'Submission of tender documents',
@@ -53,8 +52,11 @@ class VisitorHostScheduleSeeder extends Seeder
             $visitor = $visitors->random();
             $employee = $employees->random();
 
-            // Random date between range
-            $randomDate = Carbon::createFromTimestamp(rand($startDate->timestamp, $endDate->timestamp));
+            // Pick a random date that is NOT Friday or Saturday
+            do {
+                $randomDate = Carbon::createFromTimestamp(rand($startDate->timestamp, $endDate->timestamp));
+                $dayOfWeek = $randomDate->dayOfWeek; // 5=Friday, 6=Saturday
+            } while (in_array($dayOfWeek, [5, 6])); // skip Fridays and Saturdays
 
             // Random time within working hours (8 AM – 8 PM)
             $hour = rand(8, 20);

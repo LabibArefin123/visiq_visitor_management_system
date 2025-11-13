@@ -13,6 +13,15 @@
     </div>
 @stop
 
+@section('css')
+    <style>
+        .meeting-link:hover {
+            background-color: #ff9900 !important;
+            color: #fff;
+        }
+    </style>
+@stop
+
 @section('content')
     <div class="container">
         <div class="card shadow-sm">
@@ -72,7 +81,6 @@
                             </thead>
                             <tbody>
                                 @php
-                                    // Get total days in the selected month
                                     $daysInMonth = \Carbon\Carbon::create($year, $month, 1)->daysInMonth;
                                     $firstDayOfMonth = \Carbon\Carbon::create($year, $month, 1)->format('l');
                                     $startIndex = array_search($firstDayOfMonth, [
@@ -84,11 +92,9 @@
                                         'Friday',
                                         'Saturday',
                                     ]);
-                                    $week = array_fill(0, 7, null);
                                     $calendar = [];
-
-                                    // Build calendar week by week
                                     $dayCounter = 1;
+
                                     while ($dayCounter <= $daysInMonth) {
                                         $week = array_fill(0, 7, null);
                                         for (
@@ -114,9 +120,9 @@
                                                         $dayNumber,
                                                     )->format('Y-m-d');
                                                     $dayMeetings = $days[$currentDate] ?? [];
-                                                    $hasMeeting = collect($dayMeetings)->contains(
-                                                        fn($m) => $m['status'] !== 'No Meeting',
-                                                    );
+                                                    $hasMeeting = collect($dayMeetings)
+                                                        ->where('status', '!=', 'No Meeting')
+                                                        ->isNotEmpty();
 
                                                     $cellColor = '#f8f9fa';
                                                     if ($hasMeeting) {
@@ -136,28 +142,55 @@
                                             @endphp
 
                                             <td class="p-2"
-                                                style="height:110px; vertical-align: top; background-color: {{ $dayNumber ? $cellColor : '#f8f9fa' }};">
+                                                style="height:110px; vertical-align: top; background-color: {{ $dayNumber ? $cellColor : '#f8f9fa' }}">
                                                 @if ($dayNumber)
                                                     <div class="fw-bold">{{ $dayNumber }}</div>
+
                                                     @if ($hasMeeting)
                                                         <div class="mt-1 small text-start">
-                                                            @foreach ($dayMeetings as $meeting)
-                                                                @if ($meeting['status'] !== 'No Meeting')
-                                                                    <div class="mb-1 p-1 border rounded bg-white text-dark">
-                                                                        <span
-                                                                            class="badge 
-                                                            @if ($meeting['color'] === 'green') bg-success 
-                                                            @elseif($meeting['color'] === 'yellow') bg-warning 
-                                                            @elseif($meeting['color'] === 'red') bg-danger 
-                                                            @else bg-secondary @endif">
-                                                                            {{ ucfirst($meeting['status']) }}
-                                                                        </span><br>
-                                                                        <small class="text-info">Visitor:
-                                                                            {{ $meeting['visitor_name'] }}</small><br>
-                                                                        <small class="text-warning">Employee:
-                                                                            {{ $meeting['employee_name'] }}</small>
-                                                                    </div>
-                                                                @endif
+                                                            {{-- Separate Single and Group --}}
+                                                            @foreach (['Single', 'Group'] as $type)
+                                                                @php
+                                                                    $meetingsOfType = collect($dayMeetings)->where(
+                                                                        'meeting_type',
+                                                                        $type,
+                                                                    );
+                                                                @endphp
+
+                                                                @foreach ($meetingsOfType as $meeting)
+                                                                    @php
+                                                                        $url =
+                                                                            $meeting['meeting_type'] === 'Group'
+                                                                                ? route(
+                                                                                    'visitor_group_schedules.show',
+                                                                                    $meeting['id'],
+                                                                                )
+                                                                                : route(
+                                                                                    'visitor_host_schedules.show',
+                                                                                    $meeting['id'],
+                                                                                );
+                                                                    @endphp
+                                                                    <a href="{{ $url }}"
+                                                                        style="text-decoration: none;">
+                                                                        <div class="mb-1 p-1 border rounded bg-white text-dark meeting-link"
+                                                                            title="{{ $meeting['title'] }}">
+                                                                            <span
+                                                                                class="badge
+                                                                                                        @if ($meeting['color'] === 'green') bg-success
+                                                                                                        @elseif ($meeting['color'] === 'yellow') bg-warning
+                                                                                                        @elseif ($meeting['color'] === 'red') bg-danger
+                                                                                                        @else bg-secondary @endif">
+                                                                                {{ ucfirst($meeting['status']) }}
+                                                                            </span><br>
+                                                                            <small class="text-info">
+                                                                                {{ $meeting['meeting_type'] === 'Single' ? 'Visitor:' : 'Group:' }}
+                                                                                {{ $meeting['visitor_name'] }}
+                                                                            </small><br>
+                                                                            <small class="text-warning">Employee:
+                                                                                {{ $meeting['employee_name'] }}</small>
+                                                                        </div>
+                                                                    </a>
+                                                                @endforeach
                                                             @endforeach
                                                         </div>
                                                     @else
@@ -173,7 +206,6 @@
                     </div>
                 </div>
 
-
                 {{-- 🔹 List View --}}
                 <div id="listView" class="table-responsive d-none">
                     <table class="table table-hover table-striped align-middle">
@@ -184,7 +216,7 @@
                                 <th>Day</th>
                                 <th>Date</th>
                                 <th>Title</th>
-                                <th>Visitor</th>
+                                <th>Visitor / Visitor Group</th>
                                 <th>Employee</th>
                                 <th>Type</th>
                                 <th>Status</th>
@@ -204,7 +236,16 @@
                                             <td>{{ $m['title'] }}</td>
                                             <td>{{ $m['visitor_name'] }}</td>
                                             <td>{{ $m['employee_name'] }}</td>
-                                            <td>{{ $m['meeting_type'] }}</td>
+                                            <td>
+                                                @if ($m['meeting_type'] === 'Group')
+                                                    {{ $m['visitor_name'] ?? '--' }} <span
+                                                        class="badge bg-primary">Group</span>
+                                                @else
+                                                    {{ $m['visitor_name'] ?? '--' }} <span
+                                                        class="badge bg-info">Single</span>
+                                                @endif
+                                            </td>
+
                                             <td><span class="badge bg-success">{{ ucfirst($m['status']) }}</span></td>
                                             <td>{{ $m['description'] }}</td>
                                         </tr>

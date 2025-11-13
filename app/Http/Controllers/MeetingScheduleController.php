@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\VisitorHostSchedule;
+use App\Models\VisitorGroupSchedule;
 use App\Models\WeekendSchedule;
 use App\Models\OfficeSchedule;
 use Illuminate\Http\Request;
@@ -16,75 +17,102 @@ class MeetingScheduleController extends Controller
         $year = $request->input('year', Carbon::now()->year);
         $selectedWeekendId = $request->input('weekend_schedule_id');
 
-        // 🔹 Fetch all active weekend schedules
         $weekendSchedules = WeekendSchedule::where('status', 'Active')->get();
-
-        // 🔹 Determine selected weekend schedule
         $selectedWeekend = $selectedWeekendId
             ? $weekendSchedules->firstWhere('id', $selectedWeekendId)
             : $weekendSchedules->first();
 
-        // 🔹 Parse working days
         $workingDays = [];
         if ($selectedWeekend && !empty($selectedWeekend->working_days)) {
             $workingDays = array_map('trim', explode(',', $selectedWeekend->working_days));
         }
 
-        // 🔹 Fetch all meetings for this month
-        $meetings = VisitorHostSchedule::with(['visitor', 'employee'])
+        $startOfMonth = Carbon::create($year, $month, 1);
+        $endOfMonth = $startOfMonth->copy()->endOfMonth();
+
+        // 🔹 Fetch all single meetings for this month
+        $singleMeetings = VisitorHostSchedule::with(['visitor', 'employee'])
             ->whereYear('meeting_date', $year)
             ->whereMonth('meeting_date', $month)
             ->get();
 
-        // 🔹 Group meetings by date (Y-m-d format)
-        $meetingsByDate = $meetings->groupBy(function ($meeting) {
-            return Carbon::parse($meeting->meeting_date)->format('Y-m-d');
-        });
+        // 🔹 Fetch all group meetings for this month
+        $groupMeetings = VisitorGroupSchedule::with(['visitorGroup', 'employee'])
+            ->whereYear('meeting_date', $year)
+            ->whereMonth('meeting_date', $month)
+            ->get();
 
-        // 🔹 Prepare all days of the month (even weekends)
-        $startOfMonth = Carbon::create($year, $month, 1);
-        $endOfMonth = $startOfMonth->copy()->endOfMonth();
+        // 🔹 Group by date
+        $singleByDate = $singleMeetings->groupBy(fn($m) => Carbon::parse($m->meeting_date)->format('Y-m-d'));
+        $groupByDate = $groupMeetings->groupBy(fn($m) => Carbon::parse($m->meeting_date)->format('Y-m-d'));
 
+        // 🔹 Prepare all days of the month
         $days = [];
-
         for ($date = $startOfMonth->copy(); $date->lte($endOfMonth); $date->addDay()) {
             $currentDate = $date->format('Y-m-d');
             $dayName = $date->format('l');
 
-            // ✅ Fetch meetings for this specific date
-            $dayMeetings = $meetingsByDate->get($currentDate, collect());
+            $days[$currentDate] = [];
 
-            // ✅ Only skip non-working days if no meeting exists there
-            if (!empty($workingDays) && !in_array($dayName, $workingDays) && $dayMeetings->isEmpty()) {
+            // Skip non-working days only if no meeting exists
+            $daySingleMeetings = $singleByDate->get($currentDate, collect());
+            $dayGroupMeetings = $groupByDate->get($currentDate, collect());
+
+            if (
+                !empty($workingDays) && !in_array($dayName, $workingDays) &&
+                $daySingleMeetings->isEmpty() && $dayGroupMeetings->isEmpty()
+            ) {
                 continue;
             }
 
-            // ✅ If meeting exists, add details
-            if ($dayMeetings->isNotEmpty()) {
-                foreach ($dayMeetings as $meeting) {
-                    $status = strtolower($meeting->status ?? '');
-                    $color = match ($status) {
+            // Add single meetings
+            foreach ($daySingleMeetings as $m) {
+                $status = strtolower($m->status ?? '');
+                $days[$currentDate][] = [
+                    'id' => $m->id, // 🔹 add this
+                    'weekend_schedule' => $selectedWeekend->title ?? 'Default Schedule',
+                    'date' => $currentDate,
+                    'day_name' => $dayName,
+                    'title' => $m->purpose ?? 'N/A',
+                    'meeting_type' => 'Single',
+                    'status' => ucfirst($m->status ?? 'Unknown'),
+                    'color' => match ($status) {
                         'completed' => 'green',
                         'scheduled' => 'yellow',
                         'cancelled', 'canceled' => 'red',
-                        default => 'gray'
-                    };
+                        default => 'gray',
+                    },
+                    'description' => $m->remarks ?? '--',
+                    'visitor_name' => optional($m->visitor)->name ?? '--',
+                    'employee_name' => optional($m->employee)->name ?? '--',
+                ];
+            }
 
-                    $days[$currentDate][] = [
-                        'weekend_schedule' => $selectedWeekend->title ?? 'Default Schedule',
-                        'date' => $currentDate,
-                        'day_name' => $dayName,
-                        'title' => $meeting->purpose ?? 'N/A',
-                        'meeting_type' => 'Single',
-                        'status' => ucfirst($meeting->status ?? 'Unknown'),
-                        'color' => $color,
-                        'description' => $meeting->remarks ?? '--',
-                        'visitor_name' => optional($meeting->visitor)->name ?? '--',
-                        'employee_name' => optional($meeting->employee)->name ?? '--',
-                    ];
-                }
-            } else {
-                // ✅ Still add the day, just mark as “No Meeting”
+            // Add group meetings
+            foreach ($dayGroupMeetings as $m) {
+                $status = strtolower($m->status ?? '');
+                $days[$currentDate][] = [
+                    'id' => $m->id, // 🔹 add this
+                    'weekend_schedule' => $selectedWeekend->title ?? 'Default Schedule',
+                    'date' => $currentDate,
+                    'day_name' => $dayName,
+                    'title' => $m->purpose ?? 'N/A',
+                    'meeting_type' => 'Group',
+                    'status' => ucfirst($m->status ?? 'Unknown'),
+                    'color' => match ($status) {
+                        'completed' => 'green',
+                        'scheduled' => 'yellow',
+                        'cancelled', 'canceled' => 'red',
+                        default => 'gray',
+                    },
+                    'description' => $m->remarks ?? '--',
+                    'visitor_name' => optional($m->visitorGroup)->group_name ?? '--',
+                    'employee_name' => optional($m->employee)->name ?? '--',
+                ];
+            }
+
+            // If no meeting, mark as No Meeting
+            if (empty($days[$currentDate])) {
                 $days[$currentDate][] = [
                     'weekend_schedule' => $selectedWeekend->title ?? 'Default Schedule',
                     'date' => $currentDate,

@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             // BlacklistedVisitorSeeder::class,
             // VisitorEmergencySeeder::class,
             // PendingVisitorSeeder::class,
-            // VisitorHostScheduleSeeder::class,
+            VisitorHostScheduleSeeder::class,
             VisitorGroupScheduleSeeder::class,
             // OfficeScheduleSeeder::class,
             // EmergencyIncidentSeeder::class,
