@@ -13,9 +13,9 @@ class VisitorHostScheduleController extends Controller
     {
         $schedules = VisitorHostSchedule::with(['visitor', 'employee'])
             ->orderBy('meeting_date', 'asc')
-            ->paginate(10);
+            ->get();
 
-        return view('visitor_management.visitor_host_schedule.index', compact('schedules'));
+        return view('schedule_management.visitor_host_schedule.index', compact('schedules'));
     }
 
     public function create()
@@ -24,7 +24,7 @@ class VisitorHostScheduleController extends Controller
         $visitors = Visitor::orderBy('purpose')->orderBy('name')->get();
         $employees = Employee::orderBy('name')->get(); // optional, sorted by name
 
-        return view('visitor_management.visitor_host_schedule.create', compact('visitors', 'employees'));
+        return view('schedule_management.visitor_host_schedule.create', compact('visitors', 'employees'));
     }
 
 
@@ -45,14 +45,14 @@ class VisitorHostScheduleController extends Controller
 
     public function show(VisitorHostSchedule $visitor_host_schedule)
     {
-        return view('visitor_management.visitor_host_schedule.show', compact('visitor_host_schedule'));
+        return view('schedule_management.visitor_host_schedule.show', compact('visitor_host_schedule'));
     }
 
     public function edit(VisitorHostSchedule $visitor_host_schedule)
     {
         $visitors = Visitor::orderBy('purpose')->orderBy('name')->get();
         $employees = Employee::all();
-        return view('visitor_management.visitor_host_schedule.edit', compact('visitor_host_schedule', 'visitors', 'employees'));
+        return view('schedule_management.visitor_host_schedule.edit', compact('visitor_host_schedule', 'visitors', 'employees'));
     }
 
     public function update(Request $request, VisitorHostSchedule $visitor_host_schedule)

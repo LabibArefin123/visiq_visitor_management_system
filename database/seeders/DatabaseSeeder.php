@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         // ✅ Properly call multiple seeders in sequence
         $this->call([
             // RolePermissionSeeder::class,
-            ParkingListSeeder::class,
+            // ParkingListSeeder::class,
             // UserCategorySeeder::class,
             // SubAreaSeeder::class,
             // EmployeeSeeder::class,
@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             // VisitorEmergencySeeder::class,
             // PendingVisitorSeeder::class,
             // VisitorHostScheduleSeeder::class,
+            VisitorGroupScheduleSeeder::class,
             // OfficeScheduleSeeder::class,
             // EmergencyIncidentSeeder::class,
             // GuardActivityLogSeeder::class,

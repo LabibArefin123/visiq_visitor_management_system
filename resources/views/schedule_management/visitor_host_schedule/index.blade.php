@@ -18,16 +18,9 @@
 
 @section('content')
     <div class="container">
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-
         <div class="card shadow-sm">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-striped table-hover text-nowrap">
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-hover text-nowrap" id="dataTables">
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
@@ -71,11 +64,6 @@
                         @endforelse
                     </tbody>
                 </table>
-
-                <!-- Pagination -->
-                <div class="mt-3 d-flex justify-content-center">
-                    {{ $schedules->links('pagination::bootstrap-5') }}
-                </div>
             </div>
         </div>
     </div>

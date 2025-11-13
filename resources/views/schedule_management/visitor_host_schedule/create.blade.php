@@ -20,7 +20,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('visitor_host_schedules.store') }}" method="POST">
+            <form action="{{ route('visitor_host_schedules.store') }}" method="POST" data-confirm="create">
                 @csrf
                 <div class="row">
                     <div class="col-md-6 form-group">

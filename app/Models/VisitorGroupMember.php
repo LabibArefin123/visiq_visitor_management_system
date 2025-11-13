@@ -18,6 +18,6 @@ class VisitorGroupMember extends Model
     ];
 
     protected $casts = [
-        'visitor_ids' => 'array', // Store as JSON array
+        'visitor_ids' => 'array',
     ];
 }

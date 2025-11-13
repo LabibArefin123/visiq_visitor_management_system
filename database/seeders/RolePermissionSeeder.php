@@ -51,6 +51,7 @@ class RolePermissionSeeder extends Seeder
             'permissions.edit',    // Edit
             'permissions.update',  // Update
             'permissions.destroy', // Delete
+            'permissions.deleteSelected', // Delete selected
         ];
 
         $employeePermissions = [
@@ -252,14 +253,27 @@ class RolePermissionSeeder extends Seeder
             'office_schedules.destroy', // Delete
         ];
 
+        $weekendSchedulePermissions = [
+            'weekend_schedules.index',   // View
+            'weekend_schedules.create',  // Create new
+            'weekend_schedules.store',   // Store new
+            'weekend_schedules.show',    // View individual
+            'weekend_schedules.edit',    // Edit
+            'weekend_schedules.update',  // Update
+            'weekend_schedules.destroy', // Delete
+        ];
+        $visitorGroupSchedulePermissions = [
+            'visitor_group_schedules.index',   // View
+            'visitor_group_schedules.create',  // Create new
+            'visitor_group_schedules.store',   // Store new
+            'visitor_group_schedules.show',    // View individual
+            'visitor_group_schedules.edit',    // Edit
+            'visitor_group_schedules.update',  // Update
+            'visitor_group_schedules.destroy', // Delete
+        ];
+
         $meetingSchedulePermissions = [
             'meeting_schedules.index',   // View
-            'meeting_schedules.create',  // Create new
-            'meeting_schedules.store',   // Store new
-            'meeting_schedules.show',    // View individual
-            'meeting_schedules.edit',    // Edit
-            'meeting_schedules.update',  // Update
-            'meeting_schedules.destroy', // Delete
         ];
 
         $shiftGuardSchedulePermissions = [
@@ -632,6 +646,20 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Office Schedule'
+            ]);
+        }
+
+        foreach ($visitorGroupSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor Group Schedule'
+            ]);
+        }
+
+        foreach ($weekendSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Weekend Schedule'
             ]);
         }
 

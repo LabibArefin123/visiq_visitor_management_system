@@ -37,6 +37,7 @@ use App\Http\Controllers\OfficeScheduleController;
 use App\Http\Controllers\ShiftScheduleController;
 use App\Http\Controllers\MeetingScheduleController;
 use App\Http\Controllers\WeekendScheduleController;
+use App\Http\Controllers\VisitorGroupScheduleController;
 use App\Http\Controllers\ShiftGuardScheduleController;
 
 //report menu
@@ -137,7 +138,6 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/visitor_blacklist_monitor', [BlacklistMonitorController::class, 'index'])->name('visitor_blacklists.activity_log');
     Route::resource('visitor_emergencys', VisitorEmergencyController::class);
     Route::resource('visitor_group_members', VisitorGroupMemberController::class);
-    Route::resource('visitor_host_schedules', VisitorHostScheduleController::class);
     Route::resource('visitor_companies', VisitorCompanyController::class);
     Route::get('/visitor_company/pdf/{id}', [VisitorCompanyController::class, 'downloadPDF'])->name('visitor_company.pdf');
     Route::get('/visitor_company/word/{id}', [VisitorCompanyController::class, 'downloadWord'])->name('visitor_company.word');
@@ -159,6 +159,8 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('shift_schedules', ShiftScheduleController::class);
     Route::get('meeting_schedules', [MeetingScheduleController::class, 'index'])->name('meeting_schedules.index');
     Route::resource('shift_guard_schedules', ShiftGuardScheduleController::class);
+    Route::resource('visitor_host_schedules', VisitorHostScheduleController::class);
+    Route::resource('visitor_group_schedules', VisitorGroupScheduleController::class);
     Route::resource('weekend_schedules', WeekendScheduleController::class);
 
     //report menu

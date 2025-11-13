@@ -532,6 +532,12 @@ return [
                     'active' => ['visitor_host_schedules*'],
                 ],
                 [
+                    'text' => 'Visitor Group Schedule',
+                    'route'  => 'visitor_group_schedules.index',
+                    'can'  => 'visitor_group_schedules.index',
+                    'active' => ['visitor_group_schedules*'],
+                ],
+                [
                     'text' => 'Guard Shift Schedule',
                     'route'  => 'shift_guard_schedules.index',
                     'can'  => 'shift_guard_schedules.index',
