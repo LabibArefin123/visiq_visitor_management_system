@@ -20,11 +20,9 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('visitor_blacklists.store') }}" method="POST">
+                <form action="{{ route('visitor_blacklists.store') }}" method="POST" data-confirm="create">
                     @csrf
                     <div class="row">
-
-                        {{-- Blacklist ID --}}
                         <div class="col-md-6 form-group">
                             <label for="B_id"><strong>Blacklist ID</strong> <span class="text-danger">*</span></label>
                             <input type="text" name="B_id" id="B_id"
@@ -94,7 +92,7 @@
 
                     <div class="text-end mt-3">
                         <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save"></i> Save Blacklist
+                            <i class="fas fa-save"></i> Submit
                         </button>
                     </div>
                 </form>

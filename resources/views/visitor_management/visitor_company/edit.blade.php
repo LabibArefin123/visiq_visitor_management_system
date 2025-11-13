@@ -20,7 +20,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('visitor_companies.update', $visitor_company->id) }}" method="POST">
+            <form action="{{ route('visitor_companies.update', $visitor_company->id) }}" method="POST" data-confirm="edit">
                 @csrf
                 @method('PUT')
 

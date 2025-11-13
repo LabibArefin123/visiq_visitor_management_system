@@ -20,7 +20,7 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('visitors.store') }}" method="POST">
+                <form action="{{ route('visitors.store') }}" method="POST" data-confirm="create">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 form-group ">

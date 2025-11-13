@@ -20,7 +20,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('visitor_group_members.update', $group->id) }}" method="POST">
+            <form action="{{ route('visitor_group_members.update', $group->id) }}" method="POST" data-confirm="edit">
                 @csrf
                 @method('PUT')
                 <div class="row">
@@ -67,7 +67,7 @@
                                                         class="form-check-input visitor-checkbox"
                                                         {{ in_array($visitor->id, $selectedVisitors) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="visitor_{{ $visitor->id }}">
-                                                        {{ $visitor->name }} 
+                                                        {{ $visitor->name }}
                                                     </label>
                                                 </div>
                                             </div>

@@ -21,7 +21,7 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('pending_visitors.update', $visitor->id) }}" method="POST">
+                <form action="{{ route('pending_visitors.update', $visitor->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">

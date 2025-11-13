@@ -20,7 +20,7 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-body">
-                <form action="{{ route('visitors.update', $visitor->id) }}" method="POST">
+                <form action="{{ route('visitors.update', $visitor->id) }}" method="POST" data-confirm="edit">
                     @csrf
                     @method('PUT')
 

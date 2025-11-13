@@ -20,11 +20,9 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('visitor_group_members.store') }}" method="POST">
+            <form action="{{ route('visitor_group_members.store') }}" method="POST" data-confirm="create">
                 @csrf
                 <div class="row">
-
-                    {{-- Group Name --}}
                     <div class="col-md-6 form-group">
                         <label><strong>Group Name</strong> <span class="text-danger">*</span></label>
                         <input type="text" name="group_name"

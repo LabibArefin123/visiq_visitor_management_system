@@ -461,7 +461,13 @@ return [
                     'active' => ['visitor_emergencys*'],
                 ],
                 [
-                    'text' => 'Visitor Blacklist',
+                    'text' => 'Probation Visitors',
+                    'route'  => 'visitor_probations.index',
+                    'can'  => 'visitor_probations.index',
+                    'active' => ['visitor_probations*'],
+                ],
+                [
+                    'text' => 'Blacklist Visitor',
                     'route'  => 'visitor_blacklists.index',
                     'can'  => 'visitor_blacklists.index',
                     'active' => ['visitor_blacklists*'],
@@ -474,6 +480,19 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'Recruitment Menu',
+            'icon' => 'fas fa-briefcase',
+            'submenu' => [
+                [
+                    'text' => 'Visitor Job Applications',
+                    'route'  => 'visitor_job_applications.index',
+                    'can'  => 'visitor_job_applications.index',
+                    'active' => ['visitor_job_applications*'],
+                ],
+            ],
+        ],
+
         [
             'text'    => 'Employee Menu',
             'icon'    => 'fas fa-fw fa-users-cog',
@@ -512,6 +531,12 @@ return [
                     'route'  => 'meeting_schedules.index',
                     'can'  => 'meeting_schedules.index',
                     'active' => ['meeting_schedules*'],
+                ],
+                [
+                    'text' => 'Interview Schedule',
+                    'route'  => 'interview_schedules.index',
+                    'can'  => 'interview_schedules.index',
+                    'active' => ['interview_schedules*'],
                 ],
                 [
                     'text' => 'Office Schedule',

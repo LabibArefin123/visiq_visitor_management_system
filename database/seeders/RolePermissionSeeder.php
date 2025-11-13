@@ -88,6 +88,59 @@ class RolePermissionSeeder extends Seeder
             'visitor_companies.destroy', // Delete
         ];
 
+        $blacklistVisitorPermissions = [
+            'visitor_blacklists.index',   // View
+            'visitor_blacklists.create',  // Create new
+            'visitor_blacklists.store',   // Store new
+            'visitor_blacklists.show',    // View individual
+            'visitor_blacklists.edit',    // Edit
+            'visitor_blacklists.update',  // Update
+            'visitor_blacklists.destroy', // Delete
+            'visitor_blacklists.activity_log', // Activity Log
+        ];
+
+        $emergencyVisitorPermissions = [
+            'visitor_emergencys.index',   // View
+            'visitor_emergencys.create',  // Create new
+            'visitor_emergencys.store',   // Store new
+            'visitor_emergencys.show',    // View individual
+            'visitor_emergencys.edit',    // Edit
+            'visitor_emergencys.update',  // Update
+            'visitor_emergencys.destroy', // Delete
+        ];
+
+        $pendingVisitorPermissions = [
+            'pending_visitors.index',   // View
+            'pending_visitors.create',  // Create new
+            'pending_visitors.store',   // Store new
+            'pending_visitors.show',    // View individual
+            'pending_visitors.edit',    // Edit
+            'pending_visitors.update',  // Update
+            'pending_visitors.destroy', // Delete
+            'pending_visitors.approve', // Approve visitors
+        ];
+
+        $visitorJobApplicationPermissions = [
+            'visitor_job_applications.index',   // View
+            'visitor_job_applications.create',  // Create new
+            'visitor_job_applications.store',   // Store new
+            'visitor_job_applications.show',    // View individual
+            'visitor_job_applications.edit',    // Edit
+            'visitor_job_applications.update',  // Update
+            'visitor_job_applications.destroy', // Delete
+            'visitor_job_applications.approve', // Approve visitors
+        ];
+
+        $visitorGroupMemberPermissions = [
+            'visitor_group_members.index',   // View
+            'visitor_group_members.create',  // Create new
+            'visitor_group_members.store',   // Store new
+            'visitor_group_members.show',    // View individual
+            'visitor_group_members.edit',    // Edit
+            'visitor_group_members.update',  // Update
+            'visitor_group_members.destroy', // Delete
+        ];
+
         // building menu
         $areaPermissions = [
             'areas.index',   // View
@@ -181,58 +234,6 @@ class RolePermissionSeeder extends Seeder
             'departments.destroy', // Delete
         ];
 
-        $blacklistVisitorPermissions = [
-            'visitor_blacklists.index',   // View
-            'visitor_blacklists.create',  // Create new
-            'visitor_blacklists.store',   // Store new
-            'visitor_blacklists.show',    // View individual
-            'visitor_blacklists.edit',    // Edit
-            'visitor_blacklists.update',  // Update
-            'visitor_blacklists.destroy', // Delete
-            'visitor_blacklists.activity_log', // Activity Log
-        ];
-
-        $emergencyVisitorPermissions = [
-            'visitor_emergencys.index',   // View
-            'visitor_emergencys.create',  // Create new
-            'visitor_emergencys.store',   // Store new
-            'visitor_emergencys.show',    // View individual
-            'visitor_emergencys.edit',    // Edit
-            'visitor_emergencys.update',  // Update
-            'visitor_emergencys.destroy', // Delete
-        ];
-
-        $pendingVisitorPermissions = [
-            'pending_visitors.index',   // View
-            'pending_visitors.create',  // Create new
-            'pending_visitors.store',   // Store new
-            'pending_visitors.show',    // View individual
-            'pending_visitors.edit',    // Edit
-            'pending_visitors.update',  // Update
-            'pending_visitors.destroy', // Delete
-            'pending_visitors.approve', // Approve visitors
-        ];
-
-        $visitorGroupMemberPermissions = [
-            'visitor_group_members.index',   // View
-            'visitor_group_members.create',  // Create new
-            'visitor_group_members.store',   // Store new
-            'visitor_group_members.show',    // View individual
-            'visitor_group_members.edit',    // Edit
-            'visitor_group_members.update',  // Update
-            'visitor_group_members.destroy', // Delete
-        ];
-
-        $visitorHostSchedulePermissions = [
-            'visitor_host_schedules.index',   // View
-            'visitor_host_schedules.create',  // Create new
-            'visitor_host_schedules.store',   // Store new
-            'visitor_host_schedules.show',    // View individual
-            'visitor_host_schedules.edit',    // Edit
-            'visitor_host_schedules.update',  // Update
-            'visitor_host_schedules.destroy', // Delete
-        ];
-
         $shiftSchedulePermissions = [
             'shift_schedules.index',   // View
             'shift_schedules.create',  // Create new
@@ -253,6 +254,16 @@ class RolePermissionSeeder extends Seeder
             'office_schedules.destroy', // Delete
         ];
 
+        $interviewSchedulePermissions = [
+            'interview_schedules.index',   // View
+            'interview_schedules.create',  // Create new
+            'interview_schedules.store',   // Store new
+            'interview_schedules.show',    // View individual
+            'interview_schedules.edit',    // Edit
+            'interview_schedules.update',  // Update
+            'interview_schedules.destroy', // Delete
+        ];
+
         $weekendSchedulePermissions = [
             'weekend_schedules.index',   // View
             'weekend_schedules.create',  // Create new
@@ -262,6 +273,18 @@ class RolePermissionSeeder extends Seeder
             'weekend_schedules.update',  // Update
             'weekend_schedules.destroy', // Delete
         ];
+
+        $visitorHostSchedulePermissions = [
+            'visitor_host_schedules.index',   // View
+            'visitor_host_schedules.create',  // Create new
+            'visitor_host_schedules.store',   // Store new
+            'visitor_host_schedules.show',    // View individual
+            'visitor_host_schedules.edit',    // Edit
+            'visitor_host_schedules.update',  // Update
+            'visitor_host_schedules.destroy', // Delete
+        ];
+
+
         $visitorGroupSchedulePermissions = [
             'visitor_group_schedules.index',   // View
             'visitor_group_schedules.create',  // Create new
@@ -614,6 +637,7 @@ class RolePermissionSeeder extends Seeder
             ]);
         }
 
+
         foreach ($visitorGroupMemberPermissions as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,
@@ -621,10 +645,10 @@ class RolePermissionSeeder extends Seeder
             ]);
         }
 
-        foreach ($visitorHostSchedulePermissions as $permission) {
+        foreach ($visitorJobApplicationPermissions as $permission) {
             Permission::firstOrCreate([
                 'name' => $permission,
-                'module' => 'Visitor Host Schedule'
+                'module' => 'Visitor Job Application'
             ]);
         }
 
@@ -646,6 +670,20 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'Office Schedule'
+            ]);
+        }
+
+        foreach ($interviewSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Interview Schedule'
+            ]);
+        }
+
+        foreach ($visitorHostSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor Host Schedule'
             ]);
         }
 

@@ -47,10 +47,13 @@
                                     <a href="{{ route('visitor_blacklists.edit', $blacklist->id) }}"
                                         class="btn btn-primary btn-sm">Edit</a>
                                     <form action="{{ route('visitor_blacklists.destroy', $blacklist->id) }}" method="POST"
-                                        class="d-inline" onsubmit="return confirm('Remove this visitor from blacklist?');">
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('visitor_blacklists.destroy', $blacklist->id) }}')">
+                                            Delete
+                                        </button>
                                     </form>
                                 </td>
                             </tr>

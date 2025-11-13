@@ -28,13 +28,18 @@ use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\PendingVisitorController;
 use App\Http\Controllers\VisitorCompanyController;
 use App\Http\Controllers\VisitorHostScheduleController;
-use App\Http\Controllers\VisitorBlacklistController;
 use App\Http\Controllers\VisitorEmergencyController;
 use App\Http\Controllers\VisitorGroupMemberController;
+use App\Http\Controllers\VisitorProbationController;
+use App\Http\Controllers\VisitorBlacklistController;
+
+//recruitment menu
+use App\Http\Controllers\VisitorJobApplicationController;
 
 //schedule menu
 use App\Http\Controllers\OfficeScheduleController;
 use App\Http\Controllers\ShiftScheduleController;
+use App\Http\Controllers\InterviewScheduleController;
 use App\Http\Controllers\MeetingScheduleController;
 use App\Http\Controllers\WeekendScheduleController;
 use App\Http\Controllers\VisitorGroupScheduleController;
@@ -131,16 +136,20 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('room_lists', RoomListController::class);
 
     //visitor menu
+    Route::resource('visitor_job_applications', VisitorJobApplicationController::class);
+
+    //visitor menu
     Route::resource('visitors', VisitorController::class);
     Route::resource('pending_visitors', PendingVisitorController::class);
     Route::post('/pending-visitors/{id}/approve', [PendingVisitorController::class, 'approve'])->name('pending_visitors.approve');
-    Route::resource('visitor_blacklists', VisitorBlacklistController::class);
-    Route::get('/visitor_blacklist_monitor', [BlacklistMonitorController::class, 'index'])->name('visitor_blacklists.activity_log');
     Route::resource('visitor_emergencys', VisitorEmergencyController::class);
     Route::resource('visitor_group_members', VisitorGroupMemberController::class);
     Route::resource('visitor_companies', VisitorCompanyController::class);
     Route::get('/visitor_company/pdf/{id}', [VisitorCompanyController::class, 'downloadPDF'])->name('visitor_company.pdf');
     Route::get('/visitor_company/word/{id}', [VisitorCompanyController::class, 'downloadWord'])->name('visitor_company.word');
+    Route::resource('visitor_probations', VisitorProbationController::class);
+    Route::resource('visitor_blacklists', VisitorBlacklistController::class);
+    Route::get('/visitor_blacklist_monitor', [BlacklistMonitorController::class, 'index'])->name('visitor_blacklists.activity_log');
 
     //employee menu
     Route::resource('employees', EmployeeController::class);
@@ -158,6 +167,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('office_schedules', OfficeScheduleController::class);
     Route::resource('shift_schedules', ShiftScheduleController::class);
     Route::get('meeting_schedules', [MeetingScheduleController::class, 'index'])->name('meeting_schedules.index');
+    Route::resource('interview_schedules', InterviewScheduleController::class);
     Route::resource('shift_guard_schedules', ShiftGuardScheduleController::class);
     Route::resource('visitor_host_schedules', VisitorHostScheduleController::class);
     Route::resource('visitor_group_schedules', VisitorGroupScheduleController::class);
