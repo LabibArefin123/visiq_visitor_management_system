@@ -17,22 +17,23 @@
     <div class="container">
         <div class="card shadow-sm">
             <div class="card-body">
+                {{-- 🔹 Filter Section --}}
                 <form method="GET" action="{{ route('meeting_schedules.index') }}" class="row g-2 align-items-end mb-3">
                     <div class="col-md-3">
-                        <label for="office_schedule_id"><strong>Filter By Schedule</strong></label>
-                        <select name="office_schedule_id" class="form-select">
+                        <label><strong>Filter By Weekend Schedule</strong></label>
+                        <select name="weekend_schedule_id" class="form-select">
                             <option value="">Select Schedule</option>
-                            @foreach ($officeSchedules as $schedule)
+                            @foreach ($weekendSchedules as $schedule)
                                 <option value="{{ $schedule->id }}"
-                                    {{ $selectedScheduleId == $schedule->id ? 'selected' : '' }}>
-                                    {{ $schedule->schedule_name }}
+                                    {{ $selectedWeekendId == $schedule->id ? 'selected' : '' }}>
+                                    {{ $schedule->title ?? 'Schedule #' . $schedule->id }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="col-md-3">
-                        <label for="month"><strong>Filter By Month</strong></label>
+                        <label><strong>Filter By Month</strong></label>
                         <select name="month" class="form-select">
                             @foreach (range(1, 12) as $m)
                                 <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }}>
@@ -43,7 +44,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label for="year"><strong>Filter By Year</strong></label>
+                        <label><strong>Filter By Year</strong></label>
                         <select name="year" class="form-select">
                             @foreach (range(date('Y') - 2, date('Y') + 2) as $y)
                                 <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>{{ $y }}
@@ -57,128 +58,171 @@
                     </div>
                 </form>
 
-                {{-- Calendar View --}}
+                {{-- 🔹 Calendar View --}}
                 <div id="calendarView" class="p-3">
                     <h5 class="fw-bold mb-3">{{ \Carbon\Carbon::create($year, $month)->format('F Y') }}</h5>
                     <div class="table-responsive">
                         <table class="table table-bordered text-center align-middle">
                             <thead class="table-dark">
                                 <tr>
-                                    @foreach (['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as $day)
-                                        <th>{{ $day }}</th>
+                                    @foreach (['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as $dayName)
+                                        <th>{{ $dayName }}</th>
                                     @endforeach
                                 </tr>
                             </thead>
                             <tbody>
                                 @php
-                                    $firstDayOfMonth = \Carbon\Carbon::create($year, $month, 1);
-                                    $daysInMonth = $firstDayOfMonth->daysInMonth;
-                                    $startDay = $firstDayOfMonth->dayOfWeek;
-                                    $day = 1;
+                                    // Get total days in the selected month
+                                    $daysInMonth = \Carbon\Carbon::create($year, $month, 1)->daysInMonth;
+                                    $firstDayOfMonth = \Carbon\Carbon::create($year, $month, 1)->format('l');
+                                    $startIndex = array_search($firstDayOfMonth, [
+                                        'Sunday',
+                                        'Monday',
+                                        'Tuesday',
+                                        'Wednesday',
+                                        'Thursday',
+                                        'Friday',
+                                        'Saturday',
+                                    ]);
+                                    $week = array_fill(0, 7, null);
+                                    $calendar = [];
+
+                                    // Build calendar week by week
+                                    $dayCounter = 1;
+                                    while ($dayCounter <= $daysInMonth) {
+                                        $week = array_fill(0, 7, null);
+                                        for (
+                                            $i = $calendar ? 0 : $startIndex;
+                                            $i < 7 && $dayCounter <= $daysInMonth;
+                                            $i++
+                                        ) {
+                                            $week[$i] = $dayCounter;
+                                            $dayCounter++;
+                                        }
+                                        $calendar[] = $week;
+                                    }
                                 @endphp
 
-                                @for ($row = 0; $row < 6; $row++)
+                                @foreach ($calendar as $week)
                                     <tr>
-                                        @for ($col = 0; $col < 7; $col++)
-                                            @if ($row === 0 && $col < $startDay)
-                                                <td class="bg-light"></td>
-                                            @elseif($day > $daysInMonth)
-                                                <td class="bg-light"></td>
-                                            @else
-                                                @php
-                                                    $currentDate = \Carbon\Carbon::create($year, $month, $day)->format(
-                                                        'Y-m-d',
+                                        @foreach ($week as $dayNumber)
+                                            @php
+                                                if ($dayNumber) {
+                                                    $currentDate = \Carbon\Carbon::create(
+                                                        $year,
+                                                        $month,
+                                                        $dayNumber,
+                                                    )->format('Y-m-d');
+                                                    $dayMeetings = $days[$currentDate] ?? [];
+                                                    $hasMeeting = collect($dayMeetings)->contains(
+                                                        fn($m) => $m['status'] !== 'No Meeting',
                                                     );
-                                                    $dayMeetings = collect($days)->where('date', $currentDate);
-                                                @endphp
 
-                                                <td class="p-2" style="height:100px; vertical-align: top;">
-                                                    <div class="fw-bold">{{ $day }}</div>
-                                                    @if ($dayMeetings->isNotEmpty())
+                                                    $cellColor = '#f8f9fa';
+                                                    if ($hasMeeting) {
+                                                        $priority = collect($dayMeetings)
+                                                            ->pluck('color')
+                                                            ->unique()
+                                                            ->toArray();
+                                                        if (in_array('red', $priority)) {
+                                                            $cellColor = '#ffcccc';
+                                                        } elseif (in_array('yellow', $priority)) {
+                                                            $cellColor = '#fff3cd';
+                                                        } elseif (in_array('green', $priority)) {
+                                                            $cellColor = '#d4edda';
+                                                        }
+                                                    }
+                                                }
+                                            @endphp
+
+                                            <td class="p-2"
+                                                style="height:110px; vertical-align: top; background-color: {{ $dayNumber ? $cellColor : '#f8f9fa' }};">
+                                                @if ($dayNumber)
+                                                    <div class="fw-bold">{{ $dayNumber }}</div>
+                                                    @if ($hasMeeting)
                                                         <div class="mt-1 small text-start">
                                                             @foreach ($dayMeetings as $meeting)
-                                                                <div class="mb-1 p-1 border rounded"
-                                                                    style="background-color: #f0f8ff;">
-                                                                    <span
-                                                                        class="badge bg-primary">{{ $meeting['title'] }}</span><br>
-                                                                    <span
-                                                                        class="text-muted">{{ $meeting['slot'] ?? '--' }}</span><br>
-                                                                    <span
-                                                                        class="badge bg-success">{{ ucfirst($meeting['status']) }}</span><br>
-                                                                    <small class="text-info">Visitor:
-                                                                        {{ $meeting['visitor_name'] }}</small><br>
-                                                                    <small class="text-warning">Employee:
-                                                                        {{ $meeting['employee_name'] }}</small>
-                                                                </div>
+                                                                @if ($meeting['status'] !== 'No Meeting')
+                                                                    <div class="mb-1 p-1 border rounded bg-white text-dark">
+                                                                        <span
+                                                                            class="badge 
+                                                            @if ($meeting['color'] === 'green') bg-success 
+                                                            @elseif($meeting['color'] === 'yellow') bg-warning 
+                                                            @elseif($meeting['color'] === 'red') bg-danger 
+                                                            @else bg-secondary @endif">
+                                                                            {{ ucfirst($meeting['status']) }}
+                                                                        </span><br>
+                                                                        <small class="text-info">Visitor:
+                                                                            {{ $meeting['visitor_name'] }}</small><br>
+                                                                        <small class="text-warning">Employee:
+                                                                            {{ $meeting['employee_name'] }}</small>
+                                                                    </div>
+                                                                @endif
                                                             @endforeach
                                                         </div>
                                                     @else
-                                                        <div class="text-muted small">No Meeting</div>
+                                                        <div class="text-muted small mt-1">No Meeting</div>
                                                     @endif
-                                                </td>
-                                                @php $day++; @endphp
-                                            @endif
-                                        @endfor
+                                                @endif
+                                            </td>
+                                        @endforeach
                                     </tr>
-                                @endfor
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                {{-- List View --}}
+
+                {{-- 🔹 List View --}}
                 <div id="listView" class="table-responsive d-none">
-                    <table class="table table-hover table-striped align-middle" id="dataTables">
+                    <table class="table table-hover table-striped align-middle">
                         <thead class="table-dark">
                             <tr>
                                 <th>#</th>
-                                <th>Schedule Name</th>
+                                <th>Weekend Schedule</th>
                                 <th>Day</th>
                                 <th>Date</th>
-                                <th>Time Slot</th>
-                                <th>Meeting Title</th>
+                                <th>Title</th>
                                 <th>Visitor</th>
                                 <th>Employee</th>
-                                <th>Meeting Type</th>
+                                <th>Type</th>
                                 <th>Status</th>
                                 <th>Description</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($days as $index => $day)
+                            @php $i = 1; @endphp
+                            @foreach ($days as $meetings)
+                                @foreach ($meetings as $m)
+                                    @if ($m['status'] !== 'No Meeting')
+                                        <tr>
+                                            <td>{{ $i++ }}</td>
+                                            <td>{{ $m['weekend_schedule'] }}</td>
+                                            <td>{{ $m['day_name'] }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($m['date'])->format('d M, Y') }}</td>
+                                            <td>{{ $m['title'] }}</td>
+                                            <td>{{ $m['visitor_name'] }}</td>
+                                            <td>{{ $m['employee_name'] }}</td>
+                                            <td>{{ $m['meeting_type'] }}</td>
+                                            <td><span class="badge bg-success">{{ ucfirst($m['status']) }}</span></td>
+                                            <td>{{ $m['description'] }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endforeach
+                            @if (empty($days))
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $day['schedule_name'] }}</td>
-                                    <td class="text-primary fw-bold">{{ $day['day_name'] }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($day['date'])->format('d M, Y') }}</td>
-                                    <td>{{ $day['slot'] ?? '--' }}</td>
-                                    <td>{{ $day['title'] ?? 'N/A' }}</td>
-                                    <td>{{ $day['visitor_name'] ?? '--' }}</td>
-                                    <td>{{ $day['employee_name'] ?? '--' }}</td>
-                                    <td>{{ $day['meeting_type'] ?? 'N/A' }}</td>
-                                    <td>
-                                        @php $status = strtolower($day['status'] ?? 'N/A'); @endphp
-                                        <span
-                                            class="badge bg-{{ $status == 'active' ? 'success' : ($status == 'cancelled' ? 'danger' : ($status == 'completed' ? 'info' : 'secondary')) }}">
-                                            {{ ucfirst($day['status'] ?? 'N/A') }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $day['description'] ?? 'N/A' }}</td>
+                                    <td colspan="10" class="text-center">No data available.</td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="11" class="text-center">No data available for this month.</td>
-                                </tr>
-                            @endforelse
+                            @endif
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
 @stop
-
 
 @section('js')
     <script>

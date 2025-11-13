@@ -14,82 +14,85 @@ class MeetingScheduleController extends Controller
     {
         $month = $request->input('month', Carbon::now()->month);
         $year = $request->input('year', Carbon::now()->year);
-        $selectedScheduleId = $request->input('office_schedule_id');
+        $selectedWeekendId = $request->input('weekend_schedule_id');
 
-        // Active office schedules for dropdown
-        $officeSchedules = OfficeSchedule::where('status', 'Active')->get();
+        // 🔹 Fetch all active weekend schedules
+        $weekendSchedules = WeekendSchedule::where('status', 'Active')->get();
 
-        // Get weekend schedule (working days)
-        $weekendSchedule = WeekendSchedule::where('status', 'Active')->first();
-        $workingDays = $weekendSchedule ? explode(',', $weekendSchedule->working_days) : [];
+        // 🔹 Determine selected weekend schedule
+        $selectedWeekend = $selectedWeekendId
+            ? $weekendSchedules->firstWhere('id', $selectedWeekendId)
+            : $weekendSchedules->first();
 
-        // Determine selected office schedule
-        $selectedOffice = $selectedScheduleId
-            ? $officeSchedules->firstWhere('id', $selectedScheduleId)
-            : $officeSchedules->first();
-
-        if (!$selectedOffice) {
-            return view('schedule_management.meeting_schedule.index', [
-                'days' => [],
-                'month' => $month,
-                'year' => $year,
-                'officeSchedules' => $officeSchedules,
-                'selectedScheduleId' => null,
-                'selectedOffice' => null,
-            ]);
+        // 🔹 Parse working days
+        $workingDays = [];
+        if ($selectedWeekend && !empty($selectedWeekend->working_days)) {
+            $workingDays = array_map('trim', explode(',', $selectedWeekend->working_days));
         }
 
-        // Fetch host schedules (meetings) **with relationships**
+        // 🔹 Fetch all meetings for this month
         $meetings = VisitorHostSchedule::with(['visitor', 'employee'])
             ->whereYear('meeting_date', $year)
             ->whereMonth('meeting_date', $month)
             ->get();
 
-        $startOfMonth = Carbon::createFromDate($year, $month, 1);
+        // 🔹 Group meetings by date (Y-m-d format)
+        $meetingsByDate = $meetings->groupBy(function ($meeting) {
+            return Carbon::parse($meeting->meeting_date)->format('Y-m-d');
+        });
+
+        // 🔹 Prepare all days of the month (even weekends)
+        $startOfMonth = Carbon::create($year, $month, 1);
         $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
         $days = [];
 
-        // Loop through days of the month
         for ($date = $startOfMonth->copy(); $date->lte($endOfMonth); $date->addDay()) {
+            $currentDate = $date->format('Y-m-d');
             $dayName = $date->format('l');
 
-            // Skip non-working days
-            if ($workingDays && !in_array($dayName, $workingDays)) {
+            // ✅ Fetch meetings for this specific date
+            $dayMeetings = $meetingsByDate->get($currentDate, collect());
+
+            // ✅ Only skip non-working days if no meeting exists there
+            if (!empty($workingDays) && !in_array($dayName, $workingDays) && $dayMeetings->isEmpty()) {
                 continue;
             }
 
-            // Find meetings on this date
-            $dayMeetings = $meetings->filter(function ($m) use ($date) {
-                return $m->meeting_date->format('Y-m-d') === $date->format('Y-m-d');
-            });
-
-            // Add each meeting as a separate entry
+            // ✅ If meeting exists, add details
             if ($dayMeetings->isNotEmpty()) {
                 foreach ($dayMeetings as $meeting) {
-                    $days[] = [
-                        'schedule_name' => $selectedOffice->schedule_name,
-                        'date' => $date->format('Y-m-d'),
+                    $status = strtolower($meeting->status ?? '');
+                    $color = match ($status) {
+                        'completed' => 'green',
+                        'scheduled' => 'yellow',
+                        'cancelled', 'canceled' => 'red',
+                        default => 'gray'
+                    };
+
+                    $days[$currentDate][] = [
+                        'weekend_schedule' => $selectedWeekend->title ?? 'Default Schedule',
+                        'date' => $currentDate,
                         'day_name' => $dayName,
-                        'slot' => '--', // no hourly info yet
                         'title' => $meeting->purpose ?? 'N/A',
-                        'meeting_type' => 'Single/Group', // placeholder
-                        'status' => $meeting->status ?? 'No Meeting',
-                        'description' => '--',
+                        'meeting_type' => 'Single',
+                        'status' => ucfirst($meeting->status ?? 'Unknown'),
+                        'color' => $color,
+                        'description' => $meeting->remarks ?? '--',
                         'visitor_name' => optional($meeting->visitor)->name ?? '--',
                         'employee_name' => optional($meeting->employee)->name ?? '--',
                     ];
                 }
             } else {
-                // No meeting for this day
-                $days[] = [
-                    'schedule_name' => $selectedOffice->schedule_name,
-                    'date' => $date->format('Y-m-d'),
+                // ✅ Still add the day, just mark as “No Meeting”
+                $days[$currentDate][] = [
+                    'weekend_schedule' => $selectedWeekend->title ?? 'Default Schedule',
+                    'date' => $currentDate,
                     'day_name' => $dayName,
-                    'slot' => '--',
                     'title' => 'No Meeting',
                     'meeting_type' => '--',
                     'status' => 'No Meeting',
+                    'color' => 'lightgray',
                     'description' => '--',
                     'visitor_name' => '--',
                     'employee_name' => '--',
@@ -101,9 +104,9 @@ class MeetingScheduleController extends Controller
             'days',
             'month',
             'year',
-            'officeSchedules',
-            'selectedScheduleId',
-            'selectedOffice'
+            'weekendSchedules',
+            'selectedWeekendId',
+            'selectedWeekend'
         ));
     }
 }
