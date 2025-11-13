@@ -6,9 +6,6 @@
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mb-0">Meeting Schedule List</h1>
         <div class="d-flex gap-2">
-            <a href="{{ route('meeting_schedules.create') }}" class="btn btn-sm btn-success d-flex align-items-center gap-2">
-                <i class="fas fa-plus"></i> Add New
-            </a>
             <button type="button" id="toggleView" class="btn btn-secondary">
                 <i class="fas fa-list"></i> Switch to List View
             </button>
@@ -22,8 +19,7 @@
             <div class="card-body">
                 <form method="GET" action="{{ route('meeting_schedules.index') }}" class="row g-2 align-items-end mb-3">
                     <div class="col-md-3">
-                        <label for="office_schedule_id"><strong>Filter By Schedule</strong> <span
-                                class="text-danger">*</span></label>
+                        <label for="office_schedule_id"><strong>Filter By Schedule</strong></label>
                         <select name="office_schedule_id" class="form-select">
                             <option value="">Select Schedule</option>
                             @foreach ($officeSchedules as $schedule)
@@ -36,7 +32,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label for="month"><strong>Filter By Month</strong> <span class="text-danger">*</span></label>
+                        <label for="month"><strong>Filter By Month</strong></label>
                         <select name="month" class="form-select">
                             @foreach (range(1, 12) as $m)
                                 <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }}>
@@ -47,7 +43,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label for="year"><strong>Filter By Year</strong> <span class="text-danger">*</span></label>
+                        <label for="year"><strong>Filter By Year</strong></label>
                         <select name="year" class="form-select">
                             @foreach (range(date('Y') - 2, date('Y') + 2) as $y)
                                 <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>{{ $y }}
@@ -57,18 +53,13 @@
                     </div>
 
                     <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-filter"></i> Filter
-                        </button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Filter</button>
                     </div>
                 </form>
 
                 {{-- Calendar View --}}
                 <div id="calendarView" class="p-3">
-                    <h5 class="fw-bold mb-3">
-                        {{ \Carbon\Carbon::create($year, $month)->format('F Y') }}
-                    </h5>
-
+                    <h5 class="fw-bold mb-3">{{ \Carbon\Carbon::create($year, $month)->format('F Y') }}</h5>
                     <div class="table-responsive">
                         <table class="table table-bordered text-center align-middle">
                             <thead class="table-dark">
@@ -91,27 +82,35 @@
                                         @for ($col = 0; $col < 7; $col++)
                                             @if ($row === 0 && $col < $startDay)
                                                 <td class="bg-light"></td>
-                                            @elseif ($day > $daysInMonth)
+                                            @elseif($day > $daysInMonth)
                                                 <td class="bg-light"></td>
                                             @else
                                                 @php
                                                     $currentDate = \Carbon\Carbon::create($year, $month, $day)->format(
                                                         'Y-m-d',
                                                     );
-                                                    $meeting = collect($days)->firstWhere('date', $currentDate);
+                                                    $dayMeetings = collect($days)->where('date', $currentDate);
                                                 @endphp
 
                                                 <td class="p-2" style="height:100px; vertical-align: top;">
                                                     <div class="fw-bold">{{ $day }}</div>
-                                                    @if ($meeting)
-                                                        <div class="mt-1 small">
-                                                            <span
-                                                                class="badge bg-primary">{{ $meeting['title'] }}</span><br>
-                                                            <span class="text-muted">
-                                                                {{ $meeting['slot'] ?? '--' }}
-                                                            </span><br>
-                                                            <span
-                                                                class="badge bg-success">{{ ucfirst($meeting['status']) }}</span>
+                                                    @if ($dayMeetings->isNotEmpty())
+                                                        <div class="mt-1 small text-start">
+                                                            @foreach ($dayMeetings as $meeting)
+                                                                <div class="mb-1 p-1 border rounded"
+                                                                    style="background-color: #f0f8ff;">
+                                                                    <span
+                                                                        class="badge bg-primary">{{ $meeting['title'] }}</span><br>
+                                                                    <span
+                                                                        class="text-muted">{{ $meeting['slot'] ?? '--' }}</span><br>
+                                                                    <span
+                                                                        class="badge bg-success">{{ ucfirst($meeting['status']) }}</span><br>
+                                                                    <small class="text-info">Visitor:
+                                                                        {{ $meeting['visitor_name'] }}</small><br>
+                                                                    <small class="text-warning">Employee:
+                                                                        {{ $meeting['employee_name'] }}</small>
+                                                                </div>
+                                                            @endforeach
                                                         </div>
                                                     @else
                                                         <div class="text-muted small">No Meeting</div>
@@ -127,7 +126,7 @@
                     </div>
                 </div>
 
-                {{-- List View (Hidden by default) --}}
+                {{-- List View --}}
                 <div id="listView" class="table-responsive d-none">
                     <table class="table table-hover table-striped align-middle" id="dataTables">
                         <thead class="table-dark">
@@ -138,14 +137,15 @@
                                 <th>Date</th>
                                 <th>Time Slot</th>
                                 <th>Meeting Title</th>
+                                <th>Visitor</th>
+                                <th>Employee</th>
                                 <th>Meeting Type</th>
                                 <th>Status</th>
                                 <th>Description</th>
-                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($days as $index => $day)
+                            @forelse($days as $index => $day)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $day['schedule_name'] }}</td>
@@ -153,6 +153,8 @@
                                     <td>{{ \Carbon\Carbon::parse($day['date'])->format('d M, Y') }}</td>
                                     <td>{{ $day['slot'] ?? '--' }}</td>
                                     <td>{{ $day['title'] ?? 'N/A' }}</td>
+                                    <td>{{ $day['visitor_name'] ?? '--' }}</td>
+                                    <td>{{ $day['employee_name'] ?? '--' }}</td>
                                     <td>{{ $day['meeting_type'] ?? 'N/A' }}</td>
                                     <td>
                                         @php $status = strtolower($day['status'] ?? 'N/A'); @endphp
@@ -162,28 +164,10 @@
                                         </span>
                                     </td>
                                     <td>{{ $day['description'] ?? 'N/A' }}</td>
-                                    <td class="text-center">
-                                        @if ($day['id'])
-                                            <div class="d-flex justify-content-center gap-1">
-                                                <a href="{{ route('meeting_schedules.show', $day['id']) }}"
-                                                    class="btn btn-info btn-sm">View</a>
-                                                <a href="{{ route('meeting_schedules.edit', $day['id']) }}"
-                                                    class="btn btn-primary btn-sm">Edit</a>
-                                                <form action="{{ route('meeting_schedules.destroy', $day['id']) }}"
-                                                    method="POST" onsubmit="return confirm('Are you sure?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                </form>
-                                            </div>
-                                        @else
-                                            <span class="text-muted">N/A</span>
-                                        @endif
-                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="10" class="text-center">No data available for this month.</td>
+                                    <td colspan="11" class="text-center">No data available for this month.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -195,6 +179,7 @@
     </div>
 @stop
 
+
 @section('js')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -204,12 +189,10 @@
 
             toggleBtn.addEventListener('click', () => {
                 if (calendarView.classList.contains('d-none')) {
-                    // Switch to Calendar
                     calendarView.classList.remove('d-none');
                     listView.classList.add('d-none');
                     toggleBtn.innerHTML = `<i class="fas fa-list"></i> Switch to List View`;
                 } else {
-                    // Switch to List
                     calendarView.classList.add('d-none');
                     listView.classList.remove('d-none');
                     toggleBtn.innerHTML = `<i class="fas fa-calendar"></i> Switch to Calendar View`;

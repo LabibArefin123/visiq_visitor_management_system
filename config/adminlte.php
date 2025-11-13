@@ -537,6 +537,13 @@ return [
                     'can'  => 'shift_guard_schedules.index',
                     'active' => ['shift_guard_schedules*'],
                 ],
+                [
+                    'text' => 'Weekend Schedule',
+                    'route'  => 'weekend_schedules.index',
+                    'can'  => 'weekend_schedules.index',
+                    'active' => ['weekend_schedules*'],
+                ],
+
             ],
         ],
         [

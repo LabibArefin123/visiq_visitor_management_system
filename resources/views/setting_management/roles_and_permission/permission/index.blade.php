@@ -3,7 +3,14 @@
 @section('title', 'Permissions List')
 
 @section('content_header')
-    <h1>Permissions List</h1>
+    <div class="d-flex justify-content-between">
+        <h1>Permissions List</h1>
+        @if (auth()->user()->hasRole('admin'))
+            <button type="button" id="delete-selected" class="btn btn-danger btn-sm ms-2" title="Delete Selected">
+                <i class="fas fa-trash-alt me-1"></i> Delete Selected
+            </button>
+        @endif
+    </div>
 @stop
 
 @section('content')
@@ -44,6 +51,7 @@
             <table id="dataTables" class="table table-bordered table-striped">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>SL</th>
                         <th>Permission Name</th>
                         <th class="text-center">Guard</th>
@@ -53,6 +61,9 @@
                 <tbody>
                     @foreach ($permissions as $permission)
                         <tr>
+                            <td>
+                                <input type="checkbox" class="row-checkbox" value="{{ $permission->id }}">
+                            </td>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $permission->name }}</td>
                             <td class="text-center">{{ $permission->guard_name }}</td>
@@ -76,3 +87,49 @@
         </div>
     </div>
 @stop
+@section('js')
+    <script>
+        // Select / Deselect all checkboxes
+        $('#select-all').on('click', function() {
+            const checked = $(this).prop('checked');
+            $('.row-checkbox').prop('checked', checked);
+        });
+
+        // Uncheck "Select All" if any single checkbox is unchecked
+        $('#dataTables').on('change', '.row-checkbox', function() {
+            if (!$(this).prop('checked')) {
+                $('#select-all').prop('checked', false);
+            }
+        });
+
+        // Handle bulk delete
+        $('#delete-selected').on('click', function() {
+            const ids = $('.row-checkbox:checked').map(function() {
+                return $(this).val();
+            }).get();
+
+            if (ids.length === 0) {
+                alert('Please select at least one row to delete.');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete selected permissions?')) return;
+
+            $.ajax({
+                url: '{{ route('permissions.deleteSelected') }}', // Route for bulk delete
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    ids: ids
+                },
+                success: function(res) {
+                    alert(res.message || 'Selected permissions deleted successfully.');
+                    location.reload();
+                },
+                error: function() {
+                    alert('Something went wrong!');
+                }
+            });
+        });
+    </script>
+@endsection

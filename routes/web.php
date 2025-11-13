@@ -36,6 +36,7 @@ use App\Http\Controllers\VisitorGroupMemberController;
 use App\Http\Controllers\OfficeScheduleController;
 use App\Http\Controllers\ShiftScheduleController;
 use App\Http\Controllers\MeetingScheduleController;
+use App\Http\Controllers\WeekendScheduleController;
 use App\Http\Controllers\ShiftGuardScheduleController;
 
 //report menu
@@ -156,8 +157,9 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     //schedule menu
     Route::resource('office_schedules', OfficeScheduleController::class);
     Route::resource('shift_schedules', ShiftScheduleController::class);
-    Route::resource('meeting_schedules', MeetingScheduleController::class);
+    Route::get('meeting_schedules', [MeetingScheduleController::class, 'index'])->name('meeting_schedules.index');
     Route::resource('shift_guard_schedules', ShiftGuardScheduleController::class);
+    Route::resource('weekend_schedules', WeekendScheduleController::class);
 
     //report menu
     Route::get('report/visitor/daily/', [VisitorReportController::class, 'dailyIndex'])->name('report.visitor.daily');
@@ -197,6 +199,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     //setting menu
     Route::resource('user_categories', UserCategoryController::class);
     Route::resource('roles', RoleController::class);
+    Route::post('/permissions/delete-selected', [PermissionController::class, 'deleteSelected'])->name('permissions.deleteSelected');
     Route::resource('permissions', PermissionController::class);
     Route::resource('system_users', UserController::class);
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

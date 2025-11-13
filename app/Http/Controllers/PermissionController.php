@@ -53,4 +53,16 @@ class PermissionController extends Controller
         Permission::destroy($id);
         return back()->with('success', 'Permission deleted successfully.');
     }
+
+    public function deleteSelected(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:permissions,id'
+        ]);
+
+        Permission::whereIn('id', $request->ids)->delete();
+
+        return response()->json(['message' => 'Selected permission deleted successfully.']);
+    }
 }

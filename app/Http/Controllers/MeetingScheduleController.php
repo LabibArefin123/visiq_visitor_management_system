@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MeetingSchedule;
+use App\Models\VisitorHostSchedule;
+use App\Models\WeekendSchedule;
 use App\Models\OfficeSchedule;
-use App\Models\Organization;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -19,10 +19,9 @@ class MeetingScheduleController extends Controller
         // Active office schedules for dropdown
         $officeSchedules = OfficeSchedule::where('status', 'Active')->get();
 
-        // Filter schedules by month/year
-        $schedules = MeetingSchedule::whereYear('meeting_date', $year)
-            ->whereMonth('meeting_date', $month)
-            ->get();
+        // Get weekend schedule (working days)
+        $weekendSchedule = WeekendSchedule::where('status', 'Active')->first();
+        $workingDays = $weekendSchedule ? explode(',', $weekendSchedule->working_days) : [];
 
         // Determine selected office schedule
         $selectedOffice = $selectedScheduleId
@@ -40,40 +39,60 @@ class MeetingScheduleController extends Controller
             ]);
         }
 
+        // Fetch host schedules (meetings) **with relationships**
+        $meetings = VisitorHostSchedule::with(['visitor', 'employee'])
+            ->whereYear('meeting_date', $year)
+            ->whereMonth('meeting_date', $month)
+            ->get();
+
         $startOfMonth = Carbon::createFromDate($year, $month, 1);
         $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
         $days = [];
 
-        // Office start & end
-        $officeStart = Carbon::parse($selectedOffice->start_time);
-        $officeEnd = Carbon::parse($selectedOffice->end_time);
-
-        if ($officeEnd->lessThan($officeStart)) {
-            $officeEnd->addDay();
-        }
-
-        // Loop through each day
+        // Loop through days of the month
         for ($date = $startOfMonth->copy(); $date->lte($endOfMonth); $date->addDay()) {
-            for ($slot = $officeStart->copy(); $slot->lt($officeEnd); $slot->addHour()) {
-                $nextSlot = $slot->copy()->addHour();
+            $dayName = $date->format('l');
 
-                $meeting = $schedules->first(function ($m) use ($date, $slot, $nextSlot, $selectedOffice) {
-                    return $m->office_schedule_id == $selectedOffice->id &&
-                        $m->meeting_date == $date->format('Y-m-d') &&
-                        Carbon::parse($m->start_time)->betweenIncluded($slot, $nextSlot);
-                });
+            // Skip non-working days
+            if ($workingDays && !in_array($dayName, $workingDays)) {
+                continue;
+            }
 
+            // Find meetings on this date
+            $dayMeetings = $meetings->filter(function ($m) use ($date) {
+                return $m->meeting_date->format('Y-m-d') === $date->format('Y-m-d');
+            });
+
+            // Add each meeting as a separate entry
+            if ($dayMeetings->isNotEmpty()) {
+                foreach ($dayMeetings as $meeting) {
+                    $days[] = [
+                        'schedule_name' => $selectedOffice->schedule_name,
+                        'date' => $date->format('Y-m-d'),
+                        'day_name' => $dayName,
+                        'slot' => '--', // no hourly info yet
+                        'title' => $meeting->purpose ?? 'N/A',
+                        'meeting_type' => 'Single/Group', // placeholder
+                        'status' => $meeting->status ?? 'No Meeting',
+                        'description' => '--',
+                        'visitor_name' => optional($meeting->visitor)->name ?? '--',
+                        'employee_name' => optional($meeting->employee)->name ?? '--',
+                    ];
+                }
+            } else {
+                // No meeting for this day
                 $days[] = [
                     'schedule_name' => $selectedOffice->schedule_name,
                     'date' => $date->format('Y-m-d'),
-                    'day_name' => $date->format('l'),
-                    'slot' => $slot->format('H:i A') . ' - ' . $nextSlot->format('H:i A'),
-                    'title' => optional($meeting)->title ?? 'N/A',
-                    'meeting_type' => optional($meeting)->meeting_type ?? 'N/A',
-                    'status' => optional($meeting)->status ?? 'N/A',
-                    'description' => optional($meeting)->description ?? 'N/A',
-                    'id' => optional($meeting)->id,
+                    'day_name' => $dayName,
+                    'slot' => '--',
+                    'title' => 'No Meeting',
+                    'meeting_type' => '--',
+                    'status' => 'No Meeting',
+                    'description' => '--',
+                    'visitor_name' => '--',
+                    'employee_name' => '--',
                 ];
             }
         }
@@ -86,63 +105,5 @@ class MeetingScheduleController extends Controller
             'selectedScheduleId',
             'selectedOffice'
         ));
-    }
-
-    public function create()
-    {
-        return view('schedule_management.meeting_schedule.create');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'meeting_date' => 'required|date',
-            'start_time' => 'required',
-            'end_time' => 'required|',
-            'meeting_type' => 'required|string',
-            'status' => 'required|string',
-            'description' => 'nullable|string',
-        ]);
-
-        MeetingSchedule::create($request->all());
-
-        return redirect()->route('meeting_schedules.index')
-            ->with('success', 'Meeting Schedule created successfully!');
-    }
-
-    public function show(MeetingSchedule $meetingSchedule)
-    {
-        return view('schedule_management.meeting_schedule.show', compact('meetingSchedule'));
-    }
-
-    public function edit(MeetingSchedule $meetingSchedule)
-    {
-        return view('schedule_management.meeting_schedule.edit', compact('meetingSchedule'));
-    }
-
-    public function update(Request $request, MeetingSchedule $meetingSchedule)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'meeting_date' => 'required|date',
-            'start_time' => 'required',
-            'end_time' => 'required|',
-            'meeting_type' => 'required|string',
-            'status' => 'required|string',
-            'description' => 'nullable|string',
-        ]);
-
-        $meetingSchedule->update($request->all());
-
-        return redirect()->route('meeting_schedules.index')
-            ->with('success', 'Meeting Schedule updated successfully!');
-    }
-
-    public function destroy(MeetingSchedule $meetingSchedule)
-    {
-        $meetingSchedule->delete();
-        return redirect()->route('meeting_schedules.index')
-            ->with('success', 'Meeting Schedule deleted successfully!');
     }
 }

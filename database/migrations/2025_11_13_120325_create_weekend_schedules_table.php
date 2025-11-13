@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('meeting_schedules', function (Blueprint $table) {
+        Schema::create('weekend_schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('office_schedule_id')->nullable()->index();
-            $table->string('title');
-            $table->date('meeting_date');
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->text('description')->nullable();
-            $table->string('meeting_type');
+            $table->string('slot_name');
+            $table->json('working_days');
             $table->string('status');
             $table->timestamps();
         });
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('meeting_schedules');
+        Schema::dropIfExists('weekend_schedules');
     }
 };
