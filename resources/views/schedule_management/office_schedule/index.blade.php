@@ -14,8 +14,8 @@
 @section('content')
     <div class="container">
         <div class="card shadow-sm">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover table-striped align-middle">
+            <div class="card-body table-responsive">
+                <table class="table table-hover table-striped align-middle" id="dataTables">
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
@@ -56,11 +56,13 @@
                                         <a href="{{ route('office_schedules.edit', $schedule->id) }}"
                                             class="btn btn-primary btn-sm">Edit</a>
                                         <form action="{{ route('office_schedules.destroy', $schedule->id) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                            method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                onclick="triggerDeleteModal('{{ route('office_schedules.destroy', $schedule->id) }}')">
+                                                Delete
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
@@ -72,10 +74,6 @@
                         @endforelse
                     </tbody>
                 </table>
-
-                <div class="mt-3 d-flex justify-content-center">
-                    {{ $schedules->links('pagination::bootstrap-5') }}
-                </div>
             </div>
         </div>
     </div>

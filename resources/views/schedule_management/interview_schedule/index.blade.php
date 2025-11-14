@@ -49,10 +49,13 @@
                                     <a href="{{ route('interview_schedules.edit', $schedule->id) }}"
                                         class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
                                     <form action="{{ route('interview_schedules.destroy', $schedule->id) }}" method="POST"
-                                        class="d-inline" onsubmit="return confirm('Are you sure?')">
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="triggerDeleteModal('{{ route('interview_schedules.destroy', $schedule->id) }}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>

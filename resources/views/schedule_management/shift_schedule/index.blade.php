@@ -14,8 +14,8 @@
 @section('content')
     <div class="container">
         <div class="card shadow-sm">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover table-striped">
+            <div class="card-body table-responsive">
+                <table class="table table-hover table-striped" id="dataTables">
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
@@ -58,11 +58,13 @@
                                             Edit
                                         </a>
                                         <form action="{{ route('shift_schedules.destroy', $schedule->id) }}" method="POST"
-                                            class="d-inline"
-                                            onsubmit="return confirm('Are you sure you want to delete this schedule?');">
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                onclick="triggerDeleteModal('{{ route('shift_schedules.destroy', $schedule->id) }}')">
+                                                Delete
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
@@ -74,10 +76,6 @@
                         @endforelse
                     </tbody>
                 </table>
-
-                <div class="mt-3">
-                    {{ $shiftSchedules->links() }}
-                </div>
             </div>
         </div>
     </div>

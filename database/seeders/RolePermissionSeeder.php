@@ -351,6 +351,17 @@ class RolePermissionSeeder extends Seeder
             'id_cards.destroy', // Delete
         ];
 
+        $visitorIdCardListPermissions = [
+            'visitor_id_cards.index',   // View
+            'visitor_id_cards.create',  // Create new
+            'visitor_id_cards.store',   // Store new
+            'visitor_id_cards.show',    // View individual
+            'visitor_id_cards.edit',    // Edit
+            'visitor_id_cards.update',  // Update
+            'visitor_id_cards.destroy', // Delete
+            'visitor_id_cards.approve', // For Approving Status
+        ];
+
         //facility menu 
         // allotment menu (seat allotment)
         $seatAllocationPermissions = [
@@ -734,6 +745,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'ID Card'
+            ]);
+        }
+
+        foreach ($visitorIdCardListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor ID Card'
             ]);
         }
 

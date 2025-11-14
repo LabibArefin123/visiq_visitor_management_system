@@ -10,7 +10,7 @@ class OfficeScheduleController extends Controller
 {
     public function index()
     {
-        $schedules = OfficeSchedule::latest()->paginate(10);
+        $schedules = OfficeSchedule::latest()->get();
         return view('schedule_management.office_schedule.index', compact('schedules'));
     }
 

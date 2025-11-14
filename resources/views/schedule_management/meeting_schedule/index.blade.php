@@ -176,10 +176,10 @@
                                                                             title="{{ $meeting['title'] }}">
                                                                             <span
                                                                                 class="badge
-                                                                                                        @if ($meeting['color'] === 'green') bg-success
-                                                                                                        @elseif ($meeting['color'] === 'yellow') bg-warning
-                                                                                                        @elseif ($meeting['color'] === 'red') bg-danger
-                                                                                                        @else bg-secondary @endif">
+                                                                                @if ($meeting['color'] === 'green') bg-success
+                                                                                @elseif ($meeting['color'] === 'yellow') bg-warning
+                                                                                @elseif ($meeting['color'] === 'red') bg-danger
+                                                                                @else bg-secondary @endif">
                                                                                 {{ ucfirst($meeting['status']) }}
                                                                             </span><br>
                                                                             <small class="text-info">

@@ -32,7 +32,7 @@
                 @endif
 
                 <form action="{{ route('weekend_schedules.update', $weekendSchedule->id) }}" method="POST"
-                    data-confirm="update">
+                    data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">

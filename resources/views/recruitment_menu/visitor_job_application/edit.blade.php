@@ -22,7 +22,7 @@
         <div class="card shadow-lg">
             <div class="card-body">
                 <form action="{{ route('visitor_job_applications.update', $visitorJobApplication->id) }}" method="POST"
-                    data-confirm="update">
+                    data-confirm="edit">
                     @csrf
                     @method('PUT')
                     <div class="row">

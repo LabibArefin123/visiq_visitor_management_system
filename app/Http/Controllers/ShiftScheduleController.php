@@ -12,7 +12,7 @@ class ShiftScheduleController extends Controller
      */
     public function index()
     {
-        $shiftSchedules = ShiftSchedule::latest()->paginate(10);
+        $shiftSchedules = ShiftSchedule::latest()->get();
         return view('schedule_management.shift_schedule.index', compact('shiftSchedules'));
     }
 

@@ -657,6 +657,12 @@ return [
                     'icon' => 'fas fa-arrow-circle-right',
                     'submenu' => [
                         [
+                            'text' => 'Visitor ID Card List',
+                            'route' => 'visitor_id_cards.index',
+                            'can' => 'visitor_id_cards.index',
+                            'active' => ['visitor_id_cards*'],
+                        ],
+                        [
                             'text' => 'ID Card List',
                             'route' => 'id_cards.index',
                             'can' => 'id_cards.index',

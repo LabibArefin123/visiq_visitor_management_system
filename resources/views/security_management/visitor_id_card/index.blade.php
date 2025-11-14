@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'ID Card List')
+@section('title', 'Visitor ID Card List')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3>ID Card List</h3>
-        <a href="{{ route('id_cards.create') }}" class="btn btn-success btn-sm">Add New</a>
+        <h3>Visitor ID Card List</h3>
+        <a href="{{ route('visitor_id_cards.create') }}" class="btn btn-success btn-sm">Add New</a>
     </div>
 @stop
 
 @section('content')
     <div class="container">
-        <div class="card shadow-sm">
+        <div class="card shadow">
             <div class="card-body table-responsive">
                 <table class="table table-striped table-hover text-nowrap" id="dataTables">
                     <thead class="thead-dark">
@@ -28,7 +28,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($idCards as $card)
+                        @forelse ($visitorIdCards as $card)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $card->card_number }}</td>
@@ -37,29 +37,59 @@
                                 <td>{{ \Carbon\Carbon::parse($card->issue_date)->format('d F Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($card->expiry_date)->format('d F Y') }}</td>
                                 <td>
-                                    <span class="badge bg-{{ $card->status == 'active' ? 'success' : 'secondary' }}">
+                                    @php
+                                        $statusColors = [
+                                            'active' => 'success', // green
+                                            'pending' => 'warning', // yellow
+                                            'expired' => 'danger', // red
+                                            'inactive' => 'secondary', // grey (default)
+                                        ];
+
+                                        $color = $statusColors[$card->status] ?? 'secondary';
+                                    @endphp
+
+                                    <span class="badge bg-{{ $color }}">
                                         {{ ucfirst($card->status) }}
                                     </span>
                                 </td>
+
                                 <td>{{ $card->remarks ?? 'N/A' }}</td>
                                 <td>
-                                    <a href="{{ route('id_cards.show', $card->id) }}" class="btn btn-info btn-sm">View</a>
-                                    <a href="{{ route('id_cards.edit', $card->id) }}"
+                                    <a href="{{ route('visitor_id_cards.show', $card->id) }}"
+                                        class="btn btn-info btn-sm">View</a>
+
+                                    <a href="{{ route('visitor_id_cards.edit', $card->id) }}"
                                         class="btn btn-primary btn-sm">Edit</a>
-                                    <form action="{{ route('id_cards.destroy', $card->id) }}" method="POST"
+
+                                    {{-- ✅ Approve Button — Only Admin Can See --}}
+                                    @hasrole('admin')
+                                        @if ($card->status === 'pending')
+                                            <form action="{{ route('visitor_id_cards.approve', $card->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    Approve
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endhasrole
+
+                                    <form action="{{ route('visitor_id_cards.destroy', $card->id) }}" method="POST"
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="triggerDeleteModal('{{ route('id_cards.destroy', $card->id) }}')">
+                                            onclick="triggerDeleteModal('{{ route('visitor_id_cards.destroy', $card->id) }}')">
                                             Delete
                                         </button>
                                     </form>
                                 </td>
+
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center">No records found.</td>
+                                <td colspan="9" class="text-center">No records found.</td>
                             </tr>
                         @endforelse
                     </tbody>

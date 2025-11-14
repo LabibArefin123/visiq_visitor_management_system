@@ -121,6 +121,22 @@ class AjaxController extends Controller
         return response()->json($data);
     }
 
+    public function getHoldersByVisitor($type)
+    {
+        switch ($type) {
+            case 'visitor':
+                $data = \App\Models\Visitor::orderBy('name', 'asc')
+                    ->get(['id', 'name', 'visitor_id as unique_code']);
+                break;
+
+            default:
+                $data = collect();
+                break;
+        }
+
+        return response()->json($data);
+    }
+
     public function getReporters($type)
     {
         switch ($type) {

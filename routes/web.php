@@ -52,6 +52,7 @@ use App\Http\Controllers\EmployeeReportController;
 //security menu
 use App\Http\Controllers\AccessPointController;
 use App\Http\Controllers\GuardController;
+use App\Http\Controllers\VisitorIdCardController;
 use App\Http\Controllers\IdCardController;
 use App\Http\Controllers\AccessPointGuardController;
 use App\Http\Controllers\AccessHistoryLogController;
@@ -118,6 +119,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/get-division-by-branch', [AjaxController::class, 'getDivisionByBranch'])->name('ajax.getDivisionByBranch');
     Route::get('/get-department-by-division', [AjaxController::class, 'getDepartmentByDivision'])->name('ajax.getDepartmentByDivision');
     Route::get('/get-holders/{type}', [AjaxController::class, 'getHolders'])->name('ajax.getHolders');
+    Route::get('/get-holders-by-visitor/{type}', [AjaxController::class, 'getHoldersByVisitor'])->name('ajax.getHoldersByVisitor');
     Route::get('/get-reporters/{type}', [AjaxController::class, 'getReporters'])->name('ajax.getReporters');
 
     //organization menu
@@ -190,10 +192,12 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     //security menu
     Route::resource('guards', GuardController::class);
     Route::resource('id_cards', IdCardController::class);
-    Route::get('/guard_activity_log', [GuardActivityLogController::class, 'index'])->name('guards.activity_log');
+    Route::resource('visitor_id_cards', VisitorIdCardController::class);
+    Route::put('visitor-id-cards/{id}/approve', [VisitorIdCardController::class, 'approve'])->name('visitor_id_cards.approve');
+    Route::get('guard_activity_log', [GuardActivityLogController::class, 'index'])->name('guards.activity_log');
     Route::resource('access_points', AccessPointController::class);
     Route::resource('access_point_guards', AccessPointGuardController::class);
-    Route::get('/access_point_guard_history_log', [AccessHistoryLogController::class, 'index'])->name('access_point_guards.activity_log');
+    Route::get('access_point_guard_history_log', [AccessHistoryLogController::class, 'index'])->name('access_point_guards.activity_log');
     Route::resource('overstay_alerts', OverstayAlertController::class);
     Route::resource('medical_emergencies', MedicalEmergencyController::class);
     Route::resource('evacuation_plans', EvacuationPlanController::class);
