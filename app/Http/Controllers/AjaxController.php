@@ -8,6 +8,7 @@ use App\Models\Division;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Visitor;
+use App\Models\VisitorIdCard;
 use App\Models\Guard;
 use App\Models\BuildingLocation;
 use App\Models\ParkingList;
@@ -124,10 +125,23 @@ class AjaxController extends Controller
     public function getHoldersByVisitor($type)
     {
         switch ($type) {
+
+            /* -----------------------------------------
+         | START: Visitor ID Card Module
+         | Fetch visitors who do NOT already have ID cards
+         -----------------------------------------*/
             case 'visitor':
-                $data = \App\Models\Visitor::orderBy('name', 'asc')
+
+                $alreadyAssigned = VisitorIdCard::pluck('holder_id')->toArray();
+
+                $data = Visitor::whereNotIn('id', $alreadyAssigned)
+                    ->orderBy('name', 'asc')
                     ->get(['id', 'name', 'visitor_id as unique_code']);
+
                 break;
+            /* -----------------------------------------
+         | END: Visitor ID Card Module
+         -----------------------------------------*/
 
             default:
                 $data = collect();
@@ -136,6 +150,8 @@ class AjaxController extends Controller
 
         return response()->json($data);
     }
+
+
 
     public function getReporters($type)
     {
