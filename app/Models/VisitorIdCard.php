@@ -31,9 +31,6 @@ class VisitorIdCard extends Model
 
     public function holder()
     {
-        return match ($this->holder_type) {
-            'visitor' => $this->belongsTo(Visitor::class, 'holder_id'),
-            default => null,
-        };
+        return $this->belongsTo(Visitor::class, 'holder_id');
     }
 }

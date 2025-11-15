@@ -28,4 +28,9 @@ class Visitor extends Model
     protected $casts = [
         'visit_date' => 'date',
     ];
+
+    public function idCard()
+    {
+        return $this->hasOne(VisitorIdCard::class, 'holder_id');
+    }
 }

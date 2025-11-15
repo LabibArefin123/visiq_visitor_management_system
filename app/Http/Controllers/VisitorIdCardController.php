@@ -6,6 +6,8 @@ use App\Models\VisitorIdCard;
 use App\Models\Employee;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class VisitorIdCardController extends Controller
 {
@@ -108,5 +110,15 @@ class VisitorIdCardController extends Controller
         return redirect()
             ->route('visitor_id_cards.index')
             ->with('success', 'Visitor ID Card approved successfully.');
+    }
+
+    public function pdfStream($id)
+    {
+        $card = VisitorIdCard::with('holder')->findOrFail($id);
+
+        $pdf = PDF::loadView('security_management.visitor_id_card.id_card', compact('card'))
+            ->setPaper('a4', 'portrait'); // Full A4 page
+
+        return $pdf->stream('visitor_id_card_' . $id . '.pdf');
     }
 }

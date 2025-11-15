@@ -124,34 +124,18 @@ class AjaxController extends Controller
 
     public function getHoldersByVisitor($type)
     {
-        switch ($type) {
-
-            /* -----------------------------------------
-         | START: Visitor ID Card Module
-         | Fetch visitors who do NOT already have ID cards
-         -----------------------------------------*/
-            case 'visitor':
-
-                $alreadyAssigned = VisitorIdCard::pluck('holder_id')->toArray();
-
-                $data = Visitor::whereNotIn('id', $alreadyAssigned)
-                    ->orderBy('name', 'asc')
-                    ->get(['id', 'name', 'visitor_id as unique_code']);
-
-                break;
-            /* -----------------------------------------
-         | END: Visitor ID Card Module
-         -----------------------------------------*/
-
-            default:
-                $data = collect();
-                break;
+        if ($type === 'visitor') {
+            $data = Visitor::orderBy('name', 'asc')->get([
+                'id',
+                'name',
+                'visitor_id as unique_code'
+            ]);
+        } else {
+            $data = collect();
         }
 
         return response()->json($data);
     }
-
-
 
     public function getReporters($type)
     {

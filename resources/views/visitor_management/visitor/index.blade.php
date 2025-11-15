@@ -55,20 +55,46 @@
                                 <td>{{ $visitor->gender ?? 'N/A' }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="{{ route('visitors.show', $visitor->id) }}" class="btn btn-info btn-sm"><i
-                                                class="fas fa-eye"> </i></a>
+
+                                        {{-- View --}}
+                                        <a href="{{ route('visitors.show', $visitor->id) }}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+
+                                        {{-- Edit --}}
                                         <a href="{{ route('visitors.edit', $visitor->id) }}"
-                                            class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                            class="btn btn-primary btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+
+                                        {{-- View ID Card PDF --}}
+                                        @if ($visitor->idCard)
+                                            <a href="{{ route('visitor_id_cards.pdf', $visitor->idCard->id) }}"
+                                                target="_blank" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-id-card"></i>
+                                            </a>
+                                        @else
+                                            <button class="btn btn-warning btn-sm" disabled>
+                                                <i class="fas fa-id-card"></i>
+                                            </button>
+                                        @endif
+
+                                        {{-- Delete --}}
                                         <form action="{{ route('visitors.destroy', $visitor->id) }}" method="POST"
                                             class="d-inline"
                                             onsubmit="return confirm('Are you sure you want to delete this visitor?');">
+
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"><i
-                                                    class="fas fa-trash"></i></button>
+
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </form>
+
                                     </div>
                                 </td>
+
                             </tr>
                         @empty
                             <tr>

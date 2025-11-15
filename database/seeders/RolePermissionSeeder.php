@@ -360,6 +360,7 @@ class RolePermissionSeeder extends Seeder
             'visitor_id_cards.update',  // Update
             'visitor_id_cards.destroy', // Delete
             'visitor_id_cards.approve', // For Approving Status
+            'visitor_id_cards.pdf', // For pdf id card from visitor
         ];
 
         //facility menu 

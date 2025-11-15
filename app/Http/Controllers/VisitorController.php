@@ -20,7 +20,7 @@ class VisitorController extends Controller
 {
     public function index()
     {
-        $visitors = Visitor::orderBy('id', 'asc')->get();
+        $visitors = Visitor::with('idCard')->orderBy('id', 'asc')->get();
         return view('visitor_management.visitor.index', compact('visitors'));
     }
 
