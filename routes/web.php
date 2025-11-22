@@ -194,9 +194,8 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('id_cards', IdCardController::class);
     Route::resource('visitor_id_cards', VisitorIdCardController::class);
     Route::put('visitor-id-cards/{id}/approve', [VisitorIdCardController::class, 'approve'])->name('visitor_id_cards.approve');
-    Route::get('/visitor-id-card/pdf/{id}', [VisitorIdCardController::class, 'pdfStream'])
-        ->name('visitor_id_cards.pdf');
-
+    Route::get('/visitor-id-card/pdf/{id}', [VisitorIdCardController::class, 'pdfStream'])->name('visitor_id_cards.pdf');
+    Route::get('/visitor-id-cards/{id}/print', [VisitorIdCardController::class, 'print'])->name('visitor_id_cards.print');
     Route::get('guard_activity_log', [GuardActivityLogController::class, 'index'])->name('guards.activity_log');
     Route::resource('access_points', AccessPointController::class);
     Route::resource('access_point_guards', AccessPointGuardController::class);

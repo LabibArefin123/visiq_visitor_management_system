@@ -121,4 +121,30 @@ class VisitorIdCardController extends Controller
 
         return $pdf->stream('visitor_id_card_' . $id . '.pdf');
     }
+
+    public function print($id)
+    {
+        $card = VisitorIdCard::with('holder')->findOrFail($id);
+
+        if ($card->status !== 'active') {
+            abort(403, 'Only active cards can be printed.');
+        }
+
+        // Choose format — stamp or A4
+        $format = request('format') ?? 'stamp';
+
+        $view = $format === 'a4'
+            ? 'security_management.visitor_id_card.id_card.a4'
+            : 'security_management.visitor_id_card.id_card.stamp';
+
+        // Fix for DOMPDF custom size
+        $paperSize = $format === 'a4'
+            ? 'a4'
+            : [0, 0, 300, 200]; // width=300 height=200 in points (1/72 inch)
+
+        $pdf = PDF::loadView($view, compact('card'))
+            ->setPaper($paperSize, 'portrait');
+
+        return $pdf->stream("visitor-id-card-{$card->card_number}.pdf");
+    }
 }

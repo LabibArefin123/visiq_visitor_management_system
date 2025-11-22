@@ -74,6 +74,25 @@
                                             </form>
                                         @endif
                                     @endhasrole
+                                    @hasrole('admin')
+                                        @if ($card->status === 'active')
+                                            <div class="d-flex gap-2">
+
+                                                {{-- Stamp Format --}}
+                                                <a href="{{ route('visitor_id_cards.print', ['id' => $card->id, 'format' => 'stamp']) }}"
+                                                    class="btn btn-outline-primary btn-sm" target="_blank">
+                                                    Print Stamp
+                                                </a>
+
+                                                {{-- A4 Format --}}
+                                                <a href="{{ route('visitor_id_cards.print', ['id' => $card->id, 'format' => 'a4']) }}"
+                                                    class="btn btn-outline-dark btn-sm" target="_blank">
+                                                    Print A4
+                                                </a>
+
+                                            </div>
+                                        @endif
+                                    @endhasrole
 
                                     <form action="{{ route('visitor_id_cards.destroy', $card->id) }}" method="POST"
                                         class="d-inline">
