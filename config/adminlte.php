@@ -302,9 +302,12 @@ return [
         // Navbar items:
         [
             'type' => 'navbar-search',
-            'text' => 'search',
+            'text' => 'Search',
             'topnav_right' => true,
+            // 'route' => 'notifications.search', // search route
+            'id' => 'visitorSearchBar',
         ],
+
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,

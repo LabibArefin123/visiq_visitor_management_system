@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeAttendanceController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 
 //building menu
 use App\Http\Controllers\AreaController;
@@ -102,6 +103,7 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/user_profile', [ProfileController::class, 'user_profile_show'])->name('profile');
     Route::get('/user_profile/edit', [ProfileController::class, 'user_profile_edit'])->name('profile.edit');
     Route::put('/user_profile/update', [ProfileController::class, 'user_profile_update'])->name('profile.update');
+    Route::get('/notifications/search', [NotificationController::class, 'search'])->name('notifications.search');
 
     Route::get('/ai_chat', [AiController::class, 'ai_chat_index'])->name('ai_chat.index');
     Route::post('/ai-chat', [AiController::class, 'ai_chat_response'])->name('ai.chat.response');
