@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Visitor Yearly Report')
+@section('title', 'Visitor Company Yearly Report')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3>Visitor Yearly Report</h3>
+        <h3>Visitor Company Yearly Report</h3>
     </div>
 @stop
 
 @section('content')
     <div class="card shadow-lg">
         <div class="card-body">
-            <form method="GET" action="{{ route('report.visitor.yearly') }}" class="row mb-3">
+            <form method="GET" action="{{ route('report.visitor.company.yearly') }}" class="row mb-3">
                 <div class="col-md-4">
                     <label><strong>Select Year</strong></label>
                     <select name="year" class="form-control">
@@ -30,7 +30,7 @@
                     </button>
 
                     @if ($year)
-                        <a href="{{ route('report.visitor.yearly.pdf', ['year' => $year]) }}" target="_blank"
+                        <a href="{{ route('report.visitor.company.yearly.pdf', ['year' => $year]) }}" target="_blank"
                             class="btn btn-danger">
                             <i class="fas fa-file-pdf"></i> Download PDF
                         </a>
@@ -53,7 +53,7 @@
                     @forelse ($visits as $visit)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $visit->visitor->name ?? 'N/A' }}</td>
+                            <td>{{ $visit->visitorGroup->group_name?? 'N/A' }}</td>
                             <td>{{ $visit->employee->name ?? 'N/A' }}</td>
                             <td>{{ \Carbon\Carbon::parse($visit->meeting_date)->format('d M Y, h:i A') }}</td>
                             <td>{{ $visit->purpose }}</td>

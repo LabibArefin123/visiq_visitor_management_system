@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Visitor Monthly Report</title>
+    <title>Visitor Company Monthly Report</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
@@ -34,7 +34,7 @@
 </head>
 
 <body>
-    <h3>Visitor Monthly Report ({{ \Carbon\Carbon::createFromFormat('Y-m', $month)->format('F Y') }})</h3>
+    <h3>Visitor Company Monthly Report ({{ \Carbon\Carbon::createFromFormat('Y-m', $month)->format('F Y') }})</h3>
     <table>
         <thead>
             <tr>
@@ -50,7 +50,7 @@
             @forelse ($visits as $visit)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $visit->visitor->name ?? 'N/A' }}</td>
+                    <td>{{ $visit->visitorGroup->group_name ?? 'N/A' }}</td>
                     <td>{{ $visit->employee->name ?? 'N/A' }}</td>
                     <td>{{ \Carbon\Carbon::parse($visit->meeting_date)->format('d M Y, h:i A') }}</td>
                     <td>{{ $visit->purpose }}</td>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\VisitorHostSchedule;
+use App\Models\VisitorGroupSchedule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
@@ -15,7 +15,7 @@ class VisitorCompanyReportController extends Controller
         $visits = collect();
 
         if ($date) {
-            $visits = VisitorHostSchedule::with('employee')
+            $visits = VisitorGroupSchedule::with(['employee', 'visitorGroup'])
                 ->whereDate('meeting_date', $date)
                 ->orderBy('meeting_date', 'asc')
                 ->get();
@@ -32,7 +32,7 @@ class VisitorCompanyReportController extends Controller
     {
         $date = $request->get('date', Carbon::now()->format('Y-m-d'));
 
-        $visits = VisitorHostSchedule::with(['visitor', 'employee'])
+        $visits = VisitorGroupSchedule::with(['visitorGroup', 'employee'])
             ->whereDate('meeting_date', $date)
             ->orderBy('meeting_date', 'asc')
             ->get();
@@ -41,7 +41,7 @@ class VisitorCompanyReportController extends Controller
             ->setPaper('a4', 'portrait');
 
         // Stream PDF (open in browser, not download)
-        return $pdf->stream('Visitor_Daily_Report_' . $date . '.pdf');
+        return $pdf->stream('Visitor_Company_Daily_Report_' . $date . '.pdf');
     }
 
     public function monthlyIndex(Request $request)
@@ -52,7 +52,7 @@ class VisitorCompanyReportController extends Controller
         if ($month) {
             try {
                 $parsedMonth = Carbon::createFromFormat('Y-m', $month);
-                $visits = VisitorHostSchedule::with(['visitor', 'employee'])
+                $visits = VisitorGroupSchedule::with(['visitorGroup', 'employee'])
                     ->whereYear('meeting_date', $parsedMonth->year)
                     ->whereMonth('meeting_date', $parsedMonth->month)
                     ->orderBy('meeting_date', 'asc')
@@ -62,7 +62,7 @@ class VisitorCompanyReportController extends Controller
             }
         }
 
-        return view('report_menu.visitor.monthly.index', compact('visits', 'month'));
+        return view('report_menu.company_visitor.monthly.index', compact('visits', 'month'));
     }
 
     /**
@@ -78,16 +78,16 @@ class VisitorCompanyReportController extends Controller
 
         $parsedMonth = Carbon::createFromFormat('Y-m', $month);
 
-        $visits = VisitorHostSchedule::with(['visitor', 'employee'])
+        $visits = VisitorGroupSchedule::with(['visitorGroup', 'employee'])
             ->whereYear('meeting_date', $parsedMonth->year)
             ->whereMonth('meeting_date', $parsedMonth->month)
             ->orderBy('meeting_date', 'asc')
             ->get();
 
-        $pdf = Pdf::loadView('report_menu.visitor.monthly.pdf', compact('visits', 'month'))
+        $pdf = Pdf::loadView('report_menu.company_visitor.monthly.pdf', compact('visits', 'month'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream('Visitor_Monthly_Report_' . $month . '.pdf');
+        return $pdf->stream('Visitor_Company_Monthly_Report_' . $month . '.pdf');
     }
 
     public function yearlyIndex(Request $request)
@@ -96,19 +96,19 @@ class VisitorCompanyReportController extends Controller
         $visits = collect(); // Empty until filtered
 
         if ($year) {
-            $visits = VisitorHostSchedule::with(['visitor', 'employee'])
+            $visits = VisitorGroupSchedule::with(['visitorGroup', 'employee'])
                 ->whereYear('meeting_date', $year)
                 ->orderBy('meeting_date', 'asc')
                 ->get();
         }
 
         // Year list for dropdown
-        $years = VisitorHostSchedule::selectRaw('YEAR(meeting_date) as year')
+        $years = VisitorGroupSchedule::selectRaw('YEAR(meeting_date) as year')
             ->distinct()
             ->orderBy('year', 'desc')
             ->pluck('year');
 
-        return view('report_menu.visitor.yearly.index', compact('visits', 'year', 'years'));
+        return view('report_menu.company_visitor.yearly.index', compact('visits', 'year', 'years'));
     }
 
     /**
@@ -122,14 +122,14 @@ class VisitorCompanyReportController extends Controller
             return redirect()->route('report.visitor.yearly')->with('error', 'Please select a year first.');
         }
 
-        $visits = VisitorHostSchedule::with(['visitor', 'employee'])
+        $visits = VisitorGroupSchedule::with(['visitorGroup', 'employee'])
             ->whereYear('meeting_date', $year)
             ->orderBy('meeting_date', 'asc')
             ->get();
 
-        $pdf = Pdf::loadView('report_menu.visitor.yearly.pdf', compact('visits', 'year'))
+        $pdf = Pdf::loadView('report_menu.company_visitor.yearly.pdf', compact('visits', 'year'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream('Visitor_Yearly_Report_' . $year . '.pdf');
+        return $pdf->stream('Visitor_Company_Yearly_Report_' . $year . '.pdf');
     }
 }

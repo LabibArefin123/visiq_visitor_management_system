@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Visitor Monthly Report')
+@section('title', 'Visitor Company Monthly Report')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3>Visitor Monthly Report</h3>
+        <h3>Visitor Company Monthly Report</h3>
     </div>
 @stop
 
 @section('content')
     <div class="card shadow-lg">
         <div class="card-body">
-            <form method="GET" action="{{ route('report.visitor.monthly') }}" class="row mb-3">
+            <form method="GET" action="{{ route('report.visitor.company.monthly') }}" class="row mb-3">
                 <div class="col-md-4">
                     <label><strong>Select Month</strong></label>
                     <input type="month" name="month" class="form-control" value="{{ $month }}">
@@ -22,7 +22,7 @@
                     </button>
 
                     @if ($month)
-                        <a href="{{ route('report.visitor.monthly.pdf', ['month' => $month]) }}" target="_blank"
+                        <a href="{{ route('report.visitor.company.monthly.pdf', ['month' => $month]) }}" target="_blank"
                             class="btn btn-danger">
                             <i class="fas fa-file-pdf"></i> Download PDF
                         </a>
@@ -45,7 +45,7 @@
                     @forelse ($visits as $visit)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $visit->visitor->name ?? 'N/A' }}</td>
+                            <td>{{ $visit->visitorGroup->group_name ?? 'N/A' }}</td>
                             <td>{{ $visit->employee->name ?? 'N/A' }}</td>
                             <td>{{ \Carbon\Carbon::parse($visit->meeting_date)->format('d M Y, h:i A') }}</td>
                             <td>{{ $visit->purpose }}</td>

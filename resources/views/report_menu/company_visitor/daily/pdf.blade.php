@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Visitor Daily Report - {{ $date }}</title>
+    <title>Visitor Company Daily Report - {{ $date }}</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
@@ -34,7 +34,7 @@
 </head>
 
 <body>
-    <h2>Visitor Daily Report</h2>
+    <h2>Visitor Company Daily Report</h2>
     <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($date)->format('d M Y') }}</p>
 
     <table>
@@ -52,7 +52,7 @@
             @forelse ($visits as $visit)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $visit->visitor->name ?? 'N/A' }}</td>
+                    <td>{{ $visit->visitorGroup->group_name ?? 'N/A' }}</td>
                     <td>{{ $visit->employee->name ?? 'N/A' }}</td>
                     <td>{{ \Carbon\Carbon::parse($visit->meeting_date)->format('d M Y, h:i A') }}</td>
                     <td>{{ $visit->purpose }}</td>

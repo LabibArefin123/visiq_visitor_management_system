@@ -1,17 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Visitor Daily Report')
+@section('title', 'Visitor Company Daily Report')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3>Visitor Daily Report</h3>
+        <h3>Visitor Company Daily Report</h3>
     </div>
 @stop
 
 @section('content')
     <div class="card shadow-lg">
         <div class="card-body">
-            <form method="GET" action="{{ route('report.visitor.daily') }}" class="row mb-3">
+            <form method="GET" action="{{ route('report.visitor.company.daily') }}" class="row mb-3">
                 <div class="col-md-4">
                     <label><strong>Select Date</strong></label>
                     <input type="date" name="date" class="form-control" value="{{ $date }}">
@@ -20,7 +20,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-filter"></i> Filter
                     </button>
-                    <a href="{{ route('report.visitor.daily.pdf', ['date' => $date]) }}" target="_blank"
+                    <a href="{{ route('report.visitor.company.daily.pdf', ['date' => $date]) }}" target="_blank"
                         class="btn btn-danger">
                         <i class="fas fa-file-pdf"></i> Download PDF
                     </a>
@@ -42,7 +42,7 @@
                     @forelse ($visits as $visit)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $visit->visitor->name ?? 'N/A' }}</td>
+                            <td>{{ $visit->visitorGroup->group_name ?? 'N/A' }}</td>
                             <td>{{ $visit->employee->name ?? 'N/A' }}</td>
                             <td>{{ \Carbon\Carbon::parse($visit->meeting_date)->format('d M Y, h:i A') }}</td>
                             <td>{{ $visit->purpose }}</td>
