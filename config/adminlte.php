@@ -304,8 +304,8 @@ return [
             'type' => 'navbar-search',
             'text' => 'Search',
             'topnav_right' => true,
-            // 'route' => 'notifications.search', // search route
-            'id' => 'visitorSearchBar',
+            'url' => 'notifications.search',     // route name
+            'method' => 'GET',
         ],
 
         [
