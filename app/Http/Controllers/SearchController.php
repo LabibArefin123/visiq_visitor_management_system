@@ -11,6 +11,8 @@ use App\Models\BlacklistedVisitor;
 use App\Models\VisitorEmergency;
 use App\Models\VisitorProbation;
 use App\Models\VisitorJobApplication;
+use App\Models\VisitorHostSchedule;
+use App\Models\VisitorGroupSchedule;
 
 class SearchController extends Controller
 {
@@ -114,19 +116,93 @@ class SearchController extends Controller
                 }
             );
 
-        //Search Visitor Job Application
-        $visitor_job_applications = VisitorJobApplication::where('name', 'LIKE', "%$q%")
-            ->orWhere('application_id', 'LIKE', "%$q%")
-            ->orWhere('phone', 'LIKE', "%$q%")
-            ->orWhere('status', 'LIKE', "%$q%")
-            ->orWhere('position', 'LIKE', "%$q%")
-            ->get(['id', 'name', 'application_id as code', 'phone', 'status', 'position'])
-            ->map(
-                function ($vj) {
-                    $vj->type = 'visitor_job_applications';
-                    return $vj;
-                }
-            );
+        // Search Visitor Job Application
+        $visitor_job_applications = VisitorJobApplication::where(function ($query) use ($q) {
+            $query->where('name', 'LIKE', "%$q%")
+                ->orWhere('application_id', 'LIKE', "%$q%")
+                ->orWhere('phone', 'LIKE', "%$q%")
+                ->orWhere('status', 'LIKE', "%$q%")
+                ->orWhere('position', 'LIKE', "%$q%");
+        })
+            ->get()
+            ->map(function ($vj) {
+                return [
+                    'id'    => $vj->id,
+                    'name'  => $vj->name,              // stays as name
+                    'code'  => $vj->application_id,    // show actual application code
+                    'phone' => $vj->phone,
+                    'email' => null,
+                    'type'  => 'visitor_job_applications',
+                ];
+            });
+
+        // Search Visitor Host Schedule
+        $visitor_host_schedules = VisitorHostSchedule::with(['visitor', 'employee'])
+            ->where(function ($query) use ($q) {
+                // Visitor fields
+                $query->whereHas('visitor', function ($sub) use ($q) {
+                    $sub->where('name', 'LIKE', "%$q%")
+                        ->orWhere('visitor_id', 'LIKE', "%$q%")
+                        ->orWhere('phone', 'LIKE', "%$q%");
+                });
+
+                // Employee fields (separate orWhere)
+                $query->orWhereHas('employee', function ($sub) use ($q) {
+                    $sub->where('name', 'LIKE', "%$q%")
+                        ->orWhere('emp_id', 'LIKE', "%$q%");
+                });
+
+                // Host schedule fields (separate orWhere)
+                $query->orWhere(function ($sub) use ($q) {
+                    $sub->where('purpose', 'LIKE', "%$q%")
+                        ->orWhere('status', 'LIKE', "%$q%")
+                        ->orWhere('meeting_date', 'LIKE', "%$q%");
+                });
+            })
+            ->get()
+            ->map(function ($vhs) {
+                return [
+                    'id'    => $vhs->id,
+                    'name'  => $vhs->visitor->name ?? 'Unknown Visitor',
+                    'code'  => 'H' . $vhs->id,
+                    'phone' => $vhs->visitor->phone ?? null,
+                    'email' => $vhs->visitor->email ?? null,
+                    'type'  => 'visitor_host_schedules',
+                ];
+            });
+
+        // Search Visitor Group Schedule
+        $visitor_group_schedules = VisitorGroupSchedule::with(['visitorGroup', 'employee'])
+            ->where(function ($query) use ($q) {
+                // Visitor group fields
+                $query->whereHas('visitorGroup', function ($sub) use ($q) {
+                    $sub->where('group_name', 'LIKE', "%$q%");
+                });
+
+                // Employee fields
+                $query->orWhereHas('employee', function ($sub) use ($q) {
+                    $sub->where('name', 'LIKE', "%$q%")
+                        ->orWhere('emp_id', 'LIKE', "%$q%");
+                });
+
+                // Group schedule fields
+                $query->orWhere(function ($sub) use ($q) {
+                    $sub->where('purpose', 'LIKE', "%$q%")
+                        ->orWhere('status', 'LIKE', "%$q%")
+                        ->orWhere('meeting_date', 'LIKE', "%$q%");
+                });
+            })
+            ->get()
+            ->map(function ($vgs) {
+                return [
+                    'id'    => $vgs->id,
+                    'name'  => $vgs->visitorGroup->group_name ?? 'Unknown Group', // matches v.name in your JS
+                    'code'  => 'G' . $vgs->id,
+                    'phone' => null,
+                    'email' => null,
+                    'type'  => 'visitor_group_schedules',
+                ];
+            });
 
         return response()->json($visitors
             ->merge($company_visitors)
@@ -134,6 +210,8 @@ class SearchController extends Controller
             ->merge($pending_visitors)
             ->merge($emergency_visitors)
             ->merge($visitor_job_applications)
+            ->merge($visitor_host_schedules)
+            ->merge($visitor_group_schedules)
             ->merge($visitor_probations)
             ->merge($blacklist_visitors));
     }
