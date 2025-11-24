@@ -48,6 +48,7 @@ use App\Http\Controllers\ShiftGuardScheduleController;
 
 //report menu
 use App\Http\Controllers\VisitorReportController;
+use App\Http\Controllers\VisitorCompanyReportController;
 use App\Http\Controllers\EmployeeReportController;
 
 //security menu
@@ -184,6 +185,12 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('report/visitor/monthly/pdf', [VisitorReportController::class, 'monthlyDownloadPdf'])->name('report.visitor.monthly.pdf');
     Route::get('report/visitor/yearly/', [VisitorReportController::class, 'yearlyIndex'])->name('report.visitor.yearly');
     Route::get('report/visitor/yearly/pdf', [VisitorReportController::class, 'yearlyDownloadPdf'])->name('report.visitor.yearly.pdf');
+    Route::get('report/company_visitor/daily/', [VisitorCompanyReportController::class, 'dailyIndex'])->name('report.visitor.company.daily');
+    Route::get('report/company_visitor/daily/pdf', [VisitorCompanyReportController::class, 'dailyDownloadPdf'])->name('report.visitor.company.daily.pdf');
+    Route::get('report/company_visitor/monthly/', [VisitorCompanyReportController::class, 'monthlyIndex'])->name('report.visitor.company.monthly');
+    Route::get('report/company_visitor/monthly/pdf', [VisitorCompanyReportController::class, 'monthlyDownloadPdf'])->name('report.visitor.company.monthly.pdf');
+    Route::get('report/company_visitor/yearly/', [VisitorCompanyReportController::class, 'yearlyIndex'])->name('report.visitor.company.yearly');
+    Route::get('report/company_visitor/yearly/pdf', [VisitorCompanyReportController::class, 'yearlyDownloadPdf'])->name('report.visitor.company.yearly.pdf');
     Route::get('report/employee/daily/', [EmployeeReportController::class, 'dailyIndex'])->name('report.employee.daily');
     Route::get('report/employee/daily/pdf', [EmployeeReportController::class, 'dailyDownloadPdf'])->name('report.employee.daily.pdf');
     Route::get('report/employee/monthly/', [EmployeeReportController::class, 'monthlyIndex'])->name('report.employee.monthly');

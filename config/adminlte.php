@@ -600,6 +600,21 @@ return [
                     'can'  => 'report.visitor.yearly'
                 ],
                 [
+                    'text' => 'Company Visitor Daily Reports',
+                    'route'  => 'report.visitor.company.daily',
+                    'can'  => 'report.visitor.company.daily'
+                ],
+                [
+                    'text' => 'Company Visitor Monthly Reports',
+                    'route'  => 'report.visitor.company.monthly',
+                    'can'  => 'report.visitor.company.monthly'
+                ],
+                [
+                    'text' => 'Company Visitor Yearly Reports',
+                    'route'  => 'report.visitor.company.yearly',
+                    'can'  => 'report.visitor.company.yearly'
+                ],
+                [
                     'text' => 'Employee Daily Reports',
                     'route'  => 'report.employee.daily',
                     'can'  => 'report.employee.daily'
