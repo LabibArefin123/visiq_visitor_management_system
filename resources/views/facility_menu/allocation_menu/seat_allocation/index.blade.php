@@ -12,78 +12,128 @@
 @stop
 
 @section('content')
-    <div class="container">
-        <div class="card shadow-sm">
-            <div class="card-body table-responsive">
-                <table class="table table-striped table-hover text-nowrap" id="dataTables">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>#</th>
-                            <th class="text-center">User Category</th>
-                            <th class="text-center">Room</th>
-                            <th class="text-center">Seat Number</th>
-                            <th>People Name</th>
-                            <th class="text-center">Allocation Date</th>
-                            <th class="text-center">Remarks</th>
-                            <th width="140" class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($allocations as $key => $allocation)
-                            <tr>
-                                <td class="text-center">{{ $key + 1 }}</td>
-                                <td class="text-center">{{ $allocation->userCategory->category_name ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $allocation->room->room_name ?? 'N/A' }} (Level
-                                    {{ $allocation->room->level ?? '-' }})</td>
-                                <td class="text-center">{{ $allocation->seat_number }}</td>
-                                <td>
-                                    @if ($allocation->employee && $allocation->employee->name)
-                                        {{ $allocation->employee->name }}
-                                    @endif
 
-                                    @if ($allocation->visitor && $allocation->visitor->name)
-                                        @if ($allocation->employee)
-                                            <br>
-                                        @endif
-                                        <small class="text-muted">{{ $allocation->visitor->name }}</small>
-                                    @endif
+    <div class="card mb-3 shadow-sm">
+        {{-- Style css start --}}
+        <style>
+            .seat-box {
+                transition: 0.2s;
+                background: #fafafa;
+            }
 
-                                    @if (!$allocation->employee && !$allocation->visitor)
-                                        <span class="text-muted">N/A</span>
-                                    @endif
-                                </td>
+            .seat-box:hover {
+                transform: translateY(-3px);
+                background: white;
+            }
+        </style>
 
-                                <td class="text-center">
-                                    {{ \Carbon\Carbon::parse($allocation->allocation_date)->format('d M, Y') }}</td>
-                                <td class="text-center">{{ $allocation->remarks ?? '—' }}</td>
-                                <td class="text-center">
-                                    <a href="{{ route('seat_allocations.show', $allocation->id) }}"
-                                        class="btn btn-info btn-sm">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('seat_allocations.edit', $allocation->id) }}"
-                                        class="btn btn-primary btn-sm">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{{ route('seat_allocations.destroy', $allocation->id) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="triggerDeleteModal('{{ route('seat_allocations.destroy', $allocation->id) }}')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="8" class="text-center text-muted py-3">No seat allocations found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+        {{-- Style css end --}}
+        <div class="card-body">
+            <form method="GET" action="{{ route('seat_allocations.index') }}" class="row g-3">
+
+                <div class="col-md-3">
+                    <label><strong>Filter by Room</strong></label>
+                    <select name="room_list_id" class="form-control">
+                        <option value="">All Rooms</option>
+                        @foreach ($rooms as $room)
+                            <option value="{{ $room->id }}"
+                                {{ request('room_list_id') == $room->id ? 'selected' : '' }}>
+                                {{ $room->room_name }} (Level {{ $room->level }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label><strong>User Category</strong></label>
+                    <select name="user_category_id" class="form-control">
+                        <option value="">All Categories</option>
+                        @foreach ($categories as $cat)
+                            <option value="{{ $cat->id }}"
+                                {{ request('user_category_id') == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->category_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-primary btn-sm w-100">
+                        <i class="fas fa-filter"></i> Apply
+                    </button>
+                </div>
+
+            </form>
         </div>
     </div>
+    <div class="container">
+
+        @forelse($allocations->groupBy('room_list_id') as $roomId => $seats)
+            @php
+                $room = $seats->first()->room;
+            @endphp
+
+            <!-- Room Header -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <strong>{{ $room->room_name }}</strong>
+                    (Level {{ $room->level }})
+                </div>
+
+                <div class="card-body">
+
+                    <!-- Seat Grid -->
+                    <div class="row g-3">
+
+                        @foreach ($seats as $seat)
+                            @php
+                                $person = $seat->employee ?? $seat->visitor;
+                                $photo =
+                                    $person && $person->photo ? asset($person->photo) : asset('images/default.jpg');
+                            @endphp
+
+                            <div class="col-md-2 col-6">
+                                <div class="seat-box text-center p-2 shadow-sm border rounded">
+
+                                    <!-- Picture -->
+                                    <img src="{{ $photo }}" class="img-fluid rounded-circle mb-2"
+                                        style="width:70px; height:70px; object-fit:cover;">
+
+                                    <!-- Seat Number -->
+                                    <h6 class="mb-1">
+                                        Seat: <strong>{{ $seat->seat_number }}</strong>
+                                    </h6>
+
+                                    <!-- Name -->
+                                    <div class="small text-muted">
+                                        {{ $person->name ?? 'Empty Seat' }}
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="mt-2">
+                                        <a href="{{ route('seat_allocations.show', $seat->id) }}"
+                                            class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+
+                                        <a href="{{ route('seat_allocations.edit', $seat->id) }}"
+                                            class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        @endforeach
+
+                    </div>
+                </div>
+            </div>
+
+        @empty
+            <p class="text-center text-muted py-3">No seats found.</p>
+        @endforelse
+
+    </div>
+
 @stop

@@ -5,23 +5,29 @@
 @section('content')
     @if ($notifications->isNotEmpty())
         @php
-            // Group notifications by visitor name + visit date + purpose
-            $groupedNotifications = collect($notifications)->groupBy(function ($note) {
-                return $note['name'] . '|' . $note['visit_date'] . '|' . $note['purpose'];
-            });
+            // Only take pending visitor type notifications
+            $pendingNotifications = $notifications->where('type', 'pending_visitor');
+
+            // Total count for ALL pending visitors
+            $totalPending = $pendingNotifications->count();
+
+            // Get the first notification info to show in the box
+            $first = $pendingNotifications->first();
         @endphp
 
-        <div id="notification-container" class="position-fixed"
-            style="bottom: 1rem; right: 1rem; z-index: 1050; max-width: 400px; width: 100%;">
-            @foreach ($groupedNotifications as $key => $group)
-                @php
-                    $note = $group->first();
-                    $count = $group->count();
-                @endphp
+        @if ($totalPending > 0)
+            <div id="notification-container" class="position-fixed"
+                style="bottom: 1rem; right: 1rem; z-index: 1050; max-width: 400px; width: 100%;">
 
-                <div class="alert alert-light border-start border-primary border-4 shadow-sm alert-dismissible fade show custom-alert mb-3 position-relative"
+                <div class="alert alert-light border-start border-primary border-4 shadow-sm alert-dismissible fade show custom-alert position-relative"
                     role="alert" style="cursor: pointer; transition: opacity 0.5s ease-in-out;"
                     onclick="window.location.href='{{ route('pending_visitors.index') }}';">
+
+                    <!-- Total Count Badge -->
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        style="font-size: 0.9rem;">
+                        {{ $totalPending }}
+                    </span>
 
                     <button type="button" class="custom-close-btn"
                         onclick="event.stopPropagation(); this.closest('.custom-alert').style.opacity='0'; setTimeout(() => this.closest('.custom-alert').remove(), 300);"
@@ -32,19 +38,13 @@
                     </div>
 
                     <div class="pe-4">
-                        <strong>{{ $note['title'] }}</strong>
-                        @if ($count > 1)
-                            <span class="badge bg-danger ms-1">{{ $count }}</span>
-                        @endif
-                        <br>
-                        Visitor: <strong>{{ $note['name'] }}</strong><br>
-                        Visit Date: {{ $note['visit_date'] }}<br>
-                        Purpose: {{ $note['purpose'] }}<br>
+                        <strong>Pending Visitor Alert</strong><br>
+                        <small>{{ $totalPending }} visitor(s) pending for check-in</small><br>
                         <small class="text-muted">Click to view pending visitor list</small>
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @endif
     @endif
 
     <style>
@@ -74,16 +74,13 @@
             transition: opacity 0.5s ease-in-out;
         }
 
-        .custom-alert.fade-out {
-            opacity: 0;
-        }
-
         .custom-icon {
             position: absolute;
             bottom: 1.8rem;
             right: 0.8rem;
         }
     </style>
+
 
     <div class="container py-6">
         <h1 class="text-2xl font-bold">Visitor Management Dashboard</h1>
@@ -216,14 +213,14 @@
 @section('js')
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const alerts = document.querySelectorAll('.custom-alert');
+            const alert = document.querySelector('.custom-alert');
 
-            alerts.forEach((alert, index) => {
+            if (alert) {
                 setTimeout(() => {
                     alert.classList.add('fade-out');
-                    setTimeout(() => alert.remove(), 500); // Remove after fade animation
-                }, 5000 + (index * 500)); // stagger slightly for smooth flow
-            });
+                    setTimeout(() => alert.remove(), 500);
+                }, 5000);
+            }
         });
     </script>
 @endsection

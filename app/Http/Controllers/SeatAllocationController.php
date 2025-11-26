@@ -11,12 +11,34 @@ use Illuminate\Http\Request;
 
 class SeatAllocationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $allocations = SeatAllocation::with(['userCategory', 'room', 'employee', 'visitor'])
-            ->latest()->get();
+        // Fetch for filters
+        $rooms = RoomList::orderBy('level')
+            ->orderBy('room_name')
+            ->get();
 
-        return view('facility_menu.allocation_menu.seat_allocation.index', compact('allocations'));
+        $categories = UserCategory::orderBy('category_name')->get();
+
+        // Base query with relationships
+        $query = SeatAllocation::with(['userCategory', 'room', 'employee', 'visitor']);
+
+        // Apply filters if present
+        if ($request->room_list_id) {
+            $query->where('room_list_id', $request->room_list_id);
+        }
+
+        if ($request->user_category_id) {
+            $query->where('user_category_id', $request->user_category_id);
+        }
+
+        // Get filtered or full list
+        $allocations = $query->orderBy('id', 'asc')->get();
+
+        return view(
+            'facility_menu.allocation_menu.seat_allocation.index',
+            compact('allocations', 'rooms', 'categories')
+        );
     }
 
     public function create()
