@@ -41,7 +41,7 @@ return [
 
     'debug' => (bool) env('APP_DEBUG', false),
 
-   
+
 
     /*
     |--------------------------------------------------------------------------
@@ -123,12 +123,15 @@ return [
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
-        
+
     ],
     Barryvdh\DomPDF\ServiceProvider::class,
+    // App\Providers\AdminLTEComposerServiceProvider::class,
+    App\Providers\AdminLTEDynamicLogoServiceProvider::class,
+
     // App\Providers\AuthServiceProvider::class,
 
-   
-    
+
+
 
 ];

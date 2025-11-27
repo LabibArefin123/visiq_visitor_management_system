@@ -31,19 +31,32 @@
                                         <strong>Two-Factor Authentication (2FA)</strong><br>
                                         <small class="text-muted">Enable/Disable 2FA, choose provider Email/SMS/App</small>
                                     </div>
+
                                     <i class="fas fa-chevron-right text-muted"></i>
                                 </a>
                             </li>
 
 
                             <li class="list-group-item">
-                                <strong>Password Policy</strong><br>
-                                Minimum length, symbols, numbers, expiry days
+                                <a href="{{ route('settings.password_policy') }}"
+                                    class="text-decoration-none text-dark d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Password Policy</strong><br>
+                                        Minimum length, symbols, numbers, expiry days
+                                    </div>
+                                    <i class="fas fa-chevron-right text-muted"></i>
+                                </a>
                             </li>
 
                             <li class="list-group-item">
-                                <strong>Session Timeout / Auto Logout</strong><br>
-                                Auto logout after X minutes of inactivity
+                                <a href="{{ route('settings.timeout') }}"
+                                    class="text-decoration-none text-dark d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Session Timeout / Auto Logout</strong><br>
+                                        Auto logout after X minutes of inactivity
+                                    </div>
+                                    <i class="fas fa-chevron-right text-muted"></i>
+                                </a>
                             </li>
 
                             <li class="list-group-item">
@@ -103,68 +116,18 @@
 
                             <li class="list-group-item">
                                 <strong>System Name & Logo</strong><br>
-                                Change system title, sidebar logo, and login logo
+                                Change system title, system logo
                             </li>
 
                             <li class="list-group-item">
                                 <strong>Date & Time Settings</strong><br>
                                 Timezone, date format, time format
                             </li>
-
-                            <li class="list-group-item">
-                                <strong>Working Days & Hours</strong><br>
-                                Weekly off-days, office hours
-                            </li>
-
-                            <li class="list-group-item">
-                                <strong>Visitor ID Format</strong><br>
-                                Prefix and ID number length
-                            </li>
-
                         </ul>
 
                     </div>
                 </div>
             </div>
-
-
-            {{-- Visitor Rules --}}
-            <div class="card" id="visitor-rules">
-                <div class="card-header bg-warning text-dark" data-toggle="collapse" data-target="#visitorRules"
-                    style="cursor:pointer;">
-                    <h5 class="mb-0">🗂️ Visitor Rules & Configuration</h5>
-                </div>
-                <div id="visitorRules" class="collapse" data-parent="#settingsAccordion">
-                    <div class="card-body">
-
-                        <ul class="list-group">
-
-                            <li class="list-group-item">
-                                <strong>Visitor Access Duration</strong><br>
-                                Max hours per visitor pass
-                            </li>
-
-                            <li class="list-group-item">
-                                <strong>Document Requirements</strong><br>
-                                Required fields: NID, Phone, Photo, Company, etc.
-                            </li>
-
-                            <li class="list-group-item">
-                                <strong>Default Visitor Photo</strong><br>
-                                Default avatar for ID card
-                            </li>
-
-                            <li class="list-group-item">
-                                <strong>Print Settings</strong><br>
-                                A4 / Stamp size / Default print size
-                            </li>
-
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
-
 
             {{-- Logs --}}
             <div class="card" id="logs">
@@ -193,41 +156,8 @@
                 </div>
             </div>
 
-
-            {{-- User Management --}}
-            <div class="card" id="user-management">
-                <div class="card-header bg-success text-white" data-toggle="collapse" data-target="#userManagement"
-                    style="cursor:pointer;">
-                    <h5 class="mb-0">👥 User Management Settings</h5>
-                </div>
-                <div id="userManagement" class="collapse" data-parent="#settingsAccordion">
-                    <div class="card-body">
-
-                        <ul class="list-group">
-
-                            <li class="list-group-item">
-                                <strong>Roles & Permissions</strong>
-                            </li>
-
-                            <li class="list-group-item">
-                                <strong>Force Logout</strong><br>
-                                Logout all users instantly
-                            </li>
-
-                            <li class="list-group-item">
-                                <strong>User Registration</strong><br>
-                                Enable/Disable admin creation, default role
-                            </li>
-
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
-
-
             {{-- Integration --}}
-            <div class="card" id="integration">
+            {{-- <div class="card" id="integration">
                 <div class="card-header bg-purple text-white" data-toggle="collapse" data-target="#integrationSettings"
                     style="cursor:pointer;">
                     <h5 class="mb-0">🌐 Integration Settings</h5>
@@ -256,7 +186,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
             {{-- UI Settings --}}
@@ -329,11 +259,6 @@
                             <li class="list-group-item">
                                 <strong>Auto Delete Logs</strong><br>
                                 Clean logs older than X days
-                            </li>
-
-                            <li class="list-group-item">
-                                <strong>Visitor Retention Policy</strong><br>
-                                Auto-delete visitor data after X days
                             </li>
 
                             <li class="list-group-item">

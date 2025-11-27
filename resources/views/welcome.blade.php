@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Welcome to VisiQ')
+@section('title', 'Welcome to ' . ($systemInfo->name ?? 'VisiQ'))
 
 @section('content')
 
-    
+
     @include('home.header')
 
     @include('home.hero')

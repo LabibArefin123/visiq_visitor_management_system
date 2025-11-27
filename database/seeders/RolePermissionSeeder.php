@@ -520,6 +520,16 @@ class RolePermissionSeeder extends Seeder
             'system_users.destroy', // Delete
         ];
 
+        $systemInformationPermission = [
+            'system_informations.index',   // View
+            'system_informations.create',  // Create new
+            'system_informations.store',   // Store new
+            'system_informations.show',    // View individual
+            'system_informations.edit',    // Edit
+            'system_informations.update',  // Update
+            'system_informations.destroy', // Delete
+        ];
+
         $profilePermission = [
             'profile.show',    // View individual
             'profile.edit',    // Edit
@@ -870,6 +880,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'System User'
+            ]);
+        }
+
+        foreach ($systemInformationPermission as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'System Information'
             ]);
         }
 

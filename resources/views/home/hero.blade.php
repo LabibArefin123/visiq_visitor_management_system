@@ -1,12 +1,17 @@
 <section id="banner" class="py-5 bg-light">
     <div class="container">
         <div id="slider" class="position-relative rounded-4 overflow-hidden" style="height: 70vh;">
-            <!-- Slides -->
+
             @php
+                use App\Models\SystemInformation;
+
+                $system = SystemInformation::first();
+                $systemName = $system->name ?? 'VisiQ';
+
                 $slides = [
                     [
                         'image' => 'vms4.png',
-                        'title' => 'Welcome to VisiQ',
+                        'title' => 'Welcome to ' . $systemName,
                         'subtitle' => 'Accurate. Efficient. Real-Time Visitor Management.',
                     ],
                     [
@@ -23,27 +28,38 @@
             @endphp
 
             @foreach ($slides as $index => $slide)
-                <div class="slide {{ $index === 0 ? 'active' : '' }} position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center text-center"
-                    style="background-image: url('{{ asset('/images/' . $slide['image']) }}'); background-size: cover; background-position: center;">
+                <div class="slide {{ $index === 0 ? 'active' : '' }}
+             position-absolute top-0 start-0 w-100 h-100
+             d-flex align-items-center justify-content-center text-center"
+                    style="background-image: url('{{ asset('images/' . $slide['image']) }}');
+                    background-size: cover; background-position: center;">
+
                     <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
+
                     <div class="position-relative z-2">
                         <div class="text-bg px-4 py-3 rounded-4 shadow">
                             <h2 class="display-5 fw-bold animate__animated animate__fadeInDown mb-2">
                                 {{ $slide['title'] }}
                             </h2>
-                            <p class="lead animate__animated animate__fadeInUp mb-0">{{ $slide['subtitle'] }}</p>
+                            <p class="lead animate__animated animate__fadeInUp mb-0">
+                                {{ $slide['subtitle'] }}
+                            </p>
                         </div>
                     </div>
+
                 </div>
             @endforeach
+
 
             <!-- Navigation Arrows -->
             <button onclick="prevSlide()" class="arrow-btn start">
                 <i class="fas fa-chevron-left"></i>
             </button>
+
             <button onclick="nextSlide()" class="arrow-btn end">
                 <i class="fas fa-chevron-right"></i>
             </button>
+
 
             <!-- Dots -->
             <div class="position-absolute bottom-0 start-50 translate-middle-x mb-4 z-3 d-flex gap-2">
@@ -51,7 +67,9 @@
                     <span class="dot {{ $i === 0 ? 'active' : '' }}" onclick="goToSlide({{ $i }})"></span>
                 @endforeach
             </div>
+
         </div>
+
     </div>
 </section>
 

@@ -2,10 +2,18 @@
     style="padding-left: 30px; padding-right: 30px;">
     <div class="container-fluid">
 
+        @php
+            use App\Models\SystemInformation;
+
+            $sys = SystemInformation::first();
+            $navbarLogo =
+                $sys && $sys->photo ? asset('upload/system_information/' . $sys->photo) : asset('images/visiq.png');
+        @endphp
+
         <!-- Left: Logo + Title -->
         <a href="#" class="navbar-brand d-flex align-items-center">
-            <img src="{{ asset('images/visiq.png') }}" alt="Logo" class="brand-image  elevation-3"
-                style="width: 80px; height: 80px;">
+            <img src="{{ $navbarLogo }}" alt="Logo" class="brand-image elevation-3"
+                style="width: 100px; height: 100px; object-fit: contain;">
         </a>
 
         <!-- Center: Navbar Menu -->

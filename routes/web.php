@@ -85,6 +85,7 @@ use App\Http\Controllers\VisitorFeedbackController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SystemInformationController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserCategoryController;
@@ -232,14 +233,15 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::post('/permissions/delete-selected', [PermissionController::class, 'deleteSelected'])->name('permissions.deleteSelected');
     Route::resource('permissions', PermissionController::class);
     Route::resource('system_users', UserController::class);
+    Route::resource('system_informations', SystemInformationController::class);
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('/settings/password_policy', [SettingController::class, 'password_policy'])->name('settings.password_policy');
     Route::get('/settings/2fa', [SettingController::class, 'show2FA'])->name('settings.2fa');
     Route::post('/settings/toggle-2fa', [SettingController::class, 'toggle2FA'])->name('settings.toggle2fa');
     Route::get('/settings/2fa/resend', [SettingController::class, 'resend'])->name('settings.2fa.resend');
     Route::post('/settings/2fa/verify', [SettingController::class, 'verify'])->name('settings.2fa.verify');
-
-    // 2FA verify screen
-
+    Route::get('/settings/timeout', [SettingController::class, 'showTimeout'])->name('settings.timeout');
+    Route::post('/settings/timeout', [SettingController::class, 'updateTimeout'])->name('settings.timeout.update');
 });
 
 Auth::routes();

@@ -860,6 +860,12 @@ return [
                     'can' => 'system_users.index',
                     'active' => ['system_users*'],
                 ],
+                [
+                    'text' => 'System Information',
+                    'route' => 'system_informations.index',
+                    'can' => 'system_informations.index',
+                    'active' => ['system_informations*'],
+                ],
             ],
         ],
     ],
