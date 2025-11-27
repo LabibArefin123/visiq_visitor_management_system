@@ -12,54 +12,78 @@ class SettingController extends Controller
      */
     public function index()
     {
-        return view('setting_index');
+        return view('setting_management.setting.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show2FA()
     {
-        //
+        $user = auth()->user();
+        return view('setting_management.setting.2fa', compact('user'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Toggle 2FA on/off
+    public function toggle2FA()
     {
-        //
+        $user = auth()->user();
+
+        // Only allow disabling if 2FA is verified
+        $twoFactorVerified = !$user->two_factor_code; // null means verified
+
+        if ($user->two_factor_enabled && !$twoFactorVerified) {
+            return back()->with('error', 'You must verify 2FA before disabling it.');
+        }
+
+        $user->two_factor_enabled = !$user->two_factor_enabled;
+
+        if ($user->two_factor_enabled) {
+            // Generate new code when enabling
+            $user->two_factor_code = rand(100000, 999999);
+            $user->two_factor_expires_at = now()->addMinutes(10);
+        } else {
+            // Reset fields when disabling
+            $user->two_factor_code = null;
+            $user->two_factor_expires_at = null;
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Two-Factor Authentication updated successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Setting $setting)
+    // Verify 2FA code
+    public function verify(Request $request)
     {
-        //
+        $request->validate([
+            'code' => 'required|digits:6',
+        ]);
+
+        $user = auth()->user();
+
+        if ($request->code != $user->two_factor_code) {
+            return back()->with('error', 'Invalid 2FA code.');
+        }
+
+        // Mark verified by clearing code
+        $user->two_factor_code = null;
+        $user->two_factor_expires_at = null;
+        $user->save();
+
+        return back()->with('success', '2FA verified successfully. You can now disable it if you want.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Setting $setting)
+    // Resend 2FA code
+    public function resend()
     {
-        //
-    }
+        $user = auth()->user();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Setting $setting)
-    {
-        //
-    }
+        if (!$user->two_factor_enabled) {
+            return back()->with('error', '2FA is not enabled.');
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Setting $setting)
-    {
-        //
+        $user->two_factor_code = rand(100000, 999999);
+        $user->two_factor_expires_at = now()->addMinutes(10);
+        $user->save();
+
+        return back()->with('success', 'A new 2FA code has been sent.');
     }
 }

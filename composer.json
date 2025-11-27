@@ -12,6 +12,7 @@
                 "intervention/image": "^3.11",
                 "jenssegers/agent": "^2.6",
                 "jeroennoten/laravel-adminlte": "^3.14",
+                "laragear/two-factor": "^3.0",
                 "laravel/breeze": "^2.3",
                 "laravel/framework": "^11.31",
                 "laravel/tinker": "^2.9",

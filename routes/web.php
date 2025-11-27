@@ -85,6 +85,7 @@ use App\Http\Controllers\VisitorFeedbackController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserCategoryController;
 use Illuminate\Support\Facades\Auth;
@@ -97,11 +98,13 @@ Route::get('/home', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('home');
 
+
+
 Route::middleware(['auth', 'check_permission'])->group(function () {
 
     //top menu and profile
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/user_profile', [ProfileController::class, 'user_profile_show'])->name('profile');
+    Route::get('/user_profile', [ProfileController::class, 'user_profile_show'])->name('profile.show');
     Route::get('/user_profile/edit', [ProfileController::class, 'user_profile_edit'])->name('profile.edit');
     Route::put('/user_profile/update', [ProfileController::class, 'user_profile_update'])->name('profile.update');
     Route::get('/notifications/search', [SearchController::class, 'search'])->name('notifications.search');
@@ -230,6 +233,13 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::resource('system_users', UserController::class);
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('/settings/2fa', [SettingController::class, 'show2FA'])->name('settings.2fa');
+    Route::post('/settings/toggle-2fa', [SettingController::class, 'toggle2FA'])->name('settings.toggle2fa');
+    Route::get('/settings/2fa/resend', [SettingController::class, 'resend'])->name('settings.2fa.resend');
+    Route::post('/settings/2fa/verify', [SettingController::class, 'verify'])->name('settings.2fa.verify');
+
+    // 2FA verify screen
+
 });
 
 Auth::routes();

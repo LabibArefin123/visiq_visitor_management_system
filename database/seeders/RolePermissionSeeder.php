@@ -424,6 +424,12 @@ class RolePermissionSeeder extends Seeder
             'report.visitor.monthly.pdf',   // monthly visitor report pdf
             'report.visitor.yearly',   // yearly visitor report pdf
             'report.visitor.yearly.pdf',   // yearly visitor report pdf
+            'report.visitor.company.daily',   // daily visitor company report
+            'report.visitor.company.daily.pdf',   // daily visitor company report pdf
+            'report.visitor.company.monthly',   // monthly visitor company report pdf
+            'report.visitor.company.monthly.pdf',   // monthly visitor company report pdf
+            'report.visitor.company.yearly',   // yearly visitor company report pdf
+            'report.visitor.company.yearly.pdf',   // yearly visitor company report pdf
             'report.employee.daily',   // daily employee report
             'report.employee.daily.pdf',   // daily employee report pdf
             'report.employee.monthly',   // monthly employee report pdf
@@ -512,6 +518,12 @@ class RolePermissionSeeder extends Seeder
             'system_users.edit',    // Edit
             'system_users.update',  // Update
             'system_users.destroy', // Delete
+        ];
+
+        $profilePermission = [
+            'profile.show',    // View individual
+            'profile.edit',    // Edit
+            'profile.update',  // Update
         ];
 
         $ajaxPermission = [
@@ -858,6 +870,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate([
                 'name' => $permission,
                 'module' => 'System User'
+            ]);
+        }
+
+        foreach ($profilePermission as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Profile'
             ]);
         }
 
