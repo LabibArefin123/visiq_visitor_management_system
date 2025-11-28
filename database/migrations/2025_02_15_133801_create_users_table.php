@@ -15,6 +15,8 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('password');
             $table->string('profile_picture')->nullable();
+            $table->tinyInteger('is_maintenance')->default(0);
+            $table->string('maintenance_message')->nullable();
             $table->timestamps();
         });
     }

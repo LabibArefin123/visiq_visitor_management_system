@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -29,13 +30,20 @@ class LoginController extends Controller
      */
     protected function attemptLogin(Request $request)
     {
-        $login = $request->input('login');
-        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $loginInput = $request->input($this->username());
+        $field = filter_var($loginInput, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $password = $request->input('password');
 
-        return Auth::attempt([
-            $field => $login,
-            'password' => $request->input('password'),
-        ], $request->filled('remember'));
+        $user = User::where($field, $loginInput)->first();
+
+        $globalMaintenance = User::where('is_maintenance', 1)->first();
+
+        if ($globalMaintenance && !$user->hasRole('admin')) {
+            session()->flash('error', $globalMaintenance->maintenance_message);
+            return false;
+        }
+
+        return Auth::attempt([$field => $loginInput, 'password' => $password], $request->filled('remember'));
     }
 
     /**

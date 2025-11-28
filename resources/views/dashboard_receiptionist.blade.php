@@ -3,7 +3,7 @@
 @section('title', 'Welcome to VisiQ Software')
 
 @section('content')
-    @if ($notifications->isNotEmpty())
+    {{-- @if ($notifications->isNotEmpty())
         @php
             // Group notifications by visitor name + visit date + purpose
             $groupedNotifications = collect($notifications)->groupBy(function ($note) {
@@ -45,7 +45,7 @@
                 </div>
             @endforeach
         </div>
-    @endif
+    @endif --}}
 
     <style>
         .custom-close-btn {

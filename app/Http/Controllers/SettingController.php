@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class SettingController extends Controller
 {
@@ -121,5 +123,205 @@ class SettingController extends Controller
         session()->put('session_lifetime', $timeout * 60); // store in session for JS tracking if needed
 
         return back()->with('success', 'Session timeout updated successfully.');
+    }
+
+    public function databaseBackup()
+    {
+        return view('setting_management.setting.backup_setting.database_backup');
+    }
+
+    public function downloadDatabase()
+    {
+        try {
+            // Read env variables
+            $db   = env('DB_DATABASE', 'tot_visiq');   // fallback in case env not read
+            $user = env('DB_USERNAME', 'root');        // fallback to root
+            $pass = env('DB_PASSWORD', '');            // empty password
+            $host = env('DB_HOST', '127.0.0.1');
+            $port = env('DB_PORT', '3306');
+
+            // Generate backup filename
+            $fileName = $db . '_backup_' . now()->format('Y-m-d_H-i-s') . '.sql';
+            $backupFile = storage_path('app/' . $fileName);
+
+            // Laragon mysqldump path
+            $mysqldumpPath = 'E:\laragon\bin\mysql\mysql-8.0.30-winx64\bin\mysqldump.exe';
+
+            // Build mysqldump command
+            $command = "\"$mysqldumpPath\" "
+                . "--host={$host} "
+                . "--port={$port} "
+                . "--user={$user} ";
+
+            // Add password ONLY if it is not empty
+            if (!empty($pass)) {
+                $command .= "--password=\"{$pass}\" ";
+            }
+
+            $command .= "--single-transaction --quick --routines --events "
+                . "--databases {$db} "
+                . "--result-file=\"{$backupFile}\" "
+                . "2>&1";
+
+            // dd($command);
+
+            // Execute command
+            $output = shell_exec($command);
+
+            // Check if backup was created
+            if (!file_exists($backupFile) || filesize($backupFile) < 100) {
+                return back()->with('error', "Backup failed. mysqldump output: " . $output);
+            }
+
+            // Download the backup
+            return response()->download($backupFile)->deleteFileAfterSend(true);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+    public function logs(Request $request)
+    {
+        $logFile = storage_path('logs/laravel.log');
+        $logs = [];
+
+        if (file_exists($logFile)) {
+            $allLines = file($logFile);
+            $filtered = [];
+
+            // Determine range
+            $range = $request->range ?? 'today';
+            $start = null;
+            $end   = null;
+
+            switch ($range) {
+                case 'yesterday':
+                    $start = Carbon::yesterday()->startOfDay();
+                    $end   = Carbon::yesterday()->endOfDay();
+                    break;
+                case '7days':
+                    $start = now()->subDays(7);
+                    $end   = now();
+                    break;
+                case '1month':
+                    $start = now()->subMonth();
+                    $end   = now();
+                    break;
+                case '2months':
+                    $start = now()->subMonths(2);
+                    $end   = now();
+                    break;
+                case '3months':
+                    $start = now()->subMonths(3);
+                    $end   = now();
+                    break;
+                case '6months':
+                    $start = now()->subMonths(6);
+                    $end   = now();
+                    break;
+                case '1year':
+                    $start = now()->subYear();
+                    $end   = now();
+                    break;
+                case 'today':
+                default:
+                    $start = now()->startOfDay();
+                    $end   = now()->endOfDay();
+            }
+
+            $lineBuffer = '';
+            $lineDate   = null;
+            $lineLevel  = null;
+            $serial = 1;
+
+            foreach ($allLines as $line) {
+                preg_match('/\[(.*?)\]\s(\w+)\.([A-Z]+):\s(.*)/', $line, $match);
+
+                if (isset($match[1])) {
+                    // Save previous buffered line
+                    if ($lineBuffer) {
+                        $filtered[] = [
+                            'serial' => $serial++,
+                            'timestamp' => $lineDate,
+                            'level' => $lineLevel,
+                            'message' => $lineBuffer
+                        ];
+                    }
+
+                    // New line
+                    try {
+                        $lineDate = Carbon::parse($match[1]);
+                    } catch (\Exception $e) {
+                        $lineDate = null;
+                    }
+
+                    $lineLevel  = $match[3] ?? 'INFO';
+                    $lineBuffer = $match[4] ?? '';
+                } else {
+                    // Stacktrace or multiline continuation
+                    $lineBuffer .= "\n" . trim($line);
+                }
+
+                // Add last line
+            }
+
+            if ($lineBuffer) {
+                $filtered[] = [
+                    'serial' => $serial++,
+                    'timestamp' => $lineDate,
+                    'level' => $lineLevel,
+                    'message' => $lineBuffer
+                ];
+            }
+
+            // Filter by date range
+            $logs = array_filter($filtered, function ($log) use ($start, $end) {
+                if (!$log['timestamp']) return true;
+                return $log['timestamp']->between($start, $end);
+            });
+
+            // Sort newest first
+            $logs = array_reverse($logs);
+        }
+
+        return view('setting_management.setting.log_setting.log', compact('logs', 'range'));
+    }
+
+    public function clearLogs()
+    {
+        $logFile = storage_path('logs/laravel.log');
+
+        try {
+            if (file_exists($logFile)) {
+                file_put_contents($logFile, ''); // Clear the log file
+            }
+
+            return redirect()->route('settings.logs')
+                ->with('success', 'Logs cleared successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('settings.logs')
+                ->with('error', 'Failed to clear logs: ' . $e->getMessage());
+        }
+    }
+
+    public function maintenance()
+    {
+        $user = User::first(); // assuming one main record to store settings
+        return view('setting_management.setting.backup_setting.maintenance', compact('user'));
+    }
+
+    // Update maintenance mode
+    public function maintenanceUpdate(Request $request)
+    {
+        $request->validate([
+            'is_maintenance' => 'required|boolean',
+            'maintenance_message' => 'nullable|string|max:255',
+        ]);
+
+        $user = User::first(); // same record for maintenance
+        $user->is_maintenance = $request->is_maintenance;
+        $user->maintenance_message = $request->maintenance_message;
+        $user->save();
+
+        return back()->with('success', 'Maintenance mode updated successfully.');
     }
 }

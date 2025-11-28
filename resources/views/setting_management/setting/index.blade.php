@@ -113,12 +113,6 @@
                     <div class="card-body">
 
                         <ul class="list-group">
-
-                            <li class="list-group-item">
-                                <strong>System Name & Logo</strong><br>
-                                Change system title, system logo
-                            </li>
-
                             <li class="list-group-item">
                                 <strong>Date & Time Settings</strong><br>
                                 Timezone, date format, time format
@@ -141,8 +135,14 @@
                         <ul class="list-group">
 
                             <li class="list-group-item">
-                                <strong>Error Log Viewer</strong><br>
-                                View, download, clear logs
+                                <a href="{{ route('settings.logs') }}"
+                                    class="text-decoration-none text-dark d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Error Log Viewer</strong><br>
+                                        View, download, clear logs
+                                    </div>
+                                    <i class="fas fa-chevron-right text-muted"></i>
+                                </a>
                             </li>
 
                             <li class="list-group-item">
@@ -229,13 +229,24 @@
                         <ul class="list-group">
 
                             <li class="list-group-item">
-                                <strong>System Backup</strong><br>
-                                Create, download, schedule auto-backup
+                                <a href="{{ route('settings.database.backup') }}"
+                                    class="text-decoration-none text-dark d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>System Backup</strong><br>
+                                        Create, download, schedule auto-backup
+                                    </div>
+                                    <i class="fas fa-chevron-right text-muted"></i>
+                                </a>
                             </li>
 
                             <li class="list-group-item">
-                                <strong>Maintenance Mode</strong><br>
-                                Enable/Disable, custom message
+                                <a href="{{ route('settings.maintenance') }}"
+                                    class="text-decoration-none text-dark d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Maintenance Mode</strong><br>
+                                        Enable/Disable, custom message
+                                        <i class="fas fa-chevron-right text-muted"></i>
+                                </a>
                             </li>
 
                         </ul>

@@ -242,6 +242,12 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::post('/settings/2fa/verify', [SettingController::class, 'verify'])->name('settings.2fa.verify');
     Route::get('/settings/timeout', [SettingController::class, 'showTimeout'])->name('settings.timeout');
     Route::post('/settings/timeout', [SettingController::class, 'updateTimeout'])->name('settings.timeout.update');
+    Route::get('/settings/database-backup', [SettingController::class, 'databaseBackup'])->name('settings.database.backup');
+    Route::post('/settings/database-backup/download', [SettingController::class, 'downloadDatabase'])->name('settings.database.backup.download');
+    Route::get('/settings/logs', [SettingController::class, 'logs'])->name('settings.logs');
+    Route::post('/settings/logs/clear', [SettingController::class, 'clearLogs'])->name('settings.clearLogs');
+    Route::get('/settings/maintenance', [SettingController::class, 'maintenance'])->name('settings.maintenance');
+    Route::post('/settings/maintenance', [SettingController::class, 'maintenanceUpdate'])->name('settings.maintenance.update');
 });
 
 Auth::routes();
