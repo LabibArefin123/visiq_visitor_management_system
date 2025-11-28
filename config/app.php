@@ -41,6 +41,10 @@ return [
 
     'debug' => (bool) env('APP_DEBUG', false),
 
+    'theme_mode' => env('APP_THEME_MODE', 'light'),
+    'theme_primary_color' => env('APP_THEME_PRIMARY', '#0d6efd'),
+    'theme_sidebar_color' => env('APP_THEME_SIDEBAR', '#343a40'),
+    'theme_navbar_color' => env('APP_THEME_NAVBAR', '#ffffff'),
 
 
     /*
@@ -127,8 +131,6 @@ return [
     ],
     Barryvdh\DomPDF\ServiceProvider::class,
     // App\Providers\AdminLTEComposerServiceProvider::class,
-    App\Providers\AdminLTEDynamicLogoServiceProvider::class,
-
     // App\Providers\AuthServiceProvider::class,
 
 

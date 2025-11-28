@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 use App\Models\PendingVisitor;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,19 +21,16 @@ class AppServiceProvider extends ServiceProvider
         // Register permission middleware globally
         app('router')->aliasMiddleware('permission', \App\Http\Middleware\CheckPermission::class);
 
-        // Only run if the table exists to avoid migration-time errors
+        // Only run visitor count logic if table exists
         if (Schema::hasTable('pending_visitors')) {
             $today = Carbon::today();
 
-            // Count visitors whose visit_date is today or earlier
             $totalPendingVisitors = PendingVisitor::whereDate('visit_date', '<=', $today)->count();
 
-            // Store count in a global config variable
-            config([
-                'adminlte.notification_counts.pending_visitors' => $totalPendingVisitors,
-            ]);
+            // Store count in config
+            config(['adminlte.notification_counts.pending_visitors' => $totalPendingVisitors]);
 
-            // Dynamically modify AdminLTE topnav bell menu
+            // Update topnav menu dynamically
             $menu = config('adminlte.menu');
 
             foreach ($menu as &$item) {
@@ -40,16 +38,24 @@ class AppServiceProvider extends ServiceProvider
                     $item['label'] = (string) $totalPendingVisitors;
                     $item['label_color'] = $totalPendingVisitors > 0 ? 'danger' : 'success';
 
-                    foreach ($item['submenu'] as &$submenu) {
-                        if (str_contains($submenu['text'], 'Pending Visitor')) {
-                            $submenu['text'] = "Pending Visitor List ({$totalPendingVisitors})";
+                    if (isset($item['submenu']) && is_array($item['submenu'])) {
+                        foreach ($item['submenu'] as &$submenu) {
+                            if (isset($submenu['text']) && str_contains($submenu['text'], 'Pending Visitor')) {
+                                $submenu['text'] = "Pending Visitor List ({$totalPendingVisitors})";
+                            }
                         }
                     }
                 }
             }
 
-            // Apply updated menu back to config
             config(['adminlte.menu' => $menu]);
         }
+
+        // --- Dark Mode for AdminLTE ---
+        $themeMode = Session::get('theme_mode', 'light');
+        config(['adminlte.layout_dark_mode' => $themeMode === 'dark']);
+
+        // Share with all views
+        View::share('darkMode', $themeMode);
     }
 }

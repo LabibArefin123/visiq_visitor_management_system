@@ -11,9 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+
+        // 🌐 Add your language middleware here
         $middleware->alias([
-            'check_permission' => \App\Http\Middleware\CheckPermission::class, // Register new middleware
+            'check_permission' => \App\Http\Middleware\CheckPermission::class,
+            'language' => \App\Http\Middleware\LanguageSwitcher::class,
         ]);
+
+        // Apply globally (optional – recommended)
+        $middleware->append(\App\Http\Middleware\LanguageSwitcher::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

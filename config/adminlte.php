@@ -349,12 +349,6 @@ return [
             'route' => 'dashboard',
             'icon' => 'fas fa-fw fa-user',
         ],
-        [
-            'text' => 'AI Chat',
-            'url'  => 'ai_chat',
-            'icon' => 'fas fa-fw fa-robot',
-            'can'  => 'show-ai-chat',
-        ],
 
         [
             'text'    => 'Organization Menu',

@@ -114,8 +114,27 @@
 
                         <ul class="list-group">
                             <li class="list-group-item">
-                                <strong>Date & Time Settings</strong><br>
-                                Timezone, date format, time format
+                                <a href="{{ route('settings.language') }}"
+                                    class="text-decoration-none text-dark d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Language Setting</strong><br>
+                                        Changes the system language like bangla -> english
+                                    </div>
+                                    <i class="fas fa-chevron-right text-muted"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+
+                            <li class="list-group-item">
+                                <a href="{{ route('settings.datetime') }}"
+                                    class="text-decoration-none text-dark d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Date & Time Settings</strong><br>
+                                        Timezone, date format, time format
+                                    </div>
+                                    <i class="fas fa-chevron-right text-muted"></i>
+                                </a>
                             </li>
                         </ul>
 
@@ -144,12 +163,6 @@
                                     <i class="fas fa-chevron-right text-muted"></i>
                                 </a>
                             </li>
-
-                            <li class="list-group-item">
-                                <strong>Activity Log</strong><br>
-                                Logins, CRUD actions, failed attempts
-                            </li>
-
                         </ul>
 
                     </div>
@@ -201,8 +214,14 @@
                         <ul class="list-group">
 
                             <li class="list-group-item">
-                                <strong>Theme Mode</strong><br>
-                                Light / Dark / Custom colors
+                                <a href="{{ route('settings.theme') }}"
+                                    class="text-decoration-none text-dark d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Theme Mode</strong><br>
+                                        Light / Dark / Custom colors
+                                    </div>
+                                    <i class="fas fa-chevron-right text-muted"></i>
+                                </a>
                             </li>
 
                             <li class="list-group-item">
@@ -245,7 +264,8 @@
                                     <div>
                                         <strong>Maintenance Mode</strong><br>
                                         Enable/Disable, custom message
-                                        <i class="fas fa-chevron-right text-muted"></i>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-muted"></i>
                                 </a>
                             </li>
 
@@ -254,35 +274,6 @@
                     </div>
                 </div>
             </div>
-
-
-            {{-- Extra --}}
-            <div class="card" id="extra">
-                <div class="card-header bg-light" data-toggle="collapse" data-target="#extraSettings"
-                    style="cursor:pointer;">
-                    <h5 class="mb-0">🚀 Extra Settings</h5>
-                </div>
-                <div id="extraSettings" class="collapse" data-parent="#settingsAccordion">
-                    <div class="card-body">
-
-                        <ul class="list-group">
-
-                            <li class="list-group-item">
-                                <strong>Auto Delete Logs</strong><br>
-                                Clean logs older than X days
-                            </li>
-
-                            <li class="list-group-item">
-                                <strong>Custom Footer</strong><br>
-                                Footer text, links, system version
-                            </li>
-
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
-
         </div> {{-- End accordion --}}
 
     </div>

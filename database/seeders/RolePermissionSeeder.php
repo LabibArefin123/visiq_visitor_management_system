@@ -536,6 +536,23 @@ class RolePermissionSeeder extends Seeder
             'profile.update',  // Update
         ];
 
+        $settingPermission = [
+            'settings.index',    // Index page 
+            'settings.password_policy',    // to show password policy page
+            'settings.2fa',  // 2fa page
+            'settings.toggle2fa',  // 2fa page to turn on/off 
+            'settings.2fa.verify',  // 2fa code for verify
+            'settings.2fa.resend',  // 2fa code for resend
+            'settings.2fa.timeout',  // timeout for the auto logout page
+            'settings.2fa.timeout.update',  // timeout for the auto logout update
+            'settings.database.backup',  // backup page for database sql
+            'settings.database.backup.download',  // backup page for downloading database sql
+            'settings.logs',  // to show log page
+            'settings.clearLogs',  // to clear log
+            'settings.maintenance',  // to show maintenance page
+            'settings.maintenance.update',  // to update the maintenance 
+        ];
+
         $ajaxPermission = [
             'ajax.getLocationsByArea',   // Get all locations under a specific Area.
             'ajax.getBuildingsByLocation',  //  Get all building lists under a specific Location.

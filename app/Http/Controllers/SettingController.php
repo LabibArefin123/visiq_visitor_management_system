@@ -6,6 +6,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class SettingController extends Controller
 {
@@ -133,52 +134,48 @@ class SettingController extends Controller
     public function downloadDatabase()
     {
         try {
-            // Read env variables
-            $db   = env('DB_DATABASE', 'tot_visiq');   // fallback in case env not read
-            $user = env('DB_USERNAME', 'root');        // fallback to root
-            $pass = env('DB_PASSWORD', '');            // empty password
+            // DB Credentials
+            $db   = env('DB_DATABASE', 'tot_visiq');
+            $user = env('DB_USERNAME', 'root');
+            $pass = env('DB_PASSWORD', '');
             $host = env('DB_HOST', '127.0.0.1');
             $port = env('DB_PORT', '3306');
 
-            // Generate backup filename
+            // File name
             $fileName = $db . '_backup_' . now()->format('Y-m-d_H-i-s') . '.sql';
-            $backupFile = storage_path('app/' . $fileName);
+            $backupPath = storage_path('app/' . $fileName);
 
-            // Laragon mysqldump path
-            $mysqldumpPath = 'E:\laragon\bin\mysql\mysql-8.0.30-winx64\bin\mysqldump.exe';
+            // Laragon mysqldump full path
+            $mysqldump = 'E:\laragon\bin\mysql\mysql-8.0.30-winx64\bin\mysqldump.exe';
 
-            // Build mysqldump command
-            $command = "\"$mysqldumpPath\" "
-                . "--host={$host} "
-                . "--port={$port} "
-                . "--user={$user} ";
+            // Build safe command
+            $command = "\"{$mysqldump}\" "
+                . "--host=\"{$host}\" "
+                . "--port=\"{$port}\" "
+                . "--user=\"{$user}\" ";
 
-            // Add password ONLY if it is not empty
             if (!empty($pass)) {
                 $command .= "--password=\"{$pass}\" ";
             }
 
-            $command .= "--single-transaction --quick --routines --events "
-                . "--databases {$db} "
-                . "--result-file=\"{$backupFile}\" "
-                . "2>&1";
-
-            // dd($command);
+            $command .= "\"{$db}\" > \"{$backupPath}\"";
 
             // Execute command
-            $output = shell_exec($command);
+            shell_exec($command);
 
-            // Check if backup was created
-            if (!file_exists($backupFile) || filesize($backupFile) < 100) {
-                return back()->with('error', "Backup failed. mysqldump output: " . $output);
+            // Check file is created correctly
+            if (!file_exists($backupPath) || filesize($backupPath) < 50) {
+                return back()->with('error', '❌ Database backup failed. File is empty or not created.');
             }
 
-            // Download the backup
-            return response()->download($backupFile)->deleteFileAfterSend(true);
+            // Download SQL file
+            return response()->download($backupPath, $fileName)->deleteFileAfterSend(true);
         } catch (\Exception $e) {
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
+
+
     public function logs(Request $request)
     {
         $logFile = storage_path('logs/laravel.log');
@@ -323,5 +320,56 @@ class SettingController extends Controller
         $user->save();
 
         return back()->with('success', 'Maintenance mode updated successfully.');
+    }
+
+    public function language()
+    {
+        return view('setting_management.setting.language_setting.language');
+    }
+
+    public function updateLanguage(Request $request)
+    {
+        $request->validate([
+            'app_language' => 'required|in:en,bn',
+        ]);
+
+        session(['app_locale' => $request->app_language]);
+
+        return back()->with('success', 'Language updated successfully!');
+    }
+
+    public function dateTime()
+    {
+        return view('setting_management.setting.system_setting.date_time');
+    }
+
+    public function updateDateTime(Request $request)
+    {
+        // Save timezone
+        config(['app.timezone' => $request->timezone]);
+        date_default_timezone_set($request->timezone);
+
+        // Save formats
+        setting(['date_format' => $request->date_format])->save();
+        setting(['time_format' => $request->time_format])->save();
+
+        return back()->with('success', 'Date & Time settings updated successfully.');
+    }
+
+    public function theme()
+    {
+        return view('setting_management.setting.ui_setting.theme');
+    }
+
+    public function updateTheme(Request $request)
+    {
+        $request->validate([
+            'theme_mode' => 'required|in:light,dark',
+        ]);
+
+        // Store dark/light preference in session
+        Session::put('theme_mode', $request->theme_mode);
+
+        return back()->with('success', 'Theme updated successfully!');
     }
 }

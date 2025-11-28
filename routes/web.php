@@ -101,7 +101,7 @@ Route::get('/home', function () {
 
 
 
-Route::middleware(['auth', 'check_permission'])->group(function () {
+Route::middleware(['auth', 'check_permission', 'language'])->group(function () {
 
     //top menu and profile
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');
@@ -109,14 +109,6 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::get('/user_profile/edit', [ProfileController::class, 'user_profile_edit'])->name('profile.edit');
     Route::put('/user_profile/update', [ProfileController::class, 'user_profile_update'])->name('profile.update');
     Route::get('/notifications/search', [SearchController::class, 'search'])->name('notifications.search');
-
-    Route::get('/ai_chat', [AiController::class, 'ai_chat_index'])->name('ai_chat.index');
-    Route::post('/ai-chat', [AiController::class, 'ai_chat_response'])->name('ai.chat.response');
-    Route::post('/ai-chat-store', [AiController::class, 'storeChat'])->name('ai.chat.store');
-    Route::get('/ai-chat-list', [AiController::class, 'listChats'])->name('ai.chat.list');
-    Route::get('/ai-chat-view/{id}', [AiController::class, 'viewChat'])->name('ai.chat.view');
-    Route::get('/ai-chat-pdf', [AiController::class, 'ai_chat_pdf'])->name('ai.chat.pdf');
-    Route::get('/ai-chat/download/{id}', [AiController::class, 'downloadAIChatPDF'])->name('ai.chat.download');
 
     //ajax controller
     Route::get('/get-locations-by-area', [AjaxController::class, 'getLocationsByArea'])->name('ajax.getLocationsByArea');
@@ -248,6 +240,12 @@ Route::middleware(['auth', 'check_permission'])->group(function () {
     Route::post('/settings/logs/clear', [SettingController::class, 'clearLogs'])->name('settings.clearLogs');
     Route::get('/settings/maintenance', [SettingController::class, 'maintenance'])->name('settings.maintenance');
     Route::post('/settings/maintenance', [SettingController::class, 'maintenanceUpdate'])->name('settings.maintenance.update');
+    Route::get('/settings/language', [SettingController::class, 'language'])->name('settings.language');
+    Route::post('/settings/language/update', [SettingController::class, 'updateLanguage'])->name('settings.language.update');
+    Route::get('/settings/datetime', [SettingController::class, 'dateTime'])->name('settings.datetime');
+    Route::post('/settings/datetime/update', [SettingController::class, 'updateDateTime'])->name('settings.datetime.update');
+    Route::get('/settings/theme', [SettingController::class, 'theme'])->name('settings.theme');
+    Route::post('/settings/theme/update', [SettingController::class, 'updateTheme'])->name('settings.theme.update');
 });
 
 Auth::routes();

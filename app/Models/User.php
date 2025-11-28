@@ -26,6 +26,13 @@ class User extends Authenticatable implements TwoFactorAuthenticatable
         'username',
         'phone',
         'password',
+        'profile_picture',
+        'two_factor_enabled',
+        'two_factor_code',
+        'two_factor_expires_at',
+        'session_timeout',
+        'is_maintenance',
+        'maintenance_message',
     ];
 
     /**
