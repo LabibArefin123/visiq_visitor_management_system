@@ -1,0 +1,148 @@
+@extends('adminlte::page')
+
+@section('title', 'Edit Visitor')
+
+@section('content_header')
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Edit Visitor</h3>
+        <a href="{{ route('visitors.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2 back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bi bi-arrow-left" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back
+        </a>
+    </div>
+@stop
+
+@section('content')
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <form action="{{ route('visitors.update', $visitor->id) }}" method="POST" data-confirm="edit">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="row">
+                        {{-- Visitor ID --}}
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="v_id"><strong>Visitor ID</strong></label>
+                            <input type="text" name="visitor_id" id="visitor_id"
+                                class="form-control @error('visitor_id') is-invalid @enderror"
+                                value="{{ old('visitor_id', $visitor->visitor_id) }}" placeholder="Enter Visitor ID">
+                            @error('visitor_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Name --}}
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="name"><strong>Name</strong></label>
+                            <input type="text" name="name" id="name"
+                                class="form-control @error('name') is-invalid @enderror"
+                                value="{{ old('name', $visitor->name) }}" placeholder="Enter visitor's name" required>
+                            @error('name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Phone --}}
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="phone"><strong>Phone</strong></label>
+                            <input type="text" name="phone" id="phone"
+                                class="form-control @error('phone') is-invalid @enderror"
+                                value="{{ old('phone', $visitor->phone) }}" placeholder="Enter phone number" required>
+                            @error('phone')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Email --}}
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="email"><strong>Email</strong></label>
+                            <input type="email" name="email" id="email"
+                                class="form-control @error('email') is-invalid @enderror"
+                                value="{{ old('email', $visitor->email) }}" placeholder="Enter email address">
+                            @error('email')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Purpose --}}
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="purpose"><strong>Visit Purpose</strong></label>
+                            <input type="text" name="purpose" id="purpose"
+                                class="form-control @error('purpose') is-invalid @enderror"
+                                value="{{ old('purpose', $visitor->purpose) }}" placeholder="Enter visit purpose" required>
+                            @error('purpose')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Visit Date --}}
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="visit_date"><strong>Visit Date</strong></label>
+                            <input type="date" name="visit_date" id="visit_date"
+                                class="form-control @error('visit_date') is-invalid @enderror"
+                                value="{{ old('visit_date', $visitor->visit_date ? \Carbon\Carbon::parse($visitor->visit_date)->format('Y-m-d') : '') }}"
+                                required>
+                            @error('visit_date')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Date of Birth --}}
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="date_of_birth"><strong>Date of Birth</strong></label>
+                            <input type="date" name="date_of_birth" id="date_of_birth"
+                                class="form-control @error('date_of_birth') is-invalid @enderror"
+                                value="{{ old('date_of_birth', $visitor->date_of_birth ? \Carbon\Carbon::parse($visitor->date_of_birth)->format('Y-m-d') : '') }}">
+                            @error('date_of_birth')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- National ID --}}
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="national_id"><strong>National ID</strong></label>
+                            <input type="text" name="national_id" id="national_id"
+                                class="form-control @error('national_id') is-invalid @enderror"
+                                value="{{ old('national_id', $visitor->national_id) }}"
+                                placeholder="Enter National ID number">
+                            @error('national_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Gender --}}
+                        <div class="col-md-6 form-group mb-3">
+                            <label for="gender"><strong>Gender</strong></label>
+                            <select name="gender" id="gender"
+                                class="form-control @error('gender') is-invalid @enderror">
+                                <option value="">Select Gender</option>
+                                <option value="Male" {{ old('gender', $visitor->gender) == 'Male' ? 'selected' : '' }}>
+                                    Male
+                                </option>
+                                <option value="Female"
+                                    {{ old('gender', $visitor->gender) == 'Female' ? 'selected' : '' }}>
+                                    Female</option>
+                                <option value="Other" {{ old('gender', $visitor->gender) == 'Other' ? 'selected' : '' }}>
+                                    Other</option>
+                            </select>
+                            @error('gender')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@stop

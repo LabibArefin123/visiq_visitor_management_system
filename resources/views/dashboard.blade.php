@@ -1,0 +1,226 @@
+@extends('adminlte::page')
+
+@section('title', 'Welcome to VisiQ Software')
+
+@section('content')
+    @if ($notifications->isNotEmpty())
+        @php
+            // Only take pending visitor type notifications
+            $pendingNotifications = $notifications->where('type', 'pending_visitor');
+
+            // Total count for ALL pending visitors
+            $totalPending = $pendingNotifications->count();
+
+            // Get the first notification info to show in the box
+            $first = $pendingNotifications->first();
+        @endphp
+
+        @if ($totalPending > 0)
+            <div id="notification-container" class="position-fixed"
+                style="bottom: 1rem; right: 1rem; z-index: 1050; max-width: 400px; width: 100%;">
+
+                <div class="alert alert-light border-start border-primary border-4 shadow-sm alert-dismissible fade show custom-alert position-relative"
+                    role="alert" style="cursor: pointer; transition: opacity 0.5s ease-in-out;"
+                    onclick="window.location.href='{{ route('pending_visitors.index') }}';">
+
+                    <!-- Total Count Badge -->
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        style="font-size: 0.9rem;">
+                        {{ $totalPending }}
+                    </span>
+
+                    <button type="button" class="custom-close-btn"
+                        onclick="event.stopPropagation(); this.closest('.custom-alert').style.opacity='0'; setTimeout(() => this.closest('.custom-alert').remove(), 300);"
+                        aria-label="Close">&times;</button>
+
+                    <div class="custom-icon">
+                        <i class="fas fa-user-clock text-primary fs-4"></i>
+                    </div>
+
+                    <div class="pe-4">
+                        <strong>Pending Visitor Alert</strong><br>
+                        <small>{{ $totalPending }} visitor(s) pending for check-in</small><br>
+                        <small class="text-muted">Click to view pending visitor list</small>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endif
+
+    <style>
+        .custom-close-btn {
+            position: absolute;
+            top: 0.3rem;
+            right: 0.5rem;
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #999;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .custom-close-btn:hover {
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        .custom-alert {
+            padding-right: 3rem;
+            border-radius: 0.5rem;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .custom-icon {
+            position: absolute;
+            bottom: 1.8rem;
+            right: 0.8rem;
+        }
+    </style>
+
+
+    <div class="container py-6">
+        <h1 class="text-2xl font-bold">Visitor Management Dashboard</h1>
+        <p class="text-gray-600">Welcome to your VisiQ Dashboard. Here is the summary of your visitor data.</p>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-info text-white shadow-sm dashboard-box hover-box ">
+                    <div class="inner">
+                        <h3>{{ $totalVisitors ?? '00' }}</h3>
+                        <p>Total Visitors</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <a href="{{ route('visitors.index') }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-warning text-white shadow-sm dashboard-box hover-box ">
+                    <div class="inner">
+                        <h3>{{ $totalEmergencyVisitors ?? '00' }}</h3>
+                        <p>Total Emergency Visitors</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <a href="{{ route('visitor_emergencys.index') }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-indigo text-white shadow-sm dashboard-box hover-box ">
+                    <div class="inner">
+                        <h3>{{ $totalPendingVisitors ?? '00' }}</h3>
+                        <p>Total Pending Visitors</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <a href="{{ route('pending_visitors.index') }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-danger text-white shadow-sm dashboard-box hover-box ">
+                    <div class="inner">
+                        <h3>{{ $totalBlacklistVisitors ?? '00' }}</h3>
+                        <p>Total Blacklist Visitors</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user-slash"></i>
+                    </div>
+                    <a href="{{ route('visitor_blacklists.index') }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-primary text-white shadow-sm dashboard-box hover-box ">
+                    <div class="inner">
+                        <h3>{{ $totalEmployees ?? '00' }}</h3>
+                        <p>Total Employees</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <a href="{{ route('employees.index') }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-success text-white shadow-sm dashboard-box hover-box ">
+                    <div class="inner">
+                        <h3>{{ $totalCurrentCheckinEmployees ?? '00' }}</h3>
+                        <p>Current Checked In Employees</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <a href="{{ route('employees.check_in_employee.index') }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-secondary text-white shadow-sm dashboard-box hover-box ">
+                    <div class="inner">
+                        <h3>{{ $totalCurrentCheckoutEmployees ?? '00' }}</h3>
+                        <p>Current Checked Out Employees</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <a href="{{ route('employees.check_out_employee.index') }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="small-box bg-teal text-white shadow-sm dashboard-box hover-box">
+                    <div class="inner">
+                        <h3>{{ $totalParkingSlots ?? '00' }}</h3>
+                        <p>Total Parking Slots</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-parking"></i>
+                    </div>
+                    <a href="{{ route('parking_lists.index') ?? '#' }}" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+@stop
+@section('js')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const alert = document.querySelector('.custom-alert');
+
+            if (alert) {
+                setTimeout(() => {
+                    alert.classList.add('fade-out');
+                    setTimeout(() => alert.remove(), 500);
+                }, 5000);
+            }
+        });
+    </script>
+@endsection

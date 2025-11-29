@@ -1,0 +1,945 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
+class RolePermissionSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        // Reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
+        // Create Permissions
+        $defaultPermissions = [
+            'dashboard',
+        ];
+
+        $userPermissions = [
+            'users.index',   // View
+            'users.create',  // Create new
+            'users.store',   // Store new
+            'users.show',    // View individual
+            'users.edit',    // Edit
+            'users.update',  // Update
+            'users.destroy', // Delete
+        ];
+
+        $rolePermissions = [
+            'roles.index',   // View
+            'roles.create',  // Create new
+            'roles.store',   // Store new
+            'roles.show',    // View individual
+            'roles.edit',    // Edit
+            'roles.update',  // Update
+            'roles.destroy', // Delete
+        ];
+
+        $permissionPermissions = [
+            'permissions.index',   // View
+            'permissions.create',  // Create new
+            'permissions.store',   // Store new
+            'permissions.show',    // View individual
+            'permissions.edit',    // Edit
+            'permissions.update',  // Update
+            'permissions.destroy', // Delete
+            'permissions.deleteSelected', // Delete selected
+        ];
+
+        $employeePermissions = [
+            'employees.index',   // View
+            'employees.create',  // Create new
+            'employees.store',   // Store new
+            'employees.show',    // View individual
+            'employees.edit',    // Edit
+            'employees.update',  // Update
+            'employees.destroy', // Delete
+            'employee_attendances.index',
+            'employees.check_in_employee.index', // Delete
+            'employees.check_out_employee.index', // Delete
+        ];
+
+        $visitorPermissions = [
+            'visitors.index',   // View
+            'visitors.create',  // Create new
+            'visitors.store',   // Store new
+            'visitors.show',    // View individual
+            'visitors.edit',    // Edit
+            'visitors.update',  // Update
+            'visitors.destroy', // Delete
+            'visitors.feedback', // feedback
+        ];
+
+        $visitorCompanyPermissions = [
+            'visitor_companies.index',   // View
+            'visitor_companies.create',  // Create new
+            'visitor_companies.store',   // Store new
+            'visitor_companies.show',    // View individual
+            'visitor_companies.edit',    // Edit
+            'visitor_companies.update',  // Update
+            'visitor_companies.destroy', // Delete
+        ];
+
+        $blacklistVisitorPermissions = [
+            'visitor_blacklists.index',   // View
+            'visitor_blacklists.create',  // Create new
+            'visitor_blacklists.store',   // Store new
+            'visitor_blacklists.show',    // View individual
+            'visitor_blacklists.edit',    // Edit
+            'visitor_blacklists.update',  // Update
+            'visitor_blacklists.destroy', // Delete
+            'visitor_blacklists.activity_log', // Activity Log
+        ];
+
+        $emergencyVisitorPermissions = [
+            'visitor_emergencys.index',   // View
+            'visitor_emergencys.create',  // Create new
+            'visitor_emergencys.store',   // Store new
+            'visitor_emergencys.show',    // View individual
+            'visitor_emergencys.edit',    // Edit
+            'visitor_emergencys.update',  // Update
+            'visitor_emergencys.destroy', // Delete
+        ];
+
+        $pendingVisitorPermissions = [
+            'pending_visitors.index',   // View
+            'pending_visitors.create',  // Create new
+            'pending_visitors.store',   // Store new
+            'pending_visitors.show',    // View individual
+            'pending_visitors.edit',    // Edit
+            'pending_visitors.update',  // Update
+            'pending_visitors.destroy', // Delete
+            'pending_visitors.approve', // Approve visitors
+        ];
+
+        $visitorJobApplicationPermissions = [
+            'visitor_job_applications.index',   // View
+            'visitor_job_applications.create',  // Create new
+            'visitor_job_applications.store',   // Store new
+            'visitor_job_applications.show',    // View individual
+            'visitor_job_applications.edit',    // Edit
+            'visitor_job_applications.update',  // Update
+            'visitor_job_applications.destroy', // Delete
+            'visitor_job_applications.approve', // Approve visitors
+        ];
+
+        $visitorGroupMemberPermissions = [
+            'visitor_group_members.index',   // View
+            'visitor_group_members.create',  // Create new
+            'visitor_group_members.store',   // Store new
+            'visitor_group_members.show',    // View individual
+            'visitor_group_members.edit',    // Edit
+            'visitor_group_members.update',  // Update
+            'visitor_group_members.destroy', // Delete
+        ];
+
+        // building menu
+        $areaPermissions = [
+            'areas.index',   // View
+            'areas.create',  // Create new
+            'areas.store',   // Store new
+            'areas.show',    // View individual
+            'areas.edit',    // Edit
+            'areas.update',  // Update
+            'areas.destroy', // Delete
+        ];
+
+        $subAreaPermissions = [
+            'sub_areas.index',   // View
+            'sub_areas.create',  // Create new
+            'sub_areas.store',   // Store new
+            'sub_areas.show',    // View individual
+            'sub_areas.edit',    // Edit
+            'sub_areas.update',  // Update
+            'sub_areas.destroy', // Delete
+        ];
+
+        $buildingLocationPermissions = [
+            'building_locations.index',   // View
+            'building_locations.create',  // Create new
+            'building_locations.store',   // Store new
+            'building_locations.show',    // View individual
+            'building_locations.edit',    // Edit
+            'building_locations.update',  // Update
+            'building_locations.destroy', // Delete
+        ];
+
+        $buildingListPermissions = [
+            'building_lists.index',   // View
+            'building_lists.create',  // Create new
+            'building_lists.store',   // Store new
+            'building_lists.show',    // View individual
+            'building_lists.edit',    // Edit
+            'building_lists.update',  // Update
+            'building_lists.destroy', // Delete
+        ];
+
+        $roomListPermissions = [
+            'room_lists.index',   // View
+            'room_lists.create',  // Create new
+            'room_lists.store',   // Store new
+            'room_lists.show',    // View individual
+            'room_lists.edit',    // Edit
+            'room_lists.update',  // Update
+            'room_lists.destroy', // Delete
+        ];
+
+        // organization menu
+        $organizationPermissions = [
+            'organizations.index',   // View
+            'organizations.create',  // Create new
+            'organizations.store',   // Store new
+            'organizations.show',    // View individual
+            'organizations.edit',    // Edit
+            'organizations.update',  // Update
+            'organizations.destroy', // Delete
+        ];
+
+        // department menu
+        $branchPermissions = [
+            'branches.index',   // View
+            'branches.create',  // Create new
+            'branches.store',   // Store new
+            'branches.show',    // View individual
+            'branches.edit',    // Edit
+            'branches.update',  // Update
+            'branches.destroy', // Delete
+        ];
+
+        $divisionPermissions = [
+            'divisions.index',   // View
+            'divisions.create',  // Create new
+            'divisions.store',   // Store new
+            'divisions.show',    // View individual
+            'divisions.edit',    // Edit
+            'divisions.update',  // Update
+            'divisions.destroy', // Delete
+        ];
+
+        $departmentPermissions = [
+            'departments.index',   // View
+            'departments.create',  // Create new
+            'departments.store',   // Store new
+            'departments.show',    // View individual
+            'departments.edit',    // Edit
+            'departments.update',  // Update
+            'departments.destroy', // Delete
+        ];
+
+        $shiftSchedulePermissions = [
+            'shift_schedules.index',   // View
+            'shift_schedules.create',  // Create new
+            'shift_schedules.store',   // Store new
+            'shift_schedules.show',    // View individual
+            'shift_schedules.edit',    // Edit
+            'shift_schedules.update',  // Update
+            'shift_schedules.destroy', // Delete
+        ];
+
+        $officeSchedulePermissions = [
+            'office_schedules.index',   // View
+            'office_schedules.create',  // Create new
+            'office_schedules.store',   // Store new
+            'office_schedules.show',    // View individual
+            'office_schedules.edit',    // Edit
+            'office_schedules.update',  // Update
+            'office_schedules.destroy', // Delete
+        ];
+
+        $interviewSchedulePermissions = [
+            'interview_schedules.index',   // View
+            'interview_schedules.create',  // Create new
+            'interview_schedules.store',   // Store new
+            'interview_schedules.show',    // View individual
+            'interview_schedules.edit',    // Edit
+            'interview_schedules.update',  // Update
+            'interview_schedules.destroy', // Delete
+        ];
+
+        $weekendSchedulePermissions = [
+            'weekend_schedules.index',   // View
+            'weekend_schedules.create',  // Create new
+            'weekend_schedules.store',   // Store new
+            'weekend_schedules.show',    // View individual
+            'weekend_schedules.edit',    // Edit
+            'weekend_schedules.update',  // Update
+            'weekend_schedules.destroy', // Delete
+        ];
+
+        $visitorHostSchedulePermissions = [
+            'visitor_host_schedules.index',   // View
+            'visitor_host_schedules.create',  // Create new
+            'visitor_host_schedules.store',   // Store new
+            'visitor_host_schedules.show',    // View individual
+            'visitor_host_schedules.edit',    // Edit
+            'visitor_host_schedules.update',  // Update
+            'visitor_host_schedules.destroy', // Delete
+        ];
+
+
+        $visitorGroupSchedulePermissions = [
+            'visitor_group_schedules.index',   // View
+            'visitor_group_schedules.create',  // Create new
+            'visitor_group_schedules.store',   // Store new
+            'visitor_group_schedules.show',    // View individual
+            'visitor_group_schedules.edit',    // Edit
+            'visitor_group_schedules.update',  // Update
+            'visitor_group_schedules.destroy', // Delete
+        ];
+
+        $meetingSchedulePermissions = [
+            'meeting_schedules.index',   // View
+        ];
+
+        $shiftGuardSchedulePermissions = [
+            'shift_guard_schedules.index',   // View
+            'shift_guard_schedules.create',  // Create new
+            'shift_guard_schedules.store',   // Store new
+            'shift_guard_schedules.show',    // View individual
+            'shift_guard_schedules.edit',    // Edit
+            'shift_guard_schedules.update',  // Update
+            'shift_guard_schedules.destroy', // Delete
+        ];
+
+        $accessPointPermissions = [
+            'access_points.index',   // View
+            'access_points.create',  // Create new
+            'access_points.store',   // Store new
+            'access_points.show',    // View individual
+            'access_points.edit',    // Edit
+            'access_points.update',  // Update
+            'access_points.destroy', // Delete
+        ];
+
+        $guardPermissions = [
+            'guards.index',   // View
+            'guards.create',  // Create new
+            'guards.store',   // Store new
+            'guards.show',    // View individual
+            'guards.edit',    // Edit
+            'guards.update',  // Update
+            'guards.destroy', // Delete
+            'guards.activity_log', // Activity log
+        ];
+
+        $accessPointGuardPermissions = [
+            'access_point_guards.index',   // View
+            'access_point_guards.create',  // Create new
+            'access_point_guards.store',   // Store new
+            'access_point_guards.show',    // View individual
+            'access_point_guards.edit',    // Edit
+            'access_point_guards.update',  // Update
+            'access_point_guards.destroy', // Delete
+            'access_point_guards.activity_log', // Delete
+        ];
+
+        $idCardListPermissions = [
+            'id_cards.index',   // View
+            'id_cards.create',  // Create new
+            'id_cards.store',   // Store new
+            'id_cards.show',    // View individual
+            'id_cards.edit',    // Edit
+            'id_cards.update',  // Update
+            'id_cards.destroy', // Delete
+        ];
+
+        $visitorIdCardListPermissions = [
+            'visitor_id_cards.index',   // View
+            'visitor_id_cards.create',  // Create new
+            'visitor_id_cards.store',   // Store new
+            'visitor_id_cards.show',    // View individual
+            'visitor_id_cards.edit',    // Edit
+            'visitor_id_cards.update',  // Update
+            'visitor_id_cards.destroy', // Delete
+            'visitor_id_cards.approve', // For Approving Status
+            'visitor_id_cards.pdf', // For pdf id card from visitor
+        ];
+
+        //facility menu 
+        // allotment menu (seat allotment)
+        $seatAllocationPermissions = [
+            'seat_allocations.index',   // View
+            'seat_allocations.create',  // Create new
+            'seat_allocations.store',   // Store new
+            'seat_allocations.show',    // View individual
+            'seat_allocations.edit',    // Edit
+            'seat_allocations.update',  // Update
+            'seat_allocations.destroy', // Delete
+        ];
+
+        //parking menu
+        $parkingListPermissions = [
+            'parking_lists.index',   // View
+            'parking_lists.create',  // Create new
+            'parking_lists.store',   // Store new
+            'parking_lists.show',    // View individual
+            'parking_lists.edit',    // Edit
+            'parking_lists.update',  // Update
+            'parking_lists.destroy', // Delete
+        ];
+
+        $parkingPermitPermissions = [
+            'parking_permits.index',   // View
+            'parking_permits.create',  // Create new
+            'parking_permits.store',   // Store new
+            'parking_permits.show',    // View individual
+            'parking_permits.edit',    // Edit
+            'parking_permits.update',  // Update
+            'parking_permits.destroy', // Delete
+        ];
+
+        $parkingLocationPermissions = [
+            'parking_locations.index',   // View
+            'parking_locations.create',  // Create new
+            'parking_locations.store',   // Store new
+            'parking_locations.show',    // View individual
+            'parking_locations.edit',    // Edit
+            'parking_locations.update',  // Update
+            'parking_locations.destroy', // Delete
+        ];
+
+        $parkingAllotmentPermissions = [
+            'parking_allotments.index',   // View
+            'parking_allotments.create',  // Create new
+            'parking_allotments.store',   // Store new
+            'parking_allotments.show',    // View individual
+            'parking_allotments.edit',    // Edit
+            'parking_allotments.update',  // Update
+            'parking_allotments.destroy', // Delete
+        ];
+
+        //report menu
+        $reportPermissions = [
+            'report.visitor.daily',   // daily visitor report
+            'report.visitor.daily.pdf',   // daily visitor report pdf
+            'report.visitor.monthly',   // monthly visitor report pdf
+            'report.visitor.monthly.pdf',   // monthly visitor report pdf
+            'report.visitor.yearly',   // yearly visitor report pdf
+            'report.visitor.yearly.pdf',   // yearly visitor report pdf
+            'report.visitor.company.daily',   // daily visitor company report
+            'report.visitor.company.daily.pdf',   // daily visitor company report pdf
+            'report.visitor.company.monthly',   // monthly visitor company report pdf
+            'report.visitor.company.monthly.pdf',   // monthly visitor company report pdf
+            'report.visitor.company.yearly',   // yearly visitor company report pdf
+            'report.visitor.company.yearly.pdf',   // yearly visitor company report pdf
+            'report.employee.daily',   // daily employee report
+            'report.employee.daily.pdf',   // daily employee report pdf
+            'report.employee.monthly',   // monthly employee report pdf
+            'report.employee.monthly.pdf',   // monthly employee report pdf
+            'report.employee.yearly',   // yearly employee report pdf
+            'report.employee.yearly.pdf',   // yearly employee report pdf
+        ];
+
+        //asset menu
+        $lostAndFoundPermissions = [
+            'lost_and_founds.index',   // View
+            'lost_and_founds.create',  // Create new
+            'lost_and_founds.store',   // Store new
+            'lost_and_founds.show',    // View individual
+            'lost_and_founds.edit',    // Edit
+            'lost_and_founds.update',  // Update
+            'lost_and_founds.destroy', // Delete
+        ];
+
+        // security menu
+        $anncouncementPermissions = [
+            'announcements.index',   // View
+            'announcements.create',  // Create new
+            'announcements.store',   // Store new
+            'announcements.show',    // View individual
+            'announcements.edit',    // Edit
+            'announcements.update',  // Update
+            'announcements.destroy', // Delete
+        ];
+
+        $overstayAlertPermissions = [
+            'overstay_alerts.index',   // View
+            'overstay_alerts.create',  // Create new
+            'overstay_alerts.store',   // Store new
+            'overstay_alerts.show',    // View individual
+            'overstay_alerts.edit',    // Edit
+            'overstay_alerts.update',  // Update
+            'overstay_alerts.destroy', // Delete
+        ];
+
+        $emergencyIncidentPermissions = [
+            'emergency_incidents.index',   // View
+            'emergency_incidents.create',  // Create new
+            'emergency_incidents.store',   // Store new
+            'emergency_incidents.show',    // View individual
+            'emergency_incidents.edit',    // Edit
+            'emergency_incidents.update',  // Update
+            'emergency_incidents.destroy', // Delete
+        ];
+
+        $evacuationPlanPermissions = [
+            'evacuation_plans.index',   // View
+            'evacuation_plans.create',  // Create new
+            'evacuation_plans.store',   // Store new
+            'evacuation_plans.show',    // View individual
+            'evacuation_plans.edit',    // Edit
+            'evacuation_plans.update',  // Update
+            'evacuation_plans.destroy', // Delete
+        ];
+
+        $medicalEmergencyPermissions = [
+            'medical_emergencies.index',   // View
+            'medical_emergencies.create',  // Create new
+            'medical_emergencies.store',   // Store new
+            'medical_emergencies.show',    // View individual
+            'medical_emergencies.edit',    // Edit
+            'medical_emergencies.update',  // Update
+            'medical_emergencies.destroy', // Delete
+        ];
+
+        $userCategoriesPermission = [
+            'user_categories.index',   // View
+            'user_categories.create',  // Create new
+            'user_categories.store',   // Store new
+            'user_categories.show',    // View individual
+            'user_categories.edit',    // Edit
+            'user_categories.update',  // Update
+            'user_categories.destroy', // Delete
+        ];
+
+        $systemUserPermission = [
+            'system_users.index',   // View
+            'system_users.create',  // Create new
+            'system_users.store',   // Store new
+            'system_users.show',    // View individual
+            'system_users.edit',    // Edit
+            'system_users.update',  // Update
+            'system_users.destroy', // Delete
+        ];
+
+        $systemInformationPermission = [
+            'system_informations.index',   // View
+            'system_informations.create',  // Create new
+            'system_informations.store',   // Store new
+            'system_informations.show',    // View individual
+            'system_informations.edit',    // Edit
+            'system_informations.update',  // Update
+            'system_informations.destroy', // Delete
+        ];
+
+        $profilePermission = [
+            'profile.show',    // View individual
+            'profile.edit',    // Edit
+            'profile.update',  // Update
+        ];
+
+        $settingPermission = [
+            'settings.index',    // Index page 
+            'settings.password_policy',    // to show password policy page
+            'settings.2fa',  // 2fa page
+            'settings.toggle2fa',  // 2fa page to turn on/off 
+            'settings.2fa.verify',  // 2fa code for verify
+            'settings.2fa.resend',  // 2fa code for resend
+            'settings.2fa.timeout',  // timeout for the auto logout page
+            'settings.2fa.timeout.update',  // timeout for the auto logout update
+            'settings.database.backup',  // backup page for database sql
+            'settings.database.backup.download',  // backup page for downloading database sql
+            'settings.logs',  // to show log page
+            'settings.clearLogs',  // to clear log
+            'settings.maintenance',  // to show maintenance page
+            'settings.maintenance.update',  // to update the maintenance 
+        ];
+
+        $ajaxPermission = [
+            'ajax.getLocationsByArea',   // Get all locations under a specific Area.
+            'ajax.getBuildingsByLocation',  //  Get all building lists under a specific Location.
+            'ajax.getHolders',  //  Get all holders by user type
+            'ajax.getReporters',  //  Get all holders by user type
+            'ajax.getDivisionByBranch',  //  Get all division by branch
+            'ajax.getDepartmentByDivision',  //  Get all department by division
+        ];
+
+        foreach ($defaultPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Default'
+            ]);
+        }
+
+        foreach ($userPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'User'
+            ]);
+        }
+
+        foreach ($rolePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Role'
+            ]);
+        }
+
+        foreach ($permissionPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Permission'
+            ]);
+        }
+
+        foreach ($organizationPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Organization'
+            ]);
+        }
+
+        foreach ($branchPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Branch'
+            ]);
+        }
+
+        foreach ($divisionPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Division'
+            ]);
+        }
+
+        foreach ($departmentPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Department'
+            ]);
+        }
+
+        foreach ($areaPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Area'
+            ]);
+        }
+
+        foreach ($subAreaPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Sub Area'
+            ]);
+        }
+
+        foreach ($buildingLocationPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Building Location'
+            ]);
+        }
+
+        foreach ($buildingListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Building List'
+            ]);
+        }
+
+        foreach ($roomListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Room List'
+            ]);
+        }
+
+        foreach ($visitorPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor'
+            ]);
+        }
+
+        foreach ($visitorCompanyPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor Company'
+            ]);
+        }
+
+        foreach ($blacklistVisitorPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Blacklist Visitor'
+            ]);
+        }
+
+        foreach ($emergencyVisitorPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Emergency Visitor'
+            ]);
+        }
+
+        foreach ($pendingVisitorPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Pending Visitor'
+            ]);
+        }
+
+
+        foreach ($visitorGroupMemberPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor Group Member'
+            ]);
+        }
+
+        foreach ($visitorJobApplicationPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor Job Application'
+            ]);
+        }
+
+        foreach ($employeePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Employee'
+            ]);
+        }
+
+        foreach ($shiftSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Shift Schedule'
+            ]);
+        }
+
+        foreach ($officeSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Office Schedule'
+            ]);
+        }
+
+        foreach ($interviewSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Interview Schedule'
+            ]);
+        }
+
+        foreach ($visitorHostSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor Host Schedule'
+            ]);
+        }
+
+        foreach ($visitorGroupSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor Group Schedule'
+            ]);
+        }
+
+        foreach ($weekendSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Weekend Schedule'
+            ]);
+        }
+
+        foreach ($meetingSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Meeting Schedule'
+            ]);
+        }
+
+        foreach ($shiftGuardSchedulePermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Guard Shift Schedule'
+            ]);
+        }
+
+        // security menu
+        foreach ($accessPointPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Access Point'
+            ]);
+        }
+
+        foreach ($guardPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Guard'
+            ]);
+        }
+
+        foreach ($idCardListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'ID Card'
+            ]);
+        }
+
+        foreach ($visitorIdCardListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Visitor ID Card'
+            ]);
+        }
+
+        foreach ($accessPointGuardPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Access Point Guard'
+            ]);
+        }
+
+        foreach ($seatAllocationPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Seat Allocation'
+            ]);
+        }
+
+        foreach ($parkingLocationPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Parking Location'
+            ]);
+        }
+
+        foreach ($parkingListPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Parking List'
+            ]);
+        }
+
+        foreach ($parkingPermitPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Parking Permit'
+            ]);
+        }
+
+        foreach ($parkingAllotmentPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Parking Allotment'
+            ]);
+        }
+
+        foreach ($reportPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Report Module'
+            ]);
+        }
+
+        foreach ($anncouncementPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Announcement'
+            ]);
+        }
+
+        foreach ($lostAndFoundPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Lost And Found'
+            ]);
+        }
+
+        foreach ($overstayAlertPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Overstay Alert'
+            ]);
+        }
+
+        foreach ($emergencyIncidentPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Emergency Incident'
+            ]);
+        }
+
+        foreach ($evacuationPlanPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Evacuation Plan'
+            ]);
+        }
+
+        foreach ($medicalEmergencyPermissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Medical Emergency'
+            ]);
+        }
+        // setting menu
+        foreach ($userCategoriesPermission as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'User Categories'
+            ]);
+        }
+
+        foreach ($systemUserPermission as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'System User'
+            ]);
+        }
+
+        foreach ($systemInformationPermission as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'System Information'
+            ]);
+        }
+
+        foreach ($profilePermission as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Profile'
+            ]);
+        }
+
+        foreach ($ajaxPermission as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'module' => 'Ajax Controller'
+            ]);
+        }
+        // End Permissions
+
+        // Create Roles
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $editorRole = Role::firstOrCreate(['name' => 'editor']);
+
+        // Assign Permissions to Roles
+        $adminRole->syncPermissions(Permission::all());
+        $editorRole->syncPermissions([
+            'users.index',
+            'users.create',
+            'users.store',
+            'users.edit',
+            'users.update',
+        ]);
+
+        // Assign role to a user (for testing)
+        $user = User::find(1);
+        if ($user) {
+            $user->assignRole('admin');
+        }
+    }
+}
