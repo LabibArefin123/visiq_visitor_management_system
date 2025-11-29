@@ -18,6 +18,8 @@ use App\Models\VisitorProbation;
 use App\Models\VisitorJobApplication;
 use App\Models\VisitorHostSchedule;
 use App\Models\VisitorGroupSchedule;
+use App\Models\InterviewSchedule;
+use App\Models\WeekendSchedule;
 
 class SearchController extends Controller
 {
@@ -150,7 +152,7 @@ class SearchController extends Controller
                 return $e;
             });
 
-        // Search Employees (YOUR FIXED FIELDS)
+        // Search branches
         $branches = Branch::where('name', 'LIKE', "%$q%")
             ->orWhere('branch_code', 'LIKE', "%$q%")
             ->orWhere('phone', 'LIKE', "%$q%")
@@ -193,6 +195,90 @@ class SearchController extends Controller
                 return $dep;
             });
 
+        $visitor_host_schedules = VisitorHostSchedule::leftJoin(
+            'visitors',
+            'visitor_host_schedules.visitor_id',
+            '=',
+            'visitors.id'
+        )
+            ->where('visitor_host_schedules.status', 'LIKE', "%{$q}%")
+            ->orWhere('visitor_host_schedules.meeting_date', 'LIKE', "%{$q}%")
+            ->orWhere('visitors.name', 'LIKE', "%{$q}%")
+            ->limit(10)
+            ->get([
+                'visitor_host_schedules.id',
+                'visitor_host_schedules.status',
+                'visitor_host_schedules.meeting_date',
+                'visitors.name as name'
+            ])
+            ->map(function ($items) {
+                $items->type = 'visitor_host_schedules';
+                return $items;
+            });
+
+        $visitor_group_schedules = VisitorGroupSchedule::select(
+            'visitor_group_schedules.id',
+            'visitor_group_schedules.status',
+            'visitor_group_schedules.meeting_date',
+            'visitor_group_members.group_name as name'
+        )
+            ->leftJoin('visitor_group_members', 'visitor_group_schedules.visitor_group_id', '=', 'visitor_group_members.id')
+            ->leftJoin('employees', 'visitor_group_schedules.employee_id', '=', 'employees.id')
+            ->where(function ($query) use ($q) {
+                $query->where('visitor_group_schedules.status', 'LIKE', "%{$q}%")
+                    ->orWhere('visitor_group_schedules.purpose', 'LIKE', "%{$q}%")
+                    ->orWhere('visitor_group_schedules.meeting_date', 'LIKE', "%{$q}%")
+                    ->orWhere('visitor_group_members.group_name', 'LIKE', "%{$q}%")
+                    ->orWhere('employees.name', 'LIKE', "%{$q}%");
+            })
+            ->limit(10)
+            ->get()
+            ->map(function ($item) {
+                $item->type = 'visitor_group_schedules';
+                return $item;
+            });
+
+        $departments = Department::where('name', 'LIKE', "%$q%")
+            ->orWhere('dept_code', 'LIKE', "%$q%")
+            ->orWhere('phone', 'LIKE', "%$q%")
+            ->orWhere('email', 'LIKE', "%$q%")
+            ->orWhere('address', 'LIKE', "%$q%")
+            ->orWhere('contact_person', 'LIKE', "%$q%")
+            ->orWhere('contact_phone', 'LIKE', "%$q%")
+            ->limit(10)
+            ->get(['id', 'name', 'dept_code as code', 'phone', 'email', 'address', 'contact_person', 'contact_phone'])
+            ->map(function ($dep) {
+                $dep->type = 'departments';
+                return $dep;
+            });
+
+        $interview_schedules = InterviewSchedule::select(
+            'interview_schedules.id',
+            'interview_schedules.status',
+            'interview_schedules.interview_date',
+            'visitor_job_applications.name as name' // candidate name
+        )
+            ->leftJoin('visitor_job_applications', 'interview_schedules.candidate_id', '=', 'visitor_job_applications.id')
+            ->where(function ($query) use ($q) {
+                $query->where('interview_schedules.status', 'LIKE', "%{$q}%")
+                    ->orWhere('interview_schedules.interview_date', 'LIKE', "%{$q}%")
+                    ->orWhere('visitor_job_applications.name', 'LIKE', "%{$q}%"); // search by candidate name
+            })
+            ->limit(10)
+            ->get()
+            ->map(function ($item) {
+                $item->type = 'interview_schedules';
+                return $item;
+            });
+
+        $weekend_schedules = WeekendSchedule::where('slot_name', 'LIKE', "%$q%")
+            ->orWhere('status', 'LIKE', "%$q%")
+            ->get(['id', 'slot_name as name', 'status'])
+            ->map(function ($ws) {
+                $ws->type = 'weekend_schedules';
+                return $ws;
+            });
+
         $system_users = User::where('name', 'LIKE', "%$q%")
             ->orWhere('username', 'LIKE', "%$q%")
             ->orWhere('email', 'LIKE', "%$q%")
@@ -210,10 +296,14 @@ class SearchController extends Controller
             ->merge($divisions)
             ->merge($departments)
             ->merge($employees)
+            ->merge($interview_schedules)
+            ->merge($weekend_schedules)
             ->merge($system_users)
             ->merge($pending_visitors)
             ->merge($emergency_visitors)
             ->merge($visitor_job_applications)
+            ->merge($visitor_host_schedules)
+            ->merge($visitor_group_schedules)
             ->merge($visitor_probations)
             ->merge($blacklist_visitors));
     }

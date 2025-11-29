@@ -14,4 +14,8 @@ class WeekendSchedule extends Model
         'working_days',
         'status',
     ];
+
+    protected $casts = [
+        'working_days' => 'array',
+    ];
 }
