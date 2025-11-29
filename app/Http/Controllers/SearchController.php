@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Employee;
+<<<<<<< HEAD
 use App\Models\Organization;
 use App\Models\Branch;
 use App\Models\Division;
 use App\Models\Department;
+=======
+>>>>>>> cff8a03f022a6d12b5854c44afbd78917bd8cfc9
 use App\Models\Visitor;
 use App\Models\VisitorCompany;
 use App\Models\PendingVisitor;
@@ -41,6 +44,7 @@ class SearchController extends Controller
                 return $v;
             });
 
+<<<<<<< HEAD
         $organizations = Organization::where('name', 'LIKE', "%$q%")
             ->get(['id', 'name'])
             ->map(function ($org) {
@@ -48,6 +52,8 @@ class SearchController extends Controller
                 return $org;
             });
 
+=======
+>>>>>>> cff8a03f022a6d12b5854c44afbd78917bd8cfc9
         // Search Company Visitors
         $company_visitors = VisitorCompany::where('company_name', 'LIKE', "%$q%")
             ->orWhere('contact_person', 'LIKE', "%$q%")
@@ -150,6 +156,7 @@ class SearchController extends Controller
                 return $e;
             });
 
+<<<<<<< HEAD
         // Search Employees (YOUR FIXED FIELDS)
         $branches = Branch::where('name', 'LIKE', "%$q%")
             ->orWhere('branch_code', 'LIKE', "%$q%")
@@ -193,6 +200,8 @@ class SearchController extends Controller
                 return $dep;
             });
 
+=======
+>>>>>>> cff8a03f022a6d12b5854c44afbd78917bd8cfc9
         $system_users = User::where('name', 'LIKE', "%$q%")
             ->orWhere('username', 'LIKE', "%$q%")
             ->orWhere('email', 'LIKE', "%$q%")
@@ -204,11 +213,15 @@ class SearchController extends Controller
 
         return response()->json($visitors
             ->merge($company_visitors)
+<<<<<<< HEAD
             ->merge($organizations)
             ->merge($employees)
             ->merge($branches)
             ->merge($divisions)
             ->merge($departments)
+=======
+            ->merge($employees)
+>>>>>>> cff8a03f022a6d12b5854c44afbd78917bd8cfc9
             ->merge($system_users)
             ->merge($pending_visitors)
             ->merge($emergency_visitors)

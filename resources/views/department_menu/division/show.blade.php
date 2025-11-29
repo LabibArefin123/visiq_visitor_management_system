@@ -18,7 +18,11 @@
 
 @section('content')
     <div class="container">
+<<<<<<< HEAD
         <div class="card">
+=======
+        <div class="card shadow-lg">
+>>>>>>> cff8a03f022a6d12b5854c44afbd78917bd8cfc9
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 form-group mb-3">
