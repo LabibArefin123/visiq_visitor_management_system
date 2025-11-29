@@ -18,7 +18,7 @@
 
 @section('content')
     <div class="container">
-        <div class="card shadow-lg">
+        <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 form-group mb-3">

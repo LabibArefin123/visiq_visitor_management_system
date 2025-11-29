@@ -1,16 +1,16 @@
 @extends('adminlte::page')
 
-@section('title', 'Guard Details')
+@section('title', 'Branch Details')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Guard Details</h3>
+        <h3 class="mb-0">Branch Details</h3>
         <div class="d-flex gap-2">
-            <a href="{{ route('guards.edit', $guard->id) }}" class="btn btn-sm btn-primary">
+            <a href="{{ route('branches.edit', $branch->id) }}" class="btn btn-sm btn-primary">
                 <i class="fas fa-edit"></i> Edit
             </a>
-            <a href="{{ route('guards.index') }}" class="btn btn-sm btn-secondary">
-                <i class="fas fa-arrow-left"></i> Go Back
+            <a href="{{ route('branches.index') }}" class="btn btn-sm btn-secondary d-flex align-items-center gap-2">
+                <i class="fas fa-arrow-left"></i> Back
             </a>
         </div>
     </div>
@@ -21,43 +21,47 @@
         <div class="card shadow-lg">
             <div class="card-body">
                 <div class="row">
-                    {{-- Guard ID --}}
+
+                    {{-- Branch Code --}}
                     <div class="col-md-6 form-group mb-3">
-                        <label><strong>Guard ID</strong></label>
-                        <input type="text" class="form-control" value="{{ $guard->guard_id }}" readonly>
+                        <label><strong>Branch Code</strong></label>
+                        <input type="text" class="form-control" value="{{ $branch->branch_code }}" readonly>
                     </div>
 
                     {{-- Name --}}
                     <div class="col-md-6 form-group mb-3">
                         <label><strong>Name</strong></label>
-                        <input type="text" class="form-control" value="{{ $guard->name }}" readonly>
+                        <input type="text" class="form-control" value="{{ $branch->name }}" readonly>
                     </div>
 
                     {{-- Phone --}}
                     <div class="col-md-6 form-group mb-3">
                         <label><strong>Phone</strong></label>
-                        <input type="text" class="form-control" value="{{ $guard->phone }}" readonly>
+                        <input type="text" class="form-control" value="{{ $branch->phone }}" readonly>
                     </div>
 
                     {{-- Email --}}
                     <div class="col-md-6 form-group mb-3">
                         <label><strong>Email</strong></label>
-                        <input type="text" class="form-control" value="{{ $guard->email ?? 'N/A' }}" readonly>
+                        <input type="email" class="form-control" value="{{ $branch->email ?? 'N/A' }}" readonly>
                     </div>
 
+                    {{-- Address --}}
                     <div class="col-md-6 form-group mb-3">
                         <label><strong>Address</strong></label>
-                        <input type="text" class="form-control" value="{{ $guard->address }}" readonly>
+                        <input type="text" class="form-control" value="{{ $branch->address }}" readonly>
                     </div>
 
+                    {{-- Contact Person --}}
                     <div class="col-md-6 form-group mb-3">
                         <label><strong>Contact Person</strong></label>
-                        <input type="text" class="form-control" value="{{ $guard->contact_person }}" readonly>
+                        <input type="text" class="form-control" value="{{ $branch->contact_person }}" readonly>
                     </div>
 
+                    {{-- Contact Phone --}}
                     <div class="col-md-6 form-group mb-3">
                         <label><strong>Contact Phone</strong></label>
-                        <input type="text" class="form-control" value="{{ $guard->contact_phone }}" readonly>
+                        <input type="text" class="form-control" value="{{ $branch->contact_phone }}" readonly>
                     </div>
 
                 </div>

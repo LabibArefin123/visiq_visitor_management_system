@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Employee;
+use App\Models\Organization;
+use App\Models\Branch;
+use App\Models\Division;
+use App\Models\Department;
 use App\Models\Visitor;
 use App\Models\VisitorCompany;
 use App\Models\PendingVisitor;
@@ -35,6 +39,13 @@ class SearchController extends Controller
             ->map(function ($v) {
                 $v->type = 'visitors';
                 return $v;
+            });
+
+        $organizations = Organization::where('name', 'LIKE', "%$q%")
+            ->get(['id', 'name'])
+            ->map(function ($org) {
+                $org->type = 'organizations';
+                return $org;
             });
 
         // Search Company Visitors
@@ -139,6 +150,49 @@ class SearchController extends Controller
                 return $e;
             });
 
+        // Search Employees (YOUR FIXED FIELDS)
+        $branches = Branch::where('name', 'LIKE', "%$q%")
+            ->orWhere('branch_code', 'LIKE', "%$q%")
+            ->orWhere('phone', 'LIKE', "%$q%")
+            ->orWhere('email', 'LIKE', "%$q%")
+            ->orWhere('address', 'LIKE', "%$q%")
+            ->orWhere('contact_person', 'LIKE', "%$q%")
+            ->orWhere('contact_phone', 'LIKE', "%$q%")
+            ->limit(10)
+            ->get(['id', 'name', 'branch_code as code', 'phone', 'email', 'address', 'contact_person', 'contact_phone'])
+            ->map(function ($br) {
+                $br->type = 'branches';
+                return $br;
+            });
+
+        $divisions = Division::where('name', 'LIKE', "%$q%")
+            ->orWhere('div_code', 'LIKE', "%$q%")
+            ->orWhere('phone', 'LIKE', "%$q%")
+            ->orWhere('email', 'LIKE', "%$q%")
+            ->orWhere('address', 'LIKE', "%$q%")
+            ->orWhere('contact_person', 'LIKE', "%$q%")
+            ->orWhere('contact_phone', 'LIKE', "%$q%")
+            ->limit(10)
+            ->get(['id', 'name', 'div_code as code', 'phone', 'email', 'address', 'contact_person', 'contact_phone'])
+            ->map(function ($div) {
+                $div->type = 'divisions';
+                return $div;
+            });
+
+        $departments = Department::where('name', 'LIKE', "%$q%")
+            ->orWhere('dept_code', 'LIKE', "%$q%")
+            ->orWhere('phone', 'LIKE', "%$q%")
+            ->orWhere('email', 'LIKE', "%$q%")
+            ->orWhere('address', 'LIKE', "%$q%")
+            ->orWhere('contact_person', 'LIKE', "%$q%")
+            ->orWhere('contact_phone', 'LIKE', "%$q%")
+            ->limit(10)
+            ->get(['id', 'name', 'dept_code as code', 'phone', 'email', 'address', 'contact_person', 'contact_phone'])
+            ->map(function ($dep) {
+                $dep->type = 'departments';
+                return $dep;
+            });
+
         $system_users = User::where('name', 'LIKE', "%$q%")
             ->orWhere('username', 'LIKE', "%$q%")
             ->orWhere('email', 'LIKE', "%$q%")
@@ -150,7 +204,11 @@ class SearchController extends Controller
 
         return response()->json($visitors
             ->merge($company_visitors)
+            ->merge($organizations)
             ->merge($employees)
+            ->merge($branches)
+            ->merge($divisions)
+            ->merge($departments)
             ->merge($system_users)
             ->merge($pending_visitors)
             ->merge($emergency_visitors)
