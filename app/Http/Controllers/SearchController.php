@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Area;
+use App\Models\SubArea;
+use App\Models\BuildingLocation;
+use App\Models\BuildingList;
+use App\Models\RoomList;
 use App\Models\User;
+use App\Models\UserCategory;
 use App\Models\Employee;
 use App\Models\Organization;
 use App\Models\Branch;
@@ -50,6 +56,46 @@ class SearchController extends Controller
                 return $org;
             });
 
+        $areas = Area::where('name', 'LIKE', "%$q%")
+            ->get(['id', 'name'])
+            ->map(function ($area) {
+                $area->type = 'areas';
+                return $area;
+            });
+
+        $sub_areas = SubArea::where('sub_area_name', 'LIKE', "%$q%")
+            ->get(['id', 'sub_area_name as name'])
+            ->map(function ($sarea) {
+                $sarea->type = 'sub_areas';
+                return $sarea;
+            });
+
+        $building_locations = BuildingLocation::where('name', 'LIKE', "%$q%")
+            ->get(['id', 'name'])
+            ->map(function ($blocation) {
+                $blocation->type = 'building_locations';
+                return $blocation;
+            });
+
+        $building_lists = BuildingList::where('name', 'LIKE', "%$q%")
+            ->orWhere('name_in_bangla', 'LIKE', "%$q%")
+            ->orWhere('level', 'LIKE', "%$q%")
+            ->orWhere('unit_per_level', 'LIKE', "%$q%")
+            ->get(['id', 'name', 'name_in_bangla', 'level', 'unit_per_level'])
+            ->map(function ($blist) {
+                $blist->type = 'building_lists';
+                return $blist;
+            });
+
+        $room_lists = RoomList::where('room_name', 'LIKE', "%$q%")
+            ->orWhere('room_name_in_bangla', 'LIKE', "%$q%")
+            ->orWhere('level', 'LIKE', "%$q%")
+            ->get(['id', 'room_name as name', 'room_name_in_bangla', 'level'])
+            ->map(function ($rlist) {
+                $rlist->type = 'room_lists';
+                return $rlist;
+            });
+
         // Search Company Visitors
         $company_visitors = VisitorCompany::where('company_name', 'LIKE', "%$q%")
             ->orWhere('contact_person', 'LIKE', "%$q%")
@@ -65,8 +111,6 @@ class SearchController extends Controller
                 $v->type = 'visitor_companies';
                 return $v;
             });
-
-
 
         //Search Pending Visitor
         $pending_visitors = PendingVisitor::where('name', 'LIKE', "%$q%")
@@ -279,6 +323,14 @@ class SearchController extends Controller
                 return $ws;
             });
 
+        $user_categories = UserCategory::where('category_name', 'LIKE', "%$q%")
+            ->orWhere('category_name_in_bangla', 'LIKE', "%$q%")
+            ->get(['id', 'category_name as name', 'category_name_in_bangla'])
+            ->map(function ($ucat) {
+                $ucat->type = 'user_categories';
+                return $ucat;
+            });
+
         $system_users = User::where('name', 'LIKE', "%$q%")
             ->orWhere('username', 'LIKE', "%$q%")
             ->orWhere('email', 'LIKE', "%$q%")
@@ -291,6 +343,11 @@ class SearchController extends Controller
         return response()->json($visitors
             ->merge($company_visitors)
             ->merge($organizations)
+            ->merge($areas)
+            ->merge($sub_areas)
+            ->merge($building_locations)
+            ->merge($building_lists)
+            ->merge($room_lists)
             ->merge($employees)
             ->merge($branches)
             ->merge($divisions)
@@ -298,6 +355,7 @@ class SearchController extends Controller
             ->merge($employees)
             ->merge($interview_schedules)
             ->merge($weekend_schedules)
+            ->merge($user_categories)
             ->merge($system_users)
             ->merge($pending_visitors)
             ->merge($emergency_visitors)
